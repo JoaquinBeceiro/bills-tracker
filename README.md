@@ -29,7 +29,18 @@ For example, on `https://docs.google.com/spreadsheets/d/1qffzsCf2siRv-loAAMLeGzs
 8. Your JSON key file is generated and downloaded to your machine (it is the only copy!)
 9. click "DONE"
 
+## Example
+
+I have a functional example on [Netlify](https://sleepy-bhaskara-080018.netlify.com/)
+
+## Next steps
+
+- [] Validate inputs
+- [] Show graphs
+- [] Improve the code
+
 ## Authors
  **Joaquin Beceiro** 
 - [GitHub](https://github.com/JoaquinBeceiro) 
 - [Web](https://JoaquinBeceiro.com.uy)
+
