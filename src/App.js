@@ -1,25 +1,63 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import Main from "./screens/Main";
+import {
+  getUserSession,
+  setUserSession,
+  deleteUserSession
+} from "./config/localStorage";
+
+import Dialog from "./components/dialog";
+import UserContext from "./components/userContext";
 
 function App() {
+  const [user, setUSer] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [open, setOpen] = React.useState(false);
+
+  const handleOk = () => {
+    setOpen(false);
+    removeUser();
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    const userFromStorage = getUserSession();
+    if (userFromStorage) {
+      setUSer(getUserSession());
+    }
+    setLoading(false);
+  }, []);
+
+  const newUser = user => {
+    setUSer(user);
+    setUserSession(user);
+  };
+
+  const removeUser = () => {
+    setUSer(null);
+    deleteUserSession();
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContext.Provider value={{ user, newUser }}>
+      <Dialog
+        open={open}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+        title="Cerrar sesión"
+        description="Realmente desea cerrar la sesión actual?"
+      />
+      {user && (
+        <div className="exitButton" onClick={() => setOpen(true)}>
+          X
+        </div>
+      )}
+      <div className="App">{loading ? <p>Loading...</p> : <Main />}</div>
+    </UserContext.Provider>
   );
 }
 
