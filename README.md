@@ -43,6 +43,7 @@ I have a functional example on [Netlify](https://sleepy-bhaskara-080018.netlify.
 - [] Validate inputs
 - [] Show graphs
 - [] Improve the code
+- [] Editable expense type dropdown values
 
 ## Authors
 
