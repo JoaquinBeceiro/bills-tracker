@@ -34,12 +34,17 @@ const Record = props => {
   };
 
   const createDoc = async () => {
+    try{
     const doc = new GoogleSpreadsheet(spreadsheetId);
     await doc.useServiceAccountAuth(jsonFile);
     await doc.loadInfo();
 
     // Set docInfo
     setDocInfo(doc);
+    } catch (e){
+      alert(`Hubo un error en la autenticación: ${e.message}`)
+      userContext.newUser(null);
+    }
   };
 
   const updateRows = async docInfo => {

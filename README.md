@@ -4,7 +4,10 @@ Track and share expenses with Google Drive spreadsheet.
 
 ## Onboarding
 
-### 1. Create a spreadsheet
+### 1. Create a spreadsheet and share it 
+
+Share your spreadsheet with link sharing: *Anyone with th link can edit*.
+![Image of Yaktocat](public/spreadsheetSS.png)
 
 ### 2. Copy spreadsheet ID
 
@@ -43,6 +46,7 @@ I have a functional example on [Netlify](https://sleepy-bhaskara-080018.netlify.
 - [] Validate inputs
 - [] Show graphs
 - [] Improve the code
+- [] Editable expense type dropdown values
 
 ## Authors
 
