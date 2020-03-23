@@ -40,3 +40,7 @@ h5 {
 .formContainer .input {
   margin-top: 10px;
 }
+
+.MuiTypography-root {
+  font-size: 10px !important;
+}
