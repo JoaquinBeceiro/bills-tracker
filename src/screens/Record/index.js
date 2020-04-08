@@ -2,67 +2,79 @@ import React, { useEffect, useState, useContext } from "react";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 
 import { todayDate } from "../../config/date";
-import { types } from "../../config/options";
+import { defaultTypes } from "../../config/options";
 
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 import UserContext from "../../components/userContext";
 
-const Record = props => {
+const Record = (props) => {
   const userContext = useContext(UserContext);
   const { jsonFile, spreadsheetId, name } = userContext.user;
 
   const defaultValues = {
     date: todayDate(),
     amount: "",
-    type: types[0],
-    detail: ""
+    type: "",
+    detail: "",
   };
 
   const [docInfo, setDocInfo] = useState(null);
-  const [rows, setRows] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [types, setStypes] = useState(defaultTypes);
 
   const [values, setValues] = React.useState(defaultValues);
 
-  const handleChange = prop => event => {
-    setValues({ ...values, [prop]: event.target.value });
+  const handleChange = (prop) => (event) => {
+    const newValue =
+      event.target.value.charAt(0).toUpperCase() + event.target.value.slice(1);
+    setValues({ ...values, [prop]: newValue });
+  };
+
+  const handleSelectChange = (event, newValue) => {
+    if (newValue && newValue.inputValue) {
+      setValues({ ...values, type: newValue.inputValue });
+      return;
+    }
+    setValues({ ...values, type: newValue });
   };
 
   const createDoc = async () => {
-    try{
-    const doc = new GoogleSpreadsheet(spreadsheetId);
-    await doc.useServiceAccountAuth(jsonFile);
-    await doc.loadInfo();
+    try {
+      const doc = new GoogleSpreadsheet(spreadsheetId);
+      await doc.useServiceAccountAuth(jsonFile);
+      await doc.loadInfo();
 
-    // Set docInfo
-    setDocInfo(doc);
-    } catch (e){
-      alert(`Hubo un error en la autenticación: ${e.message}`)
+      // Set docInfo and get types
+      await setDocInfo(doc);
+    } catch (e) {
+      alert(`Hubo un error en la autenticación: ${e.message}`);
       userContext.newUser(null);
     }
   };
 
-  const updateRows = async docInfo => {
+  const getTypes = async () => {
     const sheet = docInfo.sheetsByIndex[0];
     const fetchedRows = await sheet.getRows();
-    setRows(fetchedRows);
-    fetchedRows[0].Date = "sergey@abc.xyz"; // update a value
-    await fetchedRows[0].save(); // save updates
+
+    const newTypes = fetchedRows.map((e) => e.Type);
+    const combinedTypes = Array.from(new Set(newTypes.concat(types)));
+    setStypes(combinedTypes);
+    setLoading(false);
   };
 
   const addRow = async (date, who, amount, type, detail) => {
     const sheet = docInfo.sheetsByIndex[0];
-    await sheet.addRow({
+    return await sheet.addRow({
       Date: date,
       Who: who,
       Amount: `$${amount}`,
       Type: type,
-      Detail: detail
+      Detail: detail,
     });
   };
 
@@ -70,15 +82,22 @@ const Record = props => {
     createDoc();
   }, []);
 
+  useEffect(() => {
+    docInfo && getTypes();
+  }, [docInfo]);
+
   if (userContext === null) {
     return <p>Error</p>;
   }
 
-  const handleAddRow = () => {
+  const handleAddRow = async () => {
+    setLoading(true);
     const { date, amount, type, detail } = values;
-    addRow(date, name, amount, type, detail);
+    await addRow(date, name, amount, type, detail);
     alert("Agregado!");
     setValues(defaultValues);
+    getTypes();
+    setLoading(true);
   };
 
   return (
@@ -91,7 +110,7 @@ const Record = props => {
           value={values.date}
           onChange={handleChange("date")}
           InputLabelProps={{
-            shrink: true
+            shrink: true,
           }}
         />
       </FormControl>
@@ -99,7 +118,7 @@ const Record = props => {
         <TextField
           className="input"
           InputProps={{
-            startAdornment: <InputAdornment position="start">$</InputAdornment>
+            startAdornment: <InputAdornment position="start">$</InputAdornment>,
           }}
           value={values.amount}
           id="standard-basic"
@@ -109,19 +128,21 @@ const Record = props => {
         />
       </FormControl>
       <FormControl>
-        <Select
-          className="input"
-          label="Tipo"
-          labelId="demo-simple-select-label"
+        <Autocomplete
           value={values.type}
-          onChange={handleChange("type")}
-        >
-          {types.map(e => (
-            <MenuItem key={e} value={e}>
-              {e}
-            </MenuItem>
-          ))}
-        </Select>
+          options={types}
+          onChange={handleSelectChange}
+          style={{ width: 300, border: "none" }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Tipo"
+              margin="normal"
+              onChange={handleChange("type")}
+            />
+          )}
+          renderOption={(option) => option}
+        />
       </FormControl>
       <FormControl>
         <TextField
@@ -142,6 +163,7 @@ const Record = props => {
             variant="contained"
             color="primary"
             onClick={handleAddRow}
+            disabled={loading}
           >
             AGREGAR!
           </Button>

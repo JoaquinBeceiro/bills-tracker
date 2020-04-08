@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import UserContext from "../../components/userContext";
+import { dateParser } from "../../config/date";
 
 import styled from "styled-components";
 
@@ -19,7 +20,7 @@ const columns = [
   { id: "Date", label: "Date" },
   { id: "Who", label: "Who" },
   { id: "Amount", label: "Amount" },
-  { id: "Type", label: "Type" }
+  { id: "Type", label: "Type" },
 ];
 
 const useStyles = makeStyles({
@@ -27,18 +28,18 @@ const useStyles = makeStyles({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    fontSize: "10px"
+    fontSize: "10px",
   },
   container: {
-    maxHeight: window.innerHeight - 140 + "px"
+    maxHeight: window.innerHeight - 140 + "px",
   },
   tableCell: {
     fontSize: "10px",
-    padding: "2px"
+    padding: "2px",
   },
   paginator: {
-    fontSize: "10px"
-  }
+    fontSize: "10px",
+  },
 });
 
 const AbsoluteContainer = styled.div`
@@ -49,7 +50,7 @@ const AbsoluteContainer = styled.div`
   background-color: #eee;
   top: 0;
   bottom: 0;
-  left:0;
+  left: 0;
   width: 100%;
   font-size: 10px;
   & .close {
@@ -66,7 +67,7 @@ const AbsoluteContainer = styled.div`
   }
 `;
 
-const DataTable = props => {
+const DataTable = (props) => {
   const classes = useStyles();
   const userContext = useContext(UserContext);
   const { jsonFile, spreadsheetId, name } = userContext.user;
@@ -81,7 +82,7 @@ const DataTable = props => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = event => {
+  const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
@@ -102,7 +103,10 @@ const DataTable = props => {
 
       const sheet = doc.sheetsByIndex[0];
       const fetchedRows = await sheet.getRows();
-      setRows(fetchedRows);
+      const sortedRows = fetchedRows.sort(
+        (a, b) => dateParser(b.Date) - dateParser(a.Date)
+      );
+      setRows(sortedRows);
     } catch (e) {
       alert(`Hubo un error en la autenticación: ${e.message}`);
       userContext.newUser(null);
@@ -121,7 +125,7 @@ const DataTable = props => {
               <Table stickyHeader size="small" aria-label="a dense table">
                 <TableHead>
                   <TableRow>
-                    {columns.map(column => (
+                    {columns.map((column) => (
                       <TableCell
                         key={column.id}
                         align={column.align}
@@ -136,10 +140,10 @@ const DataTable = props => {
                 <TableBody>
                   {rows
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map(row => {
+                    .map((row) => {
                       return (
                         <TableRow hover tabIndex={-1} key={row.rowIndex}>
-                          {columns.map(column => {
+                          {columns.map((column) => {
                             const value = row[column.id];
                             return (
                               <TableCell

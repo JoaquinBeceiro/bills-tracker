@@ -1,1 +1,1 @@
-export const types = ["Supermercado", "Farmacia", "Vestimenta", "Otros"];
+export const defaultTypes = ["Supermercado", "Farmacia", "Vestimenta", "Otros"];
