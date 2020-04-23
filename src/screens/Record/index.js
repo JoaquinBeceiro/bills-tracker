@@ -11,6 +11,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 import UserContext from "../../components/userContext";
+import Dialog from "../../components/dialog";
 
 const Record = (props) => {
   const userContext = useContext(UserContext);
@@ -26,6 +27,12 @@ const Record = (props) => {
   const [docInfo, setDocInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [types, setStypes] = useState(defaultTypes);
+
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleOk = () => {
+    setOpenDialog(false);
+  };
 
   const [values, setValues] = React.useState(defaultValues);
 
@@ -91,13 +98,18 @@ const Record = (props) => {
   }
 
   const handleAddRow = async () => {
-    setLoading(true);
     const { date, amount, type, detail } = values;
-    await addRow(date, name, amount, type, detail);
-    alert("Agregado!");
-    setValues(defaultValues);
-    getTypes();
-    setLoading(true);
+
+    if (amount && type) {
+      setLoading(true);
+      await addRow(date, name, amount, type, detail);
+      alert("Agregado!");
+      setValues(defaultValues);
+      getTypes();
+      setLoading(true);
+    } else {
+      setOpenDialog(true);
+    }
   };
 
   return (
@@ -169,6 +181,13 @@ const Record = (props) => {
           </Button>
         )}
       </FormControl>
+
+      <Dialog
+        open={openDialog}
+        handleOk={handleOk}
+        title="Atención"
+        description="Los campos 'Precio' y 'Tipo' son requeridos!"
+      />
     </div>
   );
 };
