@@ -29,6 +29,10 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
     fontSize: "10px",
+    display: "flex",
+    margin: 0,
+    height: "100%",
+    padding: 0,
   },
   container: {
     maxHeight: window.innerHeight - 140 + "px",
@@ -75,7 +79,7 @@ const DataTable = (props) => {
   const { closeAction } = props;
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [rowsPerPage, setRowsPerPage] = useState(100);
   const [rows, setRows] = useState(null);
 
   const handleChangePage = (event, newPage) => {
@@ -120,7 +124,16 @@ const DataTable = (props) => {
       </div>
       <Container maxWidth="sm" className={classes.root}>
         {rows ? (
-          <div>
+          <div
+            style={{
+              display: "flex",
+              flex: 1,
+              flexDirection: "column",
+              height: "100%",
+              boxSizing: "border-box",
+              padding: "5px 5px 70px 5px",
+            }}
+          >
             <TableContainer className={classes.container}>
               <Table stickyHeader size="small" aria-label="a dense table">
                 <TableHead>
