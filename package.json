@@ -8,7 +8,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "google-spreadsheet": "^3.0.10",
+    "google-spreadsheet": "^3.0.11",
     "mongoose": "^5.9.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
