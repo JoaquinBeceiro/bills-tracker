@@ -12,7 +12,7 @@
     "mongoose": "^5.9.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.0",
+    "react-scripts": "3.4.3",
     "styled-components": "^5.1.0",
     "typeface-roboto": "0.0.75"
   },
