@@ -2,12 +2,14 @@
 
 Track and share expenses with Google Drive spreadsheet.
 
+![App screenshot](public/appSS.png)
+
 ## Onboarding
 
 ### 1. Create a spreadsheet and share it 
 
 Share your spreadsheet with link sharing: *Anyone with th link can edit*.
-![Image of Yaktocat](public/spreadsheetSS.png)
+![Image spreadsheet](public/spreadsheetSS.png)
 
 ### 2. Copy spreadsheet ID
 
