@@ -1,7 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
-import { GoogleSpreadsheet } from "google-spreadsheet";
-import UserContext from "../../components/userContext";
-import { dateParser } from "../../config/date";
+import React, { useState } from "react";
 
 import styled from "styled-components";
 
@@ -35,7 +32,7 @@ const useStyles = makeStyles({
     padding: 0,
   },
   container: {
-    maxHeight: window.innerHeight - 140 + "px",
+    maxHeight: window.innerHeight - 170 + "px",
   },
   tableCell: {
     fontSize: "10px",
@@ -43,6 +40,10 @@ const useStyles = makeStyles({
   },
   paginator: {
     fontSize: "10px",
+    padding: 0,
+    "& div": {
+      padding: 0,
+    },
   },
 });
 
@@ -57,30 +58,14 @@ const AbsoluteContainer = styled.div`
   left: 0;
   width: 100%;
   font-size: 10px;
-  & .close {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 50px;
-    background-color: #000;
-    color: #fff;
-    text-align: center;
-    font-weight: bolder;
-    padding: 5px;
-    cursor: pointer;
-  }
 `;
 
 const DataTable = (props) => {
+  const { data } = props;
   const classes = useStyles();
-  const userContext = useContext(UserContext);
-  const { jsonFile, spreadsheetId, name } = userContext.user;
-
-  const { closeAction } = props;
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(100);
-  const [rows, setRows] = useState(null);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -91,39 +76,10 @@ const DataTable = (props) => {
     setPage(0);
   };
 
-  const handleClose = () => {
-    closeAction();
-  };
-
-  useEffect(() => {
-    loadTable();
-  }, []);
-
-  const loadTable = async () => {
-    try {
-      const doc = new GoogleSpreadsheet(spreadsheetId);
-      await doc.useServiceAccountAuth(jsonFile);
-      await doc.loadInfo();
-
-      const sheet = doc.sheetsByIndex[0];
-      const fetchedRows = await sheet.getRows();
-      const sortedRows = fetchedRows.sort(
-        (a, b) => dateParser(b.Date) - dateParser(a.Date)
-      );
-      setRows(sortedRows);
-    } catch (e) {
-      alert(`Hubo un error en la autenticación: ${e.message}`);
-      userContext.newUser(null);
-    }
-  };
-
   return (
     <AbsoluteContainer>
-      <div className="close" onClick={handleClose}>
-        CLOSE
-      </div>
       <Container maxWidth="sm" className={classes.root}>
-        {rows ? (
+        {data ? (
           <div
             style={{
               display: "flex",
@@ -131,7 +87,7 @@ const DataTable = (props) => {
               flexDirection: "column",
               height: "100%",
               boxSizing: "border-box",
-              padding: "5px 5px 70px 5px",
+              padding: "50px 5px 70px 5px",
             }}
           >
             <TableContainer className={classes.container}>
@@ -151,7 +107,7 @@ const DataTable = (props) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {rows
+                  {data
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
                       return (
@@ -180,7 +136,7 @@ const DataTable = (props) => {
               className={classes.paginator}
               rowsPerPageOptions={[25, 50, 100]}
               component="div"
-              count={rows.length}
+              count={data.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onChangePage={handleChangePage}
