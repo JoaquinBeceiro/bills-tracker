@@ -4,11 +4,12 @@ Track and share expenses with Google Drive spreadsheet.
 
 ## Screenshots
 
-<img src="public/appSS.png" width="200" height="400" />
-<img src="public/appSS3.png" width="200" height="400" />
-<img src="public/appSS1.png" width="200" height="400" />
-<img src="public/appSS2.png" width="200" height="400" />
-
+<p float="left">
+  <img src="public/appSS.png" width="200" height="400" />
+  <img src="public/appSS3.png" width="200" height="400" />
+  <img src="public/appSS1.png" width="200" height="400" />
+  <img src="public/appSS2.png" width="200" height="400" />
+</p>
 ## Onboarding
 
 ### 1. Create a spreadsheet and share it
