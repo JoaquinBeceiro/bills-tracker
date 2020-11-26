@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React from "react";
 import Paper from "@material-ui/core/Paper";
 import {
   Chart,
@@ -6,9 +6,14 @@ import {
   ValueAxis,
   BarSeries,
   Title,
+  Tooltip,
 } from "@devexpress/dx-react-chart-material-ui";
-import { scaleBand } from "@devexpress/dx-chart-core";
-import { ArgumentScale, Stack, Animation } from "@devexpress/dx-react-chart";
+
+import {
+  Animation,
+  EventTracker,
+  ValueScale,
+} from "@devexpress/dx-react-chart";
 
 const cleanAmmount = (amount) => amount.replace(/[$,.]/g, "");
 
@@ -62,6 +67,13 @@ const formatData = (data) => {
   return result;
 };
 
+const LabelResumed = (props) => (
+  <ValueAxis.Label
+    {...props}
+    text={`${props.text.split(",")[0]}k`}
+  ></ValueAxis.Label>
+);
+
 const ChartComponent = (props) => {
   const { data } = props;
 
@@ -70,13 +82,13 @@ const ChartComponent = (props) => {
   return (
     <Paper>
       <Chart data={chartData} rotated>
-        <ArgumentScale factory={scaleBand} />
-        <ArgumentAxis indentFromAxis={50} showTicks={true} tickSize={10} />
-        <ValueAxis showTicks={true} showLine={true} />
+        <ArgumentAxis />
+        <ValueAxis labelComponent={LabelResumed} />
         <BarSeries valueField="amount" argumentField="date" name="Amount" />
         <Title text="Bills / month" />
         <Animation />
-        <Stack />
+        <EventTracker />
+        <Tooltip />
       </Chart>
     </Paper>
   );
