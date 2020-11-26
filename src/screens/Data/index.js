@@ -146,7 +146,7 @@ const Data = (props) => {
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
-          <Table loading={loading} data={data} />
+          <Table loading={loading} data={data} closeAction={closeAction} />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <Chart loading={loading} data={data} />

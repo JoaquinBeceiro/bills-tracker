@@ -48,7 +48,7 @@ const useStyles = makeStyles({
 });
 
 const DataTable = (props) => {
-  const { data } = props;
+  const { data, closeAction } = props;
   const classes = useStyles();
 
   const [page, setPage] = useState(0);
@@ -63,9 +63,13 @@ const DataTable = (props) => {
     setPage(0);
   };
 
+  const handleClose = () => {
+    closeAction();
+  };
+
   return (
     <AbsoluteContainerStyled>
-      <div className="close" onClick={() => console.log("close")}>
+      <div className="close" onClick={handleClose}>
         CLOSE
       </div>
       <Container maxWidth="sm" className={classes.root}>
