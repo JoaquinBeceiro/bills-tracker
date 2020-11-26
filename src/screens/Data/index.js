@@ -139,9 +139,10 @@ const Data = (props) => {
             value={value}
             onChange={handleChange}
             aria-label="simple tabs example"
+            
           >
-            <Tab label="Table" {...a11yProps(0)} />
-            <Tab label="Chart" {...a11yProps(1)} />
+            <Tab label="Table" {...a11yProps(0)} disabled={loading} />
+            <Tab label="Chart" {...a11yProps(1)} disabled={loading} />
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>

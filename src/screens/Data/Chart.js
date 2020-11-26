@@ -10,19 +10,21 @@ import {
 import { scaleBand } from "@devexpress/dx-chart-core";
 import { ArgumentScale, Stack, Animation } from "@devexpress/dx-react-chart";
 
+const cleanAmmount = (amount) => amount.replace(/[$,.]/g, "");
+
 const formatData = (data) => {
   const result = [];
-  const formattedData = data.reduce((result, currentValue) => {
+  const formattedData = [...data].reduce((result, currentValue) => {
     (result[currentValue["Date"].substring(3, 10)] =
       result[currentValue["Date"].substring(3, 10)] || []).push({
-      Amount: currentValue.Amount,
+      Amount: cleanAmmount(currentValue.Amount),
       Date: currentValue.Date,
       Detail: currentValue.Detail,
       Type: currentValue.Type,
       Who: currentValue.Who,
     });
     return result;
-  });
+  }, []);
 
   const keysForClean = [
     "get Amount",
@@ -50,10 +52,9 @@ const formatData = (data) => {
     if (!avoidKeys.includes(date)) {
       result.push({
         date: date,
-        amount: formattedData[date].reduce((ac, curr) => {
-          const cleanPrice = curr.Amount.replace(/[$,.]/g, "");
-          return parseInt(cleanPrice) + parseInt(ac || 0);
-        }),
+        amount: formattedData[date]
+          .map(({ Amount }) => parseInt(Amount))
+          .reduce((a, b) => a + b, 0),
       });
     }
   });
@@ -66,14 +67,12 @@ const ChartComponent = (props) => {
 
   const chartData = formatData(data);
 
-
   return (
     <Paper>
       <Chart data={chartData} rotated>
         <ArgumentScale factory={scaleBand} />
-        <ArgumentAxis />
-        <ValueAxis />
-
+        <ArgumentAxis indentFromAxis={50} showTicks={true} tickSize={10} />
+        <ValueAxis showTicks={true} showLine={true} />
         <BarSeries valueField="amount" argumentField="date" name="Amount" />
         <Title text="Bills / month" />
         <Animation />

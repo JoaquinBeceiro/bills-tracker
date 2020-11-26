@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import styled from "styled-components";
+import { AbsoluteContainerStyled } from "./styles";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -47,19 +47,6 @@ const useStyles = makeStyles({
   },
 });
 
-const AbsoluteContainer = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #eee;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  font-size: 10px;
-`;
-
 const DataTable = (props) => {
   const { data } = props;
   const classes = useStyles();
@@ -77,7 +64,10 @@ const DataTable = (props) => {
   };
 
   return (
-    <AbsoluteContainer>
+    <AbsoluteContainerStyled>
+      <div className="close" onClick={() => console.log("close")}>
+        CLOSE
+      </div>
       <Container maxWidth="sm" className={classes.root}>
         {data ? (
           <div
@@ -147,7 +137,7 @@ const DataTable = (props) => {
           <p>Loading...</p>
         )}
       </Container>
-    </AbsoluteContainer>
+    </AbsoluteContainerStyled>
   );
 };
 
