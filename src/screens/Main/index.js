@@ -1,16 +1,16 @@
 import React, { useContext, useState } from "react";
 import Record from "../Record";
 import Onboarding from "../Onboarding";
-import Table from "../Table";
+import Data from "../Data";
 import UserContext from "../../components/userContext";
 import styled from "styled-components";
 
-const Main = props => {
+const Main = (props) => {
   const userContext = useContext(UserContext);
 
   const { user } = userContext;
 
-  const [showTable, setShowTable] = useState(false);
+  const [showData, setShowData] = useState(false);
 
   const ShowTable = styled.div`
     position: fixed;
@@ -34,12 +34,10 @@ const Main = props => {
           <>
             <h5>{user && user.name}</h5>
             <Record />
-            {showTable ? (
-              <Table closeAction={() => setShowTable(false)} />
+            {showData ? (
+              <Data closeAction={() => setShowData(false)} />
             ) : (
-              <ShowTable onClick={() => setShowTable(true)}>
-                Show table
-              </ShowTable>
+              <ShowTable onClick={() => setShowData(true)}>Show data</ShowTable>
             )}
           </>
         ) : (
