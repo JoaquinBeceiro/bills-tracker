@@ -3,7 +3,7 @@ import { GoogleSpreadsheet } from "google-spreadsheet";
 import UserContext from "../../components/userContext";
 import { dateParser } from "../../config/date";
 
-import styled from "styled-components";
+import { AbsoluteContainerStyled } from "./styles";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -45,31 +45,6 @@ const useStyles = makeStyles({
     fontSize: "10px",
   },
 });
-
-const AbsoluteContainer = styled.div`
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #eee;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  font-size: 10px;
-  & .close {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 50px;
-    background-color: #000;
-    color: #fff;
-    text-align: center;
-    font-weight: bolder;
-    padding: 5px;
-    cursor: pointer;
-  }
-`;
 
 const DataTable = (props) => {
   const classes = useStyles();
@@ -118,7 +93,7 @@ const DataTable = (props) => {
   };
 
   return (
-    <AbsoluteContainer>
+    <AbsoluteContainerStyled>
       <div className="close" onClick={handleClose}>
         CLOSE
       </div>
@@ -191,7 +166,7 @@ const DataTable = (props) => {
           <p>Loading...</p>
         )}
       </Container>
-    </AbsoluteContainer>
+    </AbsoluteContainerStyled>
   );
 };
 
