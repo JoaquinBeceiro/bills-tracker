@@ -2,7 +2,12 @@
 
 Track and share expenses with Google Drive spreadsheet.
 
-![App screenshot](public/appSS.png)
+## Screenshots
+
+<img src="public/appSS.png" width="200" height="400" />
+<img src="public/appSS3.png" width="200" height="400" />
+<img src="public/appSS1.png" width="200" height="400" />
+<img src="public/appSS2.png" width="200" height="400" />
 
 ## Onboarding
 
@@ -46,9 +51,9 @@ For example, on `https://docs.google.com/spreadsheets/d/1qffzsCf2siRv-loAAMLeGzs
 ## Next steps
 
 - [x] Validate inputs
-- [] Show graphs
-- [] Improve the code
-- [] Editable expense type dropdown values
+- [x] Show graphs
+- [x] Editable expense type dropdown values
+- [ ] Improve the code
 
 ## Authors
 
