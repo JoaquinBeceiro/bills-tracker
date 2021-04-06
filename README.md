@@ -1,5 +1,7 @@
 # Bills tracker
 
+> **Note:** Working on new version.
+
 Track and share expenses with Google Drive spreadsheet.
 
 ## Screenshots
