@@ -58,9 +58,17 @@ For example, on `https://docs.google.com/spreadsheets/d/1qffzsCf2siRv-loAAMLeGzs
 - [x] Editable expense type dropdown values
 - [ ] Improve the code
 
-## Authors
+## Author
 
 **Joaquin Beceiro**
 
 - [GitHub](https://github.com/JoaquinBeceiro)
 - [Web](https://JoaquinBeceiro.com.uy)
+
+## Contributors ✨
+
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/GFPdu"><img src="https://avatars.githubusercontent.com/u/32202381?v=3?s=100" width="100px;" alt=""/><br /><sub><b>GFPdu</b></sub></a></td>
+  </tr>
+</table>
