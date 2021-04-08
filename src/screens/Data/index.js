@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import styled from "styled-components";
 import { GoogleSpreadsheet } from "google-spreadsheet";
-import UserContext from "../../components/userContext";
+import UserContext from "../../config/userContext";
 import { dateParser } from "../../config/date";
 
 import Table from "./Table";
@@ -84,53 +84,53 @@ const AbsoluteContainer = styled.div`
 `;
 
 const Data = (props) => {
-  const { closeAction } = props;
+  // const { closeAction } = props;
 
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState(null);
+  // const [loading, setLoading] = useState(true);
+  // const [data, setData] = useState(null);
 
-  const userContext = useContext(UserContext);
-  const { jsonFile, spreadsheetId } = userContext.user;
+  // const userContext = useContext(UserContext);
+  // const { jsonFile, spreadsheetId } = userContext.user;
 
-  const loadData = async () => {
-    setLoading(true);
-    try {
-      const doc = new GoogleSpreadsheet(spreadsheetId);
-      await doc.useServiceAccountAuth(jsonFile);
-      await doc.loadInfo();
+  // const loadData = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const doc = new GoogleSpreadsheet(spreadsheetId);
+  //     await doc.useServiceAccountAuth(jsonFile);
+  //     await doc.loadInfo();
 
-      const sheet = doc.sheetsByIndex[0];
-      const fetchedRows = await sheet.getRows();
-      const sortedRows = fetchedRows.sort(
-        (a, b) => dateParser(b.Date) - dateParser(a.Date)
-      );
-      setData(sortedRows);
-      setLoading(false);
-    } catch (e) {
-      alert(`Hubo un error en la autenticación: ${e.message}`);
-      userContext.newUser(null);
-      setLoading(false);
-    }
-  };
+  //     const sheet = doc.sheetsByIndex[0];
+  //     const fetchedRows = await sheet.getRows();
+  //     const sortedRows = fetchedRows.sort(
+  //       (a, b) => dateParser(b.Date) - dateParser(a.Date)
+  //     );
+  //     setData(sortedRows);
+  //     setLoading(false);
+  //   } catch (e) {
+  //     alert(`Hubo un error en la autenticación: ${e.message}`);
+  //     userContext.newUser(null);
+  //     setLoading(false);
+  //   }
+  // };
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  // useEffect(() => {
+  //   loadData();
+  // }, []);
 
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  // const classes = useStyles();
+  // const [value, setValue] = React.useState(0);
 
-  const handleClose = () => {
-    closeAction();
-  };
+  // const handleClose = () => {
+  //   closeAction();
+  // };
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  // const handleChange = (event, newValue) => {
+  //   setValue(newValue);
+  // };
 
   return (
     <AbsoluteContainer>
-      <div className="close" onClick={handleClose}>
+      {/* <div className="close" onClick={handleClose}>
         CLOSE
       </div>
       <div className={classes.root}>
@@ -151,7 +151,7 @@ const Data = (props) => {
         <TabPanel value={value} index={1}>
           <Chart loading={loading} data={data} />
         </TabPanel>
-      </div>
+      </div> */}
     </AbsoluteContainer>
   );
 };

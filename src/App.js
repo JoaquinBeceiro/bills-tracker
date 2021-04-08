@@ -8,7 +8,7 @@ import {
 } from "./config/localStorage";
 
 import Dialog from "./components/dialog";
-import UserContext from "./components/userContext";
+import UserContext from "./config/userContext";
 
 function App() {
   const [user, setUSer] = useState(null);

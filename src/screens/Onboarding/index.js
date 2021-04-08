@@ -4,7 +4,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
-import UserContext from "../../components/userContext";
+import UserContext from "../../config/userContext";
 
 const Onboarding = props => {
   const userContext = useContext(UserContext);
