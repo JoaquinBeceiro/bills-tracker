@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import UserContext from "../../config/userContext";
 
 import { NoHeaderLayout } from "../../layouts";
+import { InputComponent } from "../../components";
 
 const Onboarding = (props) => {
   const userContext = useContext(UserContext);
@@ -18,9 +19,11 @@ const Onboarding = (props) => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  return <NoHeaderLayout>
-    <div>TESTt</div>
-  </NoHeaderLayout>;
+  return (
+    <NoHeaderLayout>
+      <InputComponent name="name" title="Name" placeholder="Name" type="text" />
+    </NoHeaderLayout>
+  );
 };
 
 export default Onboarding;
