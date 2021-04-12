@@ -1,5 +1,11 @@
 import React from "react";
-import { InputContainer, InputBox } from "./styles";
+import {
+  InputContainer,
+  InputBox,
+  DropdownBox,
+  BigTextBox,
+  TextAreaBox,
+} from "./styles";
 
 const Input = ({
   name,
@@ -9,10 +15,22 @@ const Input = ({
   type = "text",
   placeholder,
 }) => {
+  const defaultProps = {
+    name,
+    placeholder,
+  };
+
   return (
-    <InputContainer>
+    <InputContainer className={type}>
       <label for={name}>{title}</label>
-      <InputBox name={name} placeholder={placeholder} />
+      {
+        {
+          text: <InputBox {...defaultProps} type="text" />,
+          dropdown: <DropdownBox {...defaultProps} />,
+          bigtext: <BigTextBox {...defaultProps} />,
+          textarea: <TextAreaBox {...defaultProps} />,
+        }[type]
+      }
     </InputContainer>
   );
 };

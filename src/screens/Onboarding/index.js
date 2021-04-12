@@ -22,6 +22,18 @@ const Onboarding = (props) => {
   return (
     <NoHeaderLayout>
       <InputComponent name="name" title="Name" placeholder="Name" type="text" />
+      <InputComponent
+        name="sId"
+        title="Spreadsheet ID"
+        placeholder="Spreadheet ID"
+        type="bigtext"
+      />
+      <InputComponent
+        name="json"
+        title="JSON"
+        placeholder="JSON File"
+        type="textarea"
+      />
     </NoHeaderLayout>
   );
 };
