@@ -14,6 +14,9 @@ const Content = styled.div`
   flex: 1;
   width: 100%;
   padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 export { Main, Content };

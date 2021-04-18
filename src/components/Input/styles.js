@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const InputContainer = styled.div`
+  box-sizing: border-box;
   margin-bottom: 30px;
   border-bottom: 1px solid #c4c4c4;
   width: 100%;
@@ -11,6 +12,11 @@ const InputContainer = styled.div`
     font-weight: 300;
     font-size: 11px;
     color: #000;
+  }
+
+  &.text {
+    height: 45px;
+    overflow: hidden;
   }
 
   &.textarea,
