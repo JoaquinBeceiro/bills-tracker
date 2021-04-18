@@ -1,10 +1,8 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 
-import { todayDate } from "../config/date";
-import { defaultTypes } from "../config/options";
+import { todayDate } from "../lib/utils/date";
+import { defaultTypes, sheetHeaders, sheetTitle } from "../config/sheet";
 
-const sheetTitle = "Bills";
-const sheetHeaders = ["Date", "Who", "Amount", "Type", "Detail"];
 
 const getSheet = (doc) => {
   return doc.sheetsByTitle[sheetTitle];
