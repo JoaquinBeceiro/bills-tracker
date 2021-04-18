@@ -22,15 +22,19 @@ const Input = ({
 
   return (
     <InputContainer className={type}>
-      <label for={name}>{title}</label>
-      {
+      <div>
+        <label for={name}>{title}</label>
+      </div>
+      <div>
         {
-          text: <InputBox {...defaultProps} type="text" />,
-          dropdown: <DropdownBox {...defaultProps} />,
-          bigtext: <BigTextBox {...defaultProps} />,
-          textarea: <TextAreaBox {...defaultProps} />,
-        }[type]
-      }
+          {
+            text: <InputBox {...defaultProps} type="text" />,
+            dropdown: <DropdownBox {...defaultProps} />,
+            bigtext: <BigTextBox {...defaultProps} />,
+            textarea: <TextAreaBox {...defaultProps} />,
+          }[type]
+        }
+      </div>
     </InputContainer>
   );
 };

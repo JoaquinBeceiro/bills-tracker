@@ -22,6 +22,23 @@ const InputContainer = styled.div`
       margin-bottom: 8px;
     }
   }
+
+  > div {
+    display: flex;
+    min-height: 45px;
+    :first-child {
+      align-items: center;
+    }
+    :last-child {
+      flex: 1;
+      align-items: flex-end;
+      width: 100%;
+    }
+  }
+
+  &.text:focus-within {
+    border-bottom: 2px solid #38b44e;
+  }
 `;
 
 const InputBox = styled.input`
@@ -37,7 +54,8 @@ const InputBox = styled.input`
     color: #7e7e7e;
   }
   &:focus {
-    border-bottom: 2px solid #38b44e;
+    outline: none;
+    /* border-bottom: 2px solid #38b44e; */
     ::placeholder {
       color: #000;
     }
@@ -56,7 +74,7 @@ const DropdownBox = styled.select`
     color: #7e7e7e;
   }
   &:focus {
-    border-bottom: 2px solid #38b44e;
+    outline: none;
     ::placeholder {
       color: #000;
     }
@@ -78,6 +96,7 @@ const BigTextBox = styled.textarea`
     color: #7e7e7e;
   }
   &:focus {
+    outline: none;
     border-bottom: 2px solid #38b44e;
     ::placeholder {
       color: #000;
