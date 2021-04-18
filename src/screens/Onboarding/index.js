@@ -1,12 +1,10 @@
 import React, { useContext } from "react";
+import UserContext from "../../config/userContext";
 
-import FormControl from "@material-ui/core/FormControl";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
+import { NoHeaderLayout } from "../../layouts";
+import { InputComponent, ButtonComponent } from "../../components";
 
-import UserContext from "../../components/userContext";
-
-const Onboarding = props => {
+const Onboarding = (props) => {
   const userContext = useContext(UserContext);
 
   const { newUser } = userContext;
@@ -14,59 +12,41 @@ const Onboarding = props => {
   const [values, setValues] = React.useState({
     name: "",
     spreadsheetId: "",
-    jsonFile: ""
+    jsonFile: "",
   });
 
-  const handleChange = prop => event => {
+  const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
   return (
-    <div className="formContainer">
-      <FormControl>
-        <TextField
-          className="input"
-          label="Nombre"
-          value={values.name}
-          onChange={handleChange("name")}
+    <NoHeaderLayout>
+      <div>
+        <InputComponent
+          name="name"
+          title="Name"
+          placeholder="Name"
+          type="text"
         />
-      </FormControl>
-      <FormControl>
-        <TextField
-          className="input"
-          label="Spreadsheet ID"
-          value={values.spreadsheetId}
-          onChange={handleChange("spreadsheetId")}
+        <InputComponent
+          name="sId"
+          title="Spreadsheet ID"
+          placeholder="Spreadheet ID"
+          type="bigtext"
         />
-      </FormControl>
-      <FormControl>
-        <TextField
-          className="input"
-          label="JSON file"
-          multiline
-          rows="10"
-          value={values.jsonFile}
-          onChange={handleChange("jsonFile")}
+        <InputComponent
+          name="json"
+          title="JSON"
+          placeholder="JSON File"
+          type="textarea"
         />
-      </FormControl>
-      <FormControl>
-        <Button
-          className="input"
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            const newUserContext = {
-              spreadsheetId: values.spreadsheetId,
-              name: values.name,
-              jsonFile: JSON.parse(values.jsonFile)
-            };
-            newUser(newUserContext);
-          }}
-        >
-          GUARDAR
-        </Button>
-      </FormControl>
-    </div>
+        <ButtonComponent text="Start" />
+      </div>
+      <div>
+        <p className="text-center m-0">Need help?</p>
+        <ButtonComponent text="Setup guide" type="text" />
+      </div>
+    </NoHeaderLayout>
   );
 };
 

@@ -1,38 +1,33 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import Record from "../Record";
 import Onboarding from "../Onboarding";
 import Data from "../Data";
-import UserContext from "../../components/userContext";
+import UserContext from "../../config/userContext";
 import { ShowTable } from "./styles";
+
+import { createDoc, getTypes, addRow } from "../../services";
 
 const Main = (props) => {
   const userContext = useContext(UserContext);
 
-  const { user } = userContext;
+  const { user, doc } = userContext;
 
-  const [showData, setShowData] = useState(false);
+  const setupDoc = async () => {
+    const { jsonFile, spreadsheetId, name } = user;
+
+    const newDoc = await createDoc(jsonFile, spreadsheetId, name);
+    // const newRow = await addRow(newDoc, "1", "2", "3", "5", "5");
+    const types = await getTypes(newDoc);
+
+  };
+
+  useEffect(() => {
+    setupDoc();
+  }, []);
 
   return (
     <div className="container">
-      <div>
-        <h1>Add bills</h1>
-        {user ? (
-          <>
-            <h5>{user && user.name}</h5>
-            <Record />
-            {showData ? (
-              <Data closeAction={() => setShowData(false)} />
-            ) : (
-              <ShowTable onClick={() => setShowData(true)}>Show data</ShowTable>
-            )}
-          </>
-        ) : (
-          <>
-            <h5>Registro</h5>
-            <Onboarding />
-          </>
-        )}
-      </div>
+
     </div>
   );
 };
