@@ -44,7 +44,7 @@ const Onboarding = (props) => {
       </div>
       <div>
         <p className="text-center m-0">Need help?</p>
-        <ButtonComponent text="Set up guide" type="text" />
+        <ButtonComponent text="Setup guide" type="text" />
       </div>
     </NoHeaderLayout>
   );
