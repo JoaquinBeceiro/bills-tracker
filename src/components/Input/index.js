@@ -18,6 +18,8 @@ const Input = ({
   const defaultProps = {
     name,
     placeholder,
+    onChange,
+    value,
   };
 
   return (

@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from "react";
-import Record from "../Record";
-import Onboarding from "../Onboarding";
-import Data from "../Data";
+// import Record from "../Record";
+// import Data from "../Data";
 import UserContext from "../../config/userContext";
 import { ShowTable } from "./styles";
 
