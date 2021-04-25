@@ -5,6 +5,10 @@ const Main = styled.div`
   color: white;
   display: flex;
   align-items: center;
+  position: fixed;
+  top: 0px;
+  z-index: 999;
+  width: 100%;
 `;
 
 const TitleContainer = styled.div`

@@ -1,7 +1,7 @@
 import React from "react";
 import { Default, Text } from "./styles";
 
-const Input = ({ type = "default", text, action }) => {
+const Button = ({ type = "default", text, action }) => {
   const handleClick = () => {
     action && action();
   };
@@ -16,4 +16,4 @@ const Input = ({ type = "default", text, action }) => {
   }[type];
 };
 
-export default Input;
+export default Button;

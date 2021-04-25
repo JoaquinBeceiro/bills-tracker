@@ -18,12 +18,14 @@ const Input = ({
   const defaultProps = {
     name,
     placeholder,
+    onChange,
+    value,
   };
 
   return (
     <InputContainer className={type}>
       <div>
-        <label for={name}>{title}</label>
+        <label htmlFor={name}>{title}</label>
       </div>
       <div>
         {

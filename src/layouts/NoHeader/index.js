@@ -1,15 +1,8 @@
 import React, { useContext } from "react";
-import { Main, Content } from "./styles";
-
-import { HeaderComponent } from "../../components";
+import { Content } from "./styles";
 
 const Onboarding = ({ children }) => {
-  return (
-    <Main>
-      <HeaderComponent />
-      <Content>{children}</Content>
-    </Main>
-  );
+  return <Content>{children}</Content>;
 };
 
 export default Onboarding;
