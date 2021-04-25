@@ -18,24 +18,24 @@ const RouterComponent = ({ children }) => (
       <Route exact path="/">
         <Splash />
       </Route>
-      <Route path="/onboarding">
+      <Route exact path="/onboarding">
         <MasterLayout footer={false} subTitle="Onboarding" allowSignOut={false}>
           <Onboarding />
         </MasterLayout>
       </Route>
-      <Route path="/home">
+      <Route exact path="/home">
         <MasterLayout footer={true} subTitle="Home" allowSignOut={false}>
           <Main />
         </MasterLayout>
       </Route>
-      <Route path="/types">
+      <Route exact path="/types">
         <MasterLayout
           footer={true}
           subTitle="Types"
           allowSignOut={false}
         ></MasterLayout>
       </Route>
-      <Route path="/analytics">
+      <Route exact path="/analytics">
         <MasterLayout
           footer={true}
           subTitle="Analytics"

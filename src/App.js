@@ -9,13 +9,20 @@ import UserContext from "./config/userContext";
 
 function App() {
   const [user, setUSer] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const userFromStorage = getUserSession();
     if (userFromStorage) {
       setUSer(getUserSession());
+    } else {
+      setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [user]);
 
   const newUser = (user) => {
     setUSer(user);
@@ -28,7 +35,7 @@ function App() {
   };
 
   return (
-    <UserContext.Provider value={{ user, newUser }}>
+    <UserContext.Provider value={{ user, newUser, loading }}>
       <Router />
     </UserContext.Provider>
   );

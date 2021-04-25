@@ -5,6 +5,8 @@ import { NoHeaderLayout } from "../../layouts";
 import { InputComponent, ButtonComponent } from "../../components";
 import { useHistory } from "react-router-dom";
 
+import { checkCredentials } from "../../services";
+
 const Onboarding = () => {
   const userContext = useContext(UserContext);
   const history = useHistory();
@@ -16,10 +18,18 @@ const Onboarding = () => {
     jsonFile: "",
   });
 
+  const checkUser = async (jsonFile, spreadsheetId) => {
+    const valid = await checkCredentials(jsonFile, spreadsheetId);
+    if (valid) {
+      history.push("/home");
+    }
+  };
+
   useEffect(() => {
     if (user) {
       const { name, spreadsheetId, jsonFile } = user;
       setValues({ name, spreadsheetId, jsonFile: JSON.stringify(jsonFile) });
+      checkUser(jsonFile, spreadsheetId);
     }
   }, [user]);
 

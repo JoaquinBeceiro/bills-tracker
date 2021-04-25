@@ -6,6 +6,17 @@ const getSheet = (doc) => {
   return doc.sheetsByTitle[sheetTitle];
 };
 
+export const checkCredentials = async (jsonFile, spreadsheetId) => {
+  try {
+    const doc = new GoogleSpreadsheet(spreadsheetId);
+    await doc.useServiceAccountAuth(jsonFile);
+    await doc.loadInfo();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
 export const createDoc = async (jsonFile, spreadsheetId, name, onError) => {
   try {
     const doc = new GoogleSpreadsheet(spreadsheetId);
@@ -20,7 +31,7 @@ export const createDoc = async (jsonFile, spreadsheetId, name, onError) => {
       });
     }
     return doc;
-  } catch (e) {
+  } catch (error) {
     onError && onError();
     return null;
   }

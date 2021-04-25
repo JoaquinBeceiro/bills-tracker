@@ -3,30 +3,32 @@ import UserContext from "../../config/userContext";
 import { createDoc, getTypes } from "../../services";
 import { withRouter } from "react-router";
 import { Container, Content, Title } from "./styles";
-
+import { checkCredentials } from "../../services";
 import Logo from "../../rsc/img/logo.svg";
 
 const Splash = (props) => {
   const { history } = props;
 
   const userContext = useContext(UserContext);
-  const { user, doc } = userContext;
+  const { user, loading } = userContext;
 
-  const setupDoc = async () => {
-    const { jsonFile, spreadsheetId, name } = user;
-    const newDoc = await createDoc(jsonFile, spreadsheetId, name);
-    history.push("/main");
+  const checkUser = async (jsonFile, spreadsheetId) => {
+    const valid = await checkCredentials(jsonFile, spreadsheetId);
+    if (valid) {
+      history.push("/home");
+    }
   };
 
   useEffect(() => {
-    if (user) {
-      setupDoc();
-    } else {
-      setTimeout(() => {
+    if (!loading) {
+      if (user) {
+        const { jsonFile, spreadsheetId } = user;
+        checkUser(jsonFile, spreadsheetId);
+      } else {
         history.push("/onboarding");
-      }, 1000);
+      }
     }
-  }, []);
+  }, [loading, user]);
 
   return (
     <Container>
