@@ -11,24 +11,21 @@ const Main = (props) => {
 
   const { user, doc } = userContext;
 
-  const setupDoc = async () => {
+  const setupDoc = async (user) => {
     const { jsonFile, spreadsheetId, name } = user;
 
     const newDoc = await createDoc(jsonFile, spreadsheetId, name);
     // const newRow = await addRow(newDoc, "1", "2", "3", "5", "5");
     const types = await getTypes(newDoc);
-
   };
 
   useEffect(() => {
-    setupDoc();
-  }, []);
+    if (user) {
+      setupDoc(user);
+    }
+  }, [user]);
 
-  return (
-    <div className="container">
-
-    </div>
-  );
+  return <div className="container"></div>;
 };
 
 export default Main;

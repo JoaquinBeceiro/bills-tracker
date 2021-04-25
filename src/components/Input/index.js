@@ -25,7 +25,7 @@ const Input = ({
   return (
     <InputContainer className={type}>
       <div>
-        <label for={name}>{title}</label>
+        <label htmlFor={name}>{title}</label>
       </div>
       <div>
         {

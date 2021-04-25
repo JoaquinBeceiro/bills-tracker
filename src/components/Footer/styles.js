@@ -12,4 +12,14 @@ const Container = styled.div`
   align-items: center;
 `;
 
-export { Container };
+const MenuItem = styled.button`
+  border: none;
+  background: none;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`;
+
+export { Container, MenuItem };

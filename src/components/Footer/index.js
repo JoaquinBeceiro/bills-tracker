@@ -1,12 +1,28 @@
 import React from "react";
-import { Container } from "./styles";
+import { Container, MenuItem } from "./styles";
+import { useHistory } from "react-router-dom";
+import { PieChartIcon, LineChartIcon, HomeIcon } from "../";
 
 const Footer = () => {
-  return <Container>
-    <div>1</div>
-    <div>2</div>
-    <div>3</div>
-  </Container>;
+  const history = useHistory();
+
+  const handleNavigate = (route) => {
+    history.push(route);
+  };
+
+  return (
+    <Container>
+      <MenuItem onClick={() => handleNavigate("/types")}>
+        <PieChartIcon />
+      </MenuItem>
+      <MenuItem onClick={() => handleNavigate("/home")}>
+        <HomeIcon />
+      </MenuItem>
+      <MenuItem onClick={() => handleNavigate("/analytics")}>
+        <LineChartIcon />
+      </MenuItem>
+    </Container>
+  );
 };
 
 export default Footer;
