@@ -5,7 +5,7 @@ import { NoHeaderLayout } from "../../layouts";
 import { InputComponent, ButtonComponent } from "../../components";
 import { useHistory } from "react-router-dom";
 
-const Onboarding = (props) => {
+const Onboarding = () => {
   const userContext = useContext(UserContext);
   const history = useHistory();
   const { user, newUser } = userContext;
@@ -31,7 +31,7 @@ const Onboarding = (props) => {
     const newUserContext = {
       spreadsheetId: values.spreadsheetId,
       name: values.name,
-      jsonFile: JSON.parse(values.jsonFile),
+      jsonFile: values.jsonFile && JSON.parse(values.jsonFile),
     };
     newUser(newUserContext);
     history.push("/home");

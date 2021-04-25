@@ -1,14 +1,12 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
-
 import { todayDate } from "../lib/utils/date";
 import { defaultTypes, sheetHeaders, sheetTitle } from "../config/sheet";
-
 
 const getSheet = (doc) => {
   return doc.sheetsByTitle[sheetTitle];
 };
 
-export const createDoc = async (jsonFile, spreadsheetId, name) => {
+export const createDoc = async (jsonFile, spreadsheetId, name, onError) => {
   try {
     const doc = new GoogleSpreadsheet(spreadsheetId);
     await doc.useServiceAccountAuth(jsonFile);
@@ -23,7 +21,7 @@ export const createDoc = async (jsonFile, spreadsheetId, name) => {
     }
     return doc;
   } catch (e) {
-    alert(`Hubo un error en la autenticación: ${e.message}`);
+    onError && onError();
     return null;
   }
 };
