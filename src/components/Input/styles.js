@@ -88,6 +88,7 @@ const DropdownBox = styled.select`
 `;
 
 const BigTextBox = styled.textarea`
+  overflow: hidden;
   height: 40px;
   font-family: Roboto;
   resize: vertical;

@@ -6,6 +6,8 @@ import {
   Redirect,
 } from "react-router-dom";
 
+import { MasterLayout } from "../layouts";
+
 import Splash from "../screens/Splash";
 import Onboarding from "../screens/Onboarding";
 
@@ -16,10 +18,11 @@ const RouterComponent = ({ children }) => (
         <Splash />
       </Route>
       <Route path="/onboarding">
-        <Onboarding />
+        <MasterLayout footer={false} subTitle="Onboarding" allowSignOut={false}>
+          <Onboarding />
+        </MasterLayout>
       </Route>
     </Switch>
-    {children}
   </Router>
 );
 

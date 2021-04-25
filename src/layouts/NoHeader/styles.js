@@ -1,12 +1,5 @@
 import styled from "styled-components";
 
-const Main = styled.div`
-  display: flex;
-  background-color: #38b44e;
-  height: 100vh;
-  flex-direction: column;
-`;
-
 const Content = styled.div`
   margin-top: 5px;
   background: #ffffff;
@@ -19,4 +12,4 @@ const Content = styled.div`
   justify-content: space-between;
 `;
 
-export { Main, Content };
+export { Content };
