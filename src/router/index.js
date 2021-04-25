@@ -28,6 +28,20 @@ const RouterComponent = ({ children }) => (
           <Main />
         </MasterLayout>
       </Route>
+      <Route path="/types">
+        <MasterLayout
+          footer={true}
+          subTitle="Types"
+          allowSignOut={false}
+        ></MasterLayout>
+      </Route>
+      <Route path="/analytics">
+        <MasterLayout
+          footer={true}
+          subTitle="Analytics"
+          allowSignOut={false}
+        ></MasterLayout>
+      </Route>
     </Switch>
   </Router>
 );

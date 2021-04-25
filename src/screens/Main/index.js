@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from "react";
+import UserContext from "../../config/userContext";
 // import Record from "../Record";
 // import Data from "../Data";
-import UserContext from "../../config/userContext";
-import { ShowTable } from "./styles";
-
+// import { ShowTable } from "./styles";
+import { ArrowIndicatorIcon } from "../../components";
+import { HeaderLayout } from "../../layouts";
 import { createDoc, getTypes, addRow } from "../../services";
 
 const Main = (props) => {
@@ -25,7 +26,13 @@ const Main = (props) => {
     }
   }, [user]);
 
-  return <div className="container"></div>;
+  const headerBoxProps = {
+    primaryValue: "$43.776",
+    secondaryValue: "$450 this month",
+    icon: <ArrowIndicatorIcon up={true} />,
+  };
+
+  return <HeaderLayout headerBox={headerBoxProps}>test</HeaderLayout>;
 };
 
 export default Main;
