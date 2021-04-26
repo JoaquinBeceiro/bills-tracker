@@ -1,10 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import UserContext from "../../config/userContext";
 import { useHistory } from "react-router-dom";
-// import Record from "../Record";
-// import Data from "../Data";
-// import { ShowTable } from "./styles";
-import { ArrowIndicatorIcon } from "../../components";
+import { ArrowIndicatorIcon, LoadingComponent } from "../../components";
 import { HeaderLayout } from "../../layouts";
 import { createDoc, getTypes, addRow } from "../../services";
 
@@ -26,6 +23,10 @@ const Main = (props) => {
     // const newRow = await addRow(newDoc, "1", "2", "3", "5", "5");
     const types = await getTypes(newDoc);
 
+    console.log("=====================");
+    console.log("!!! types", types);
+    console.log("=====================");
+
     setMainLoading(false);
   };
 
@@ -45,7 +46,12 @@ const Main = (props) => {
     icon: <ArrowIndicatorIcon up={true} />,
   };
 
-  return <HeaderLayout headerBox={headerBoxProps}>test</HeaderLayout>;
+  return (
+    <>
+      <HeaderLayout headerBox={headerBoxProps}>test</HeaderLayout>
+      {mainLoading && <LoadingComponent />}
+    </>
+  );
 };
 
 export default Main;
