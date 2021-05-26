@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { GoogleSpreadsheet } from "google-spreadsheet";
 
-import { todayDate } from "../../config/date";
-import { defaultTypes } from "../../config/options";
+import { todayDate } from "config/date";
+import { defaultTypes } from "config/options";
 
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
@@ -10,8 +10,8 @@ import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-import UserContext from "../../config/userContext";
-import Dialog from "../../components/dialog";
+import UserContext from "config/userContext";
+import Dialog from "components/dialog";
 
 const Record = (props) => {
   const userContext = useContext(UserContext);

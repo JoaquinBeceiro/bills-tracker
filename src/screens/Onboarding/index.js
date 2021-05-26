@@ -1,11 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
-import UserContext from "../../config/userContext";
-
-import { NoHeaderLayout } from "../../layouts";
-import { InputComponent, ButtonComponent } from "../../components";
+import UserContext from "config/userContext";
+import { NoHeaderLayout } from "layouts";
+import { InputComponent, ButtonComponent } from "components";
 import { useHistory } from "react-router-dom";
 
-import { checkCredentials } from "../../services";
+import { checkCredentials } from "services";
 
 const Onboarding = () => {
   const userContext = useContext(UserContext);

@@ -6,26 +6,23 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import { MasterLayout } from "../layouts";
-
-import Splash from "../screens/Splash";
-import Onboarding from "../screens/Onboarding";
-import Main from "../screens/Main";
+import { MasterLayout } from "layouts";
+import { SplashScreen, OnboardingScreen, MainScreen } from "screens";
 
 const RouterComponent = ({ children }) => (
   <Router>
     <Switch>
       <Route exact path="/">
-        <Splash />
+        <SplashScreen />
       </Route>
       <Route exact path="/onboarding">
         <MasterLayout footer={false} subTitle="Onboarding" allowSignOut={false}>
-          <Onboarding />
+          <OnboardingScreen />
         </MasterLayout>
       </Route>
       <Route exact path="/home">
         <MasterLayout footer={true} subTitle="Home" allowSignOut={false}>
-          <Main />
+          <MainScreen />
         </MasterLayout>
       </Route>
       <Route exact path="/types">
