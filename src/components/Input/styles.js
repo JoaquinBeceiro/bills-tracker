@@ -56,6 +56,22 @@ const InputContainer = styled.div`
   &.text:focus-within {
     border-bottom: 2px solid #38b44e;
   }
+
+  &.date:focus-within {
+    border-bottom: 2px solid #38b44e;
+  }
+
+  &.type:focus-within {
+    border-bottom: 2px solid #38b44e;
+  }
+
+  &.money:focus-within {
+    border-bottom: 2px solid #38b44e;
+  }
+
+  &.dropdown:focus-within {
+    border-bottom: 2px solid #38b44e;
+  }
 `;
 
 const InputBox = styled.input`
@@ -99,6 +115,7 @@ const Date = styled(InputBox)`
   font-size: 18px;
   ::-webkit-calendar-picker-indicator {
     color: #333333;
+    margin-left: 10px;
   }
 `;
 
