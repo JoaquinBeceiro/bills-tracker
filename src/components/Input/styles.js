@@ -81,7 +81,6 @@ const InputBox = styled.input`
   }
   &:focus {
     outline: none;
-    /* border-bottom: 2px solid #38b44e; */
     ::placeholder {
       color: #000;
     }
@@ -94,7 +93,6 @@ const TextMoney = styled(InputBox)`
   font-weight: bold;
   &:focus {
     outline: none;
-    /* border-bottom: 2px solid #38b44e; */
     ::placeholder {
       color: #7e7e7e;
     }
