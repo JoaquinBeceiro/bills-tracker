@@ -53,24 +53,17 @@ const InputContainer = styled.div`
     }
   }
 
-  &.text:focus-within {
-    border-bottom: 2px solid #38b44e;
+  &.bigtext:focus-within {
+    margin-bottom: 24px;
   }
 
-  &.date:focus-within {
-    border-bottom: 2px solid #38b44e;
-  }
-
-  &.type:focus-within {
-    border-bottom: 2px solid #38b44e;
-  }
-
-  &.money:focus-within {
-    border-bottom: 2px solid #38b44e;
-  }
-
+  &.text:focus-within,
+  &.date:focus-within,
+  &.type:focus-within,
+  &.money:focus-within,
   &.dropdown:focus-within {
     border-bottom: 2px solid #38b44e;
+    margin-bottom: 24px;
   }
 `;
 
