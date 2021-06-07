@@ -18,6 +18,7 @@
     "react-lottie": "^1.2.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.0",
+    "react-select": "^4.3.1",
     "react-toastify": "^7.0.3",
     "styled-components": "^5.1.0",
     "typeface-roboto": "0.0.75",

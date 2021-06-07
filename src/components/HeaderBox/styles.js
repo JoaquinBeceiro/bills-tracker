@@ -3,8 +3,8 @@ import styled from "styled-components";
 const Container = styled.div`
   background: #ffffff;
   border-radius: 7px;
-  padding: 7px 21px;
-  margin: 17px;
+  padding: 7px 15px;
+  margin: 12px;
   display: flex;
   justify-content: center;
 `;

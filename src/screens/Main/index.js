@@ -1,17 +1,22 @@
 import React, { useContext, useEffect, useState } from "react";
 import UserContext from "config/userContext";
-import { ArrowIndicatorIcon, LoadingComponent } from "components";
+import {
+  ArrowIndicatorIcon,
+  LoadingComponent,
+  ButtonComponent,
+  InputComponent,
+} from "components";
 import { HeaderLayout } from "layouts";
-import { getTypes, getTotalByMonth, getTotalByYear } from "services";
+import { getTypes, getTotalByMonth, addRow } from "services";
 import { nowYear, nowMonth, pastMonthYear } from "lib/utils/date";
 import { moneyToNumber, formatMoney } from "lib/utils/currency";
 
 const Main = (props) => {
   const [mainLoading, setMainLoading] = useState(true);
-
   const [totalMonth, setTotalMonth] = useState(0);
   const [differencePastCurrent, setDiifferencePastCurrent] = useState(0);
   const [gratherThanPastMonth, setGratherThanPastMonth] = useState(false);
+  const [billsTypes, setBillsTypes] = useState([]);
 
   const userContext = useContext(UserContext);
   const { user, doc, loading } = userContext;
@@ -27,8 +32,10 @@ const Main = (props) => {
       pastMonthYearValue.year
     );
 
-    setTotalMonth(totalMonthValue);
+    const typesFormatted = types.map((type) => ({ value: type, label: type }));
 
+    setBillsTypes(typesFormatted);
+    setTotalMonth(totalMonthValue);
     setDiifferencePastCurrent(
       formatMoney(
         moneyToNumber(totalPastMonthValue) - moneyToNumber(totalMonthValue)
@@ -56,9 +63,32 @@ const Main = (props) => {
     icon: <ArrowIndicatorIcon up={gratherThanPastMonth} />,
   };
 
+  const addTestRow = () => {
+    // addRow(doc, "123", "test", "123456", "asd", "dsa");
+  };
+
   return (
     <>
-      <HeaderLayout headerBox={headerBoxProps}>test</HeaderLayout>
+      <HeaderLayout headerBox={headerBoxProps}>
+        <InputComponent type="money" placeholder="0" />
+        <InputComponent
+          type="dropdown"
+          name="type"
+          title="Type"
+          options={billsTypes}
+        />
+        <InputComponent type="date" name="date" title="Date" />
+        <InputComponent
+          type="bigtext"
+          name="description"
+          title="Description"
+          placeholder="Write a description..."
+        />
+        <div>
+          <ButtonComponent action={addTestRow} text="Add bill" />
+        </div>
+      </HeaderLayout>
+
       {mainLoading && <LoadingComponent />}
     </>
   );

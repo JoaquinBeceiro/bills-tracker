@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Main, TitleContainer, ActionContainer } from "./styles";
 
 import { SignOutIcon } from "../";
@@ -8,8 +8,16 @@ const Header = ({
   subTitle = "Home",
   allowSignOut = true,
 }) => {
+  const [colorChange, setColorchange] = useState(false);
+
+  const changeNavbarColor = () => {
+    setColorchange(window.scrollY >= 10);
+  };
+
+  window.addEventListener("scroll", changeNavbarColor);
+
   return (
-    <Main>
+    <Main colorChange={colorChange}>
       <ActionContainer></ActionContainer>
       <TitleContainer>
         <h1>{title}</h1>

@@ -1,11 +1,7 @@
 import React from "react";
-import {
-  InputContainer,
-  InputBox,
-  DropdownBox,
-  BigTextBox,
-  TextAreaBox,
-} from "./styles";
+import * as S from "./styles";
+
+import { DollarIcon } from "components";
 
 const Input = ({
   name,
@@ -13,7 +9,8 @@ const Input = ({
   value,
   onChange,
   type = "text",
-  placeholder,
+  placeholder = "",
+  options = [],
 }) => {
   const defaultProps = {
     name,
@@ -23,21 +20,29 @@ const Input = ({
   };
 
   return (
-    <InputContainer className={type}>
+    <S.InputContainer className={type}>
       <div>
-        <label htmlFor={name}>{title}</label>
+        {type === "money" ? (
+          <DollarIcon />
+        ) : (
+          <label htmlFor={name}>{title}</label>
+        )}
       </div>
       <div>
         {
           {
-            text: <InputBox {...defaultProps} type="text" />,
-            dropdown: <DropdownBox {...defaultProps} />,
-            bigtext: <BigTextBox {...defaultProps} />,
-            textarea: <TextAreaBox {...defaultProps} />,
+            text: <S.InputBox {...defaultProps} type="text" />,
+            date: <S.Date {...defaultProps} type="date" />,
+            money: <S.TextMoney {...defaultProps} type="text" />,
+            dropdown: (
+              <S.DropdownBox {...defaultProps} options={options} isClearable />
+            ),
+            bigtext: <S.BigTextBox {...defaultProps} rows="2" />,
+            textarea: <S.TextAreaBox {...defaultProps} />,
           }[type]
         }
       </div>
-    </InputContainer>
+    </S.InputContainer>
   );
 };
 
