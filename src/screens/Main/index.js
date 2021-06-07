@@ -1,49 +1,59 @@
 import React, { useContext, useEffect, useState } from "react";
-import UserContext from "../../config/userContext";
-import { useHistory } from "react-router-dom";
-import { ArrowIndicatorIcon, LoadingComponent } from "../../components";
-import { HeaderLayout } from "../../layouts";
-import { createDoc, getTypes, addRow } from "../../services";
+import UserContext from "config/userContext";
+import { ArrowIndicatorIcon, LoadingComponent } from "components";
+import { HeaderLayout } from "layouts";
+import { getTypes, getTotalByMonth, getTotalByYear } from "services";
+import { nowYear, nowMonth, pastMonthYear } from "lib/utils/date";
+import { moneyToNumber, formatMoney } from "lib/utils/currency";
 
 const Main = (props) => {
   const [mainLoading, setMainLoading] = useState(true);
 
+  const [totalMonth, setTotalMonth] = useState(0);
+  const [differencePastCurrent, setDiifferencePastCurrent] = useState(0);
+  const [gratherThanPastMonth, setGratherThanPastMonth] = useState(false);
+
   const userContext = useContext(UserContext);
-  const history = useHistory();
-
-  const onError = () => {
-    history.push("/onboarding");
-  };
-
   const { user, doc, loading } = userContext;
-  const setupDoc = async (user) => {
-    const { jsonFile, spreadsheetId, name } = user;
 
-    const newDoc = await createDoc(jsonFile, spreadsheetId, name, onError);
-    // const newRow = await addRow(newDoc, "1", "2", "3", "5", "5");
-    const types = await getTypes(newDoc);
+  const setupDoc = async (user, doc) => {
+    const types = await getTypes(doc);
+    const pastMonthYearValue = pastMonthYear();
 
-    console.log("=====================");
-    console.log("!!! types", types);
-    console.log("=====================");
+    const totalMonthValue = await getTotalByMonth(doc, nowMonth(), nowYear());
+    const totalPastMonthValue = await getTotalByMonth(
+      doc,
+      pastMonthYearValue.month,
+      pastMonthYearValue.year
+    );
+
+    setTotalMonth(totalMonthValue);
+
+    setDiifferencePastCurrent(
+      formatMoney(
+        moneyToNumber(totalPastMonthValue) - moneyToNumber(totalMonthValue)
+      )
+    );
+
+    setGratherThanPastMonth(
+      moneyToNumber(totalMonthValue) > moneyToNumber(totalPastMonthValue)
+    );
 
     setMainLoading(false);
   };
 
   useEffect(() => {
     if (!loading) {
-      if (user) {
-        setupDoc(user);
-      } else {
-        onError();
+      if (user && doc) {
+        setupDoc(user, doc);
       }
     }
-  }, [user, loading]);
+  }, [user, doc, loading]);
 
   const headerBoxProps = {
-    primaryValue: "$43.776",
-    secondaryValue: "$450 this month",
-    icon: <ArrowIndicatorIcon up={true} />,
+    primaryValue: `$${totalMonth}`,
+    secondaryValue: `$${differencePastCurrent} this month`,
+    icon: <ArrowIndicatorIcon up={gratherThanPastMonth} />,
   };
 
   return (

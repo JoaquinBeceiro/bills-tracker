@@ -1,5 +1,5 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
-import { todayDate } from "../lib/utils/date";
+import { moneyToNumber, formatMoney } from "../lib/utils/currency";
 import { defaultTypes, sheetHeaders, sheetTitle } from "../config/sheet";
 
 const getSheet = (doc) => {
@@ -59,6 +59,47 @@ export const addRow = async (doc, date, who, amount, type, detail) => {
       Type: type,
       Detail: detail,
     });
+  } else {
+    return null;
+  }
+};
+
+export const getTotalByMonth = async (doc, month, year) => {
+  if (doc) {
+    const sheet = getSheet(doc);
+    const fetchedRows = await sheet.getRows();
+    const totalsFiltered = fetchedRows.filter((e) => {
+      const dateSplitted = e.Date.split("/");
+      return (
+        dateSplitted[2] === year.toString() &&
+        dateSplitted[1] === month.toString()
+      );
+    });
+
+    const totalValue = totalsFiltered.reduce((acc, val) => {
+      return acc + moneyToNumber(val.Amount);
+    }, 0);
+
+    return formatMoney(totalValue);
+  } else {
+    return null;
+  }
+};
+
+export const getTotalByYear = async (doc, year) => {
+  if (doc) {
+    const sheet = getSheet(doc);
+    const fetchedRows = await sheet.getRows();
+    const totalsFiltered = fetchedRows.filter((e) => {
+      const dateSplitted = e.Date.split("/");
+      return dateSplitted[2] === year.toString();
+    });
+
+    const totalValue = totalsFiltered.reduce((acc, val) => {
+      return acc + moneyToNumber(val.Amount);
+    }, 0);
+
+    return formatMoney(totalValue);
   } else {
     return null;
   }
