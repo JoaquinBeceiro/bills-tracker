@@ -8,7 +8,7 @@ import {
 } from "components";
 import { HeaderLayout } from "layouts";
 import { getTypes, getTotalByMonth, addRow } from "services";
-import { nowYear, nowMonth, pastMonthYear } from "lib/utils/date";
+import { nowYear, nowMonth, pastMonthYear, todayDate } from "lib/utils/date";
 import { moneyToNumber, formatMoney } from "lib/utils/currency";
 
 const Main = (props) => {
@@ -17,6 +17,21 @@ const Main = (props) => {
   const [differencePastCurrent, setDiifferencePastCurrent] = useState(0);
   const [gratherThanPastMonth, setGratherThanPastMonth] = useState(false);
   const [billsTypes, setBillsTypes] = useState([]);
+
+  const defaultForm = {
+    amount: "",
+    type: "",
+    date: todayDate(),
+    description: "",
+  };
+  const [form, setForm] = useState(defaultForm);
+
+  const onChange = (name, value) => {
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
 
   const userContext = useContext(UserContext);
   const { user, doc, loading } = userContext;
@@ -70,19 +85,32 @@ const Main = (props) => {
   return (
     <>
       <HeaderLayout headerBox={headerBoxProps}>
-        <InputComponent type="money" placeholder="0" />
+        <InputComponent
+          type="money"
+          placeholder="0"
+          name="amount"
+          onChange={onChange}
+        />
         <InputComponent
           type="dropdown"
           name="type"
           title="Type"
           options={billsTypes}
+          onChange={onChange}
         />
-        <InputComponent type="date" name="date" title="Date" />
+        <InputComponent
+          type="date"
+          name="date"
+          title="Date"
+          value={form.date}
+          onChange={onChange}
+        />
         <InputComponent
           type="bigtext"
           name="description"
           title="Description"
           placeholder="Write a description..."
+          onChange={onChange}
         />
         <div>
           <ButtonComponent action={addTestRow} text="Add bill" />

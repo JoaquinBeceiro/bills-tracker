@@ -12,10 +12,13 @@ const Input = ({
   placeholder = "",
   options = [],
 }) => {
+  const handleChangeInput = (e) => onChange(e.target.name, e.target.value);
+  const handleChangeDropdown = ({value}) => onChange(name, value);
+
   const defaultProps = {
     name,
     placeholder,
-    onChange,
+    onChange: type === "dropdown" ? handleChangeDropdown : handleChangeInput,
     value,
   };
 
