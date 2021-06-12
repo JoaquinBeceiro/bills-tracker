@@ -26,6 +26,10 @@ const Main = (props) => {
   };
   const [form, setForm] = useState(defaultForm);
 
+  const clearForm = () => setForm(defaultForm);
+
+  const addBillDisabled = !(form.amount && form.type && form.date);
+
   const onChange = (name, value) => {
     setForm({
       ...form,
@@ -78,8 +82,32 @@ const Main = (props) => {
     icon: <ArrowIndicatorIcon up={gratherThanPastMonth} />,
   };
 
-  const addTestRow = () => {
-    // addRow(doc, "123", "test", "123456", "asd", "dsa");
+  const addTestRow = async () => {
+    const { amount, type, date, description } = form;
+
+    if (amount && type && date && user.name) {
+      setMainLoading(true);
+      try {
+        const addAction = await addRow(
+          doc,
+          date,
+          user.name,
+          amount,
+          type,
+          description
+        );
+        if (addAction) {
+          // TODO: Success msg
+          clearForm();
+        } else {
+          // TODO: Error mesg
+        }
+        setMainLoading(false);
+      } catch (error) {
+        // TODO: Error mesg
+        setMainLoading(false);
+      }
+    }
   };
 
   return (
@@ -89,6 +117,7 @@ const Main = (props) => {
           type="money"
           placeholder="0"
           name="amount"
+          value={form.amount}
           onChange={onChange}
         />
         <InputComponent
@@ -96,6 +125,7 @@ const Main = (props) => {
           name="type"
           title="Type"
           options={billsTypes}
+          value={billsTypes && form.type && billsTypes[form.type]}
           onChange={onChange}
         />
         <InputComponent
@@ -110,10 +140,15 @@ const Main = (props) => {
           name="description"
           title="Description"
           placeholder="Write a description..."
+          value={form.description}
           onChange={onChange}
         />
         <div>
-          <ButtonComponent action={addTestRow} text="Add bill" />
+          <ButtonComponent
+            action={addTestRow}
+            text="Add bill"
+            disabled={addBillDisabled}
+          />
         </div>
       </HeaderLayout>
 

@@ -36,7 +36,7 @@ const Input = ({
           {
             text: <S.InputBox {...defaultProps} type="text" />,
             date: <S.Date {...defaultProps} type="date" />,
-            money: <S.TextMoney {...defaultProps} type="text" />,
+            money: <S.TextMoney {...defaultProps} type="number" />,
             dropdown: (
               <S.DropdownBox {...defaultProps} options={options} isClearable />
             ),

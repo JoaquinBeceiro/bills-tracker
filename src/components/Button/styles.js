@@ -15,6 +15,10 @@ const Button = styled.button`
   &:focus {
     outline: none;
   }
+  &:disabled {
+    background-color: #c4c4c4;
+    cursor: not-allowed;
+  }
 `;
 
 const Default = styled(Button)`
