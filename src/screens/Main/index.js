@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { GlobalContext } from "context";
+import { GlobalContext, DispatchTypes } from "context";
 import {
   ArrowIndicatorIcon,
   LoadingComponent,
@@ -39,9 +39,8 @@ const Main = () => {
 
   const context = useContext(GlobalContext);
   const [userState] = context.globalUser;
+  const [, modalDispatch] = context.globalModal;
   const { user, doc, loading } = userState;
-
-  const screenLoading = mainLoading || loading;
 
   const getStartData = async (doc) => {
     setMainLoading(true);
@@ -102,8 +101,19 @@ const Main = () => {
           description
         );
         if (addAction) {
-          // TODO: Success msg
-
+          modalDispatch({
+            type: DispatchTypes.Modal.MODAL_SHOW,
+            title: "Bill added",
+            content: "Your bill was added to spreadsheet sucssesfully!",
+            actions: [
+              {
+                text: "Ok",
+                action: () => {
+                  modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
+                },
+              },
+            ],
+          });
           clearForm();
         } else {
           // TODO: Error mesg
@@ -115,6 +125,8 @@ const Main = () => {
       }
     }
   };
+
+  const screenLoading = mainLoading || loading;
 
   return (
     <>

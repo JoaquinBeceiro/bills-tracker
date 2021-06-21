@@ -1,5 +1,5 @@
 import React from "react";
-import { Default, Text } from "./styles";
+import * as S from "./styles";
 
 const Button = ({ type = "default", text, action, disabled }) => {
   const handleClick = () => {
@@ -12,8 +12,9 @@ const Button = ({ type = "default", text, action, disabled }) => {
   };
 
   return {
-    default: <Default {...defaultProps}>{text}</Default>,
-    text: <Text {...defaultProps}>{text}</Text>,
+    default: <S.Default {...defaultProps}>{text}</S.Default>,
+    secondary: <S.Secondary {...defaultProps}>{text}</S.Secondary>,
+    text: <S.Text {...defaultProps}>{text}</S.Text>,
   }[type];
 };
 

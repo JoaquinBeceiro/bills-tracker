@@ -18,8 +18,26 @@ export const Modal = styled.div`
   background-color: #ffffff;
   padding: 23px;
   border-radius: 7px;
+  max-width: 90vw;
 `;
 
-export const Title = styled.h3``;
+export const Title = styled.h3`
+  text-align: center;
+`;
 
-export const Content = styled.div``;
+export const Content = styled.div`
+  text-align: center;
+`;
+
+export const ActionsContainer = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  button {
+    margin: 5px 0;
+    height: 30px;
+    font-weight: 500;
+    font-size: 12px;
+  }
+`;

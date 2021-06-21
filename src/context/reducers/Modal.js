@@ -1,22 +1,24 @@
+import { DispatchTypes } from "../";
+
 export const modalInitialState = {
   show: false,
-  title: "Test",
-  content: "Test content",
+  title: "",
+  content: "",
   actions: [],
 };
 
-const ModalReducer = async (currentState, action) => {
+const ModalReducer = (currentState, action) => {
   switch (action.type) {
-    case "SHOW":
+    case DispatchTypes.Modal.MODAL_SHOW:
       currentState.show = true;
       currentState.title = action.title;
       currentState.content = action.content;
       currentState.actions = action.actions;
       return { ...currentState };
-    case "HIDE":
+    case DispatchTypes.Modal.MODAL_HIDE:
       currentState.show = false;
       return { ...currentState };
-    case "RESET":
+    case DispatchTypes.Modal.MODAL_RESET:
       return modalInitialState;
     default:
       return currentState;

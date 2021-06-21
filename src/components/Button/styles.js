@@ -21,16 +21,22 @@ const Button = styled.button`
   }
 `;
 
-const Default = styled(Button)`
+export const Default = styled(Button)`
   background: #38b44e;
   &:hover {
     background-color: #6fc97f;
   }
 `;
 
-const Text = styled(Button)`
+export const Secondary = styled(Button)`
+  background: #333333;
+  color: #ffffff;
+  &:hover {
+    background-color: #6fc97f;
+  }
+`;
+
+export const Text = styled(Button)`
   background: none;
   color: #333;
 `;
-
-export { Default, Text };
