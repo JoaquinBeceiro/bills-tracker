@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import UserContext from "config/userContext";
+import { GlobalContext } from "context";
 import {
   ArrowIndicatorIcon,
   LoadingComponent,
@@ -11,7 +11,7 @@ import { getTypes, getTotalByMonth, addRow } from "services";
 import { nowYear, nowMonth, pastMonthYear, todayDate } from "lib/utils/date";
 import { moneyToNumber, formatMoney } from "lib/utils/currency";
 
-const Main = (props) => {
+const Main = () => {
   const [mainLoading, setMainLoading] = useState(true);
   const [totalMonth, setTotalMonth] = useState(0);
   const [differencePastCurrent, setDiifferencePastCurrent] = useState(0);
@@ -37,10 +37,15 @@ const Main = (props) => {
     });
   };
 
-  const userContext = useContext(UserContext);
-  const { user, doc, loading } = userContext;
+  const context = useContext(GlobalContext);
+  const [userState] = context.globalUser;
+  const { user, doc, loading } = userState;
 
-  const setupDoc = async (user, doc) => {
+  const screenLoading = mainLoading || loading;
+
+  const getStartData = async (doc) => {
+    setMainLoading(true);
+
     const types = await getTypes(doc);
     const pastMonthYearValue = pastMonthYear();
 
@@ -70,11 +75,11 @@ const Main = (props) => {
 
   useEffect(() => {
     if (!loading) {
-      if (user && doc) {
-        setupDoc(user, doc);
+      if (doc) {
+        getStartData(doc);
       }
     }
-  }, [user, doc, loading]);
+  }, [doc, loading]);
 
   const headerBoxProps = {
     primaryValue: `$${totalMonth}`,
@@ -82,7 +87,7 @@ const Main = (props) => {
     icon: <ArrowIndicatorIcon up={gratherThanPastMonth} />,
   };
 
-  const addTestRow = async () => {
+  const addBill = async () => {
     const { amount, type, date, description } = form;
 
     if (amount && type && date && user.name) {
@@ -98,6 +103,7 @@ const Main = (props) => {
         );
         if (addAction) {
           // TODO: Success msg
+
           clearForm();
         } else {
           // TODO: Error mesg
@@ -145,14 +151,14 @@ const Main = (props) => {
         />
         <div>
           <ButtonComponent
-            action={addTestRow}
+            action={addBill}
             text="Add bill"
             disabled={addBillDisabled}
           />
         </div>
       </HeaderLayout>
 
-      {mainLoading && <LoadingComponent />}
+      {screenLoading && <LoadingComponent />}
     </>
   );
 };

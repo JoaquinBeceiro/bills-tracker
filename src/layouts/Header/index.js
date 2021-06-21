@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Container, Content, HeaderBox } from "./styles";
+import React from "react";
+import { Container, Content } from "./styles";
 import { HeaderBoxComponent } from "../../components";
 
 const Header = ({ children, headerBox }) => {

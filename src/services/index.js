@@ -17,7 +17,7 @@ export const checkCredentials = async (jsonFile, spreadsheetId) => {
   }
 };
 
-export const createDoc = async (jsonFile, spreadsheetId, name, onError) => {
+export const createDoc = async (jsonFile, spreadsheetId) => {
   try {
     const doc = new GoogleSpreadsheet(spreadsheetId);
     await doc.useServiceAccountAuth(jsonFile);
@@ -32,8 +32,7 @@ export const createDoc = async (jsonFile, spreadsheetId, name, onError) => {
     }
     return doc;
   } catch (error) {
-    onError && onError();
-    return null;
+    throw error;
   }
 };
 

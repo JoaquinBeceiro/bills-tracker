@@ -1,15 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
-import UserContext from "config/userContext";
+import { GlobalContext, DispatchTypes } from "context";
 import { NoHeaderLayout } from "layouts";
 import { InputComponent, ButtonComponent } from "components";
 import { useHistory } from "react-router-dom";
-
 import { checkCredentials } from "services";
 
 const Onboarding = () => {
-  const userContext = useContext(UserContext);
   const history = useHistory();
-  const { user, newUser } = userContext;
+
+  const context = useContext(GlobalContext);
+  const [userState, userDispatch] = context.globalUser;
 
   const [values, setValues] = useState({
     name: "",
@@ -17,20 +17,21 @@ const Onboarding = () => {
     jsonFile: "",
   });
 
-  const checkUser = async (jsonFile, spreadsheetId) => {
-    const valid = await checkCredentials(jsonFile, spreadsheetId);
-    if (valid) {
-      history.push("/home");
-    }
-  };
-
   useEffect(() => {
-    if (user) {
+    const { user } = userState;
+    if (user?.name && user?.spreadsheetId && user?.jsonFile) {
       const { name, spreadsheetId, jsonFile } = user;
       setValues({ name, spreadsheetId, jsonFile: JSON.stringify(jsonFile) });
+      const checkUser = async (jsonFile, spreadsheetId) => {
+        const valid = await checkCredentials(jsonFile, spreadsheetId);
+        if (valid) {
+          history.push("/home");
+        }
+      };
+
       checkUser(jsonFile, spreadsheetId);
     }
-  }, [user]);
+  }, [userState, history]);
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -42,7 +43,7 @@ const Onboarding = () => {
       name: values.name,
       jsonFile: values.jsonFile && JSON.parse(values.jsonFile),
     };
-    newUser(newUserContext);
+    userDispatch({ type: DispatchTypes.User.NEW_USER, user: newUserContext });
     history.push("/home");
   };
 

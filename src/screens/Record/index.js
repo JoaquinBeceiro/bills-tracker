@@ -10,7 +10,7 @@ import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-import UserContext from "config/userContext";
+import { UserContext } from "context";
 import Dialog from "components/dialog";
 
 const Record = (props) => {

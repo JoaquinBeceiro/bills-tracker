@@ -8,7 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import styled from "styled-components";
 import { GoogleSpreadsheet } from "google-spreadsheet";
-import UserContext from "config/userContext";
+import { UserContext } from "context";
 import { dateParser } from "config/date";
 
 import Table from "./Table";
