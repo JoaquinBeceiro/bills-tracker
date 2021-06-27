@@ -1,36 +1,12 @@
-import React, { useEffect, useState } from "react";
-import {
-  getUserSession,
-  setUserSession,
-  deleteUserSession,
-} from "./config/localStorage";
-import Router from "./router";
-import UserContext from "./config/userContext";
+import React from "react";
+import Router from "router";
+import AppContextProvider from "context";
 
 function App() {
-  const [user, setUSer] = useState(null);
-
-  useEffect(() => {
-    const userFromStorage = getUserSession();
-    if (userFromStorage) {
-      setUSer(getUserSession());
-    }
-  }, []);
-
-  const newUser = (user) => {
-    setUSer(user);
-    setUserSession(user);
-  };
-
-  const removeUser = () => {
-    setUSer(null);
-    deleteUserSession();
-  };
-
   return (
-    <UserContext.Provider value={{ user, newUser }}>
+    <AppContextProvider>
       <Router />
-    </UserContext.Provider>
+    </AppContextProvider>
   );
 }
 

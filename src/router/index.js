@@ -1,32 +1,37 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
-
-import { MasterLayout } from "../layouts";
-
-import Splash from "../screens/Splash";
-import Onboarding from "../screens/Onboarding";
-import Main from "../screens/Main";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { MasterLayout } from "layouts";
+import { SplashScreen, OnboardingScreen, MainScreen } from "screens";
 
 const RouterComponent = ({ children }) => (
   <Router>
     <Switch>
       <Route exact path="/">
-        <Splash />
+        <SplashScreen />
       </Route>
-      <Route path="/onboarding">
+      <Route exact path="/onboarding">
         <MasterLayout footer={false} subTitle="Onboarding" allowSignOut={false}>
-          <Onboarding />
+          <OnboardingScreen />
         </MasterLayout>
       </Route>
-      <Route path="/home">
+      <Route exact path="/home">
         <MasterLayout footer={true} subTitle="Home" allowSignOut={false}>
-          <Main />
+          <MainScreen />
         </MasterLayout>
+      </Route>
+      <Route exact path="/types">
+        <MasterLayout
+          footer={true}
+          subTitle="Types"
+          allowSignOut={false}
+        ></MasterLayout>
+      </Route>
+      <Route exact path="/analytics">
+        <MasterLayout
+          footer={true}
+          subTitle="Analytics"
+          allowSignOut={false}
+        ></MasterLayout>
       </Route>
     </Switch>
   </Router>

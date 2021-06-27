@@ -9,6 +9,8 @@ const Main = styled.div`
   top: 0px;
   z-index: 999;
   width: 100%;
+  ${({ colorChange }) => colorChange && `background-color: #38b44e;`}
+  transition: background-color 0.5s ease;
 `;
 
 const TitleContainer = styled.div`
