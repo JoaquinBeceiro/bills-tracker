@@ -10,23 +10,23 @@
 </p>
 
 ## Table of Contents
- 
- - [Objectives](#Objectives)
- - [Screenshots](#Screenshots)
- - [Architecture](#Architecture)
- - [Onboarding](#Onboarding)
- - [Example](#Example)
- - [Next steps](#Next-steps)
- - [Author](#Author)
- - [Contributors ✨](#Contributors-✨)
+
+- [Objectives](#Objectives)
+- [Screenshots](#Screenshots)
+- [Architecture](#Architecture)
+- [Onboarding](#Onboarding)
+- [Example](#Example)
+- [Next steps](#Next-steps)
+- [Author](#Author)
+- [Contributors ✨](#Contributors-✨)
 
 ## Objectives
+
 - Save bills to a spreadsheet quickly and easily
 - Separate types of expenses
-- Show all the records with graphs 
+- Show all the records with graphs
 - Allow use by more than one user on the same spreadsheet
 - Recognize where your money goes!
-
 
 ## Screenshots
 
@@ -40,15 +40,15 @@
 </p>
 
 ## Architecture
-![public/img/Arch.png](public/img/Arch.png)
 
+![public/img/Arch.png](public/img/Arch.png)
 
 ## Onboarding
 
 ### 1. Create a spreadsheet and share it
 
 Share your spreadsheet with link sharing: _Anyone with th link can edit_.
-![Image spreadsheet](public/spreadsheetSS.png)
+![Image spreadsheet](public/img/spreadsheetSS.png)
 
 ### 2. Copy spreadsheet ID
 
