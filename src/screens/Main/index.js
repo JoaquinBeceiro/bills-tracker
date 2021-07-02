@@ -14,7 +14,7 @@ import { moneyToNumber, formatMoney } from "lib/utils/currency";
 const Main = () => {
   const [mainLoading, setMainLoading] = useState(true);
   const [totalMonth, setTotalMonth] = useState(0);
-  const [differencePastCurrent, setDiifferencePastCurrent] = useState(0);
+  const [pastMonth, setPastMonth] = useState(0);
   const [gratherThanPastMonth, setGratherThanPastMonth] = useState(false);
   const [billsTypes, setBillsTypes] = useState([]);
 
@@ -59,11 +59,7 @@ const Main = () => {
 
     setBillsTypes(typesFormatted);
     setTotalMonth(totalMonthValue);
-    setDiifferencePastCurrent(
-      formatMoney(
-        moneyToNumber(totalPastMonthValue) - moneyToNumber(totalMonthValue)
-      )
-    );
+    setPastMonth(totalPastMonthValue);
 
     setGratherThanPastMonth(
       moneyToNumber(totalMonthValue) > moneyToNumber(totalPastMonthValue)
@@ -82,7 +78,7 @@ const Main = () => {
 
   const headerBoxProps = {
     primaryValue: `$${totalMonth}`,
-    secondaryValue: `$${differencePastCurrent} this month`,
+    secondaryValue: `$${pastMonth} past month`,
     icon: <ArrowIndicatorIcon up={gratherThanPastMonth} />,
   };
 
