@@ -110,6 +110,7 @@ const Main = () => {
                 text: "Ok",
                 action: () => {
                   modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
+                  getStartData(doc);
                 },
               },
             ],
