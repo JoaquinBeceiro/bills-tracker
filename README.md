@@ -72,11 +72,11 @@ For example, on `https://docs.google.com/spreadsheets/d/1qffzsCf2siRv-loAAMLeGzs
 2. Click blue "+ CREATE CREDENITALS" and select "Service account" option
 3. Enter name, description, click "CREATE"
 4. You can skip permissions, click "CONTINUE"
-5. Click "+ CREATE KEY" button
-6. Select the "JSON" key type option
-7. Click "Create" button
-8. Your JSON key file is generated and downloaded to your machine (it is the only copy!)
-9. click "DONE"
+5. Click "DONE"
+6. Click the name of your credential
+7. Go to keys
+8. Select Add key > Create new key
+9. Click "DONE"
 
 ## Example
 
