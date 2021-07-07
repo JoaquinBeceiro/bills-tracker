@@ -2,9 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { GlobalContext, DispatchTypes } from "context";
 import { withRouter } from "react-router";
 import { Container, Content, Title } from "./styles";
-import { checkCredentials } from "services";
+import { checkCredentials, createDoc } from "services";
 import Logo from "rsc/img/logo.svg";
-import { createDoc } from "services";
 import { setUserSession, getUserSession } from "config/localStorage";
 
 const Splash = (props) => {
