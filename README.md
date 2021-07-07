@@ -63,7 +63,7 @@ For example, on `https://docs.google.com/spreadsheets/d/1qffzsCf2siRv-loAAMLeGzs
    <br>
    ![](https://i.imgur.com/2L3jidY.png)![](https://i.imgur.com/YEBjmMp.png)
 3. Enable the Sheets API for your project
-4. In the sidebar on the left, select APIs & Services > Library
+4. In the sidebar on the left, select APIs & Services > Library <br>
    ![](https://i.imgur.com/zdezoMD.png)
 5. Search for "sheets"
 6. Click on "Google Sheets API"
