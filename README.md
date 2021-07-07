@@ -79,7 +79,7 @@ For example, on `https://docs.google.com/spreadsheets/d/1qffzsCf2siRv-loAAMLeGzs
 5. Click "DONE"
 6. Click the name of your credential
 7. Go to keys
-8. Select Add key > Create new key
+8. Select Add key > Create new key <br>
    ![Create new key button](https://i.imgur.com/XDXuK5D.png)
 9. Click "DONE"
 
