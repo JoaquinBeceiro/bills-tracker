@@ -85,7 +85,7 @@ For example, on `https://docs.google.com/spreadsheets/d/1qffzsCf2siRv-loAAMLeGzs
 
 ## Example
 
-- I have a functional example on [Netlify](https://sleepy-bhaskara-080018.netlify.com/)
+- I have a functional example on [Netlify](http://pwa.billstracker.app/)
 
 ## Next steps
 
