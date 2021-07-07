@@ -33,17 +33,21 @@ const Onboarding = () => {
     }
   }, [userState, history]);
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
+  const handleChange = (prop) => (name, value) => {
+    setValues({ ...values, [prop]: value });
   };
 
   const handleStart = () => {
+    userDispatch({ type: DispatchTypes.User.SET_USER_START });
     const newUserContext = {
       spreadsheetId: values.spreadsheetId,
       name: values.name,
       jsonFile: values.jsonFile && JSON.parse(values.jsonFile),
     };
-    userDispatch({ type: DispatchTypes.User.NEW_USER, user: newUserContext });
+    userDispatch({
+      type: DispatchTypes.User.SET_USER_SUCCESS,
+      user: newUserContext,
+    });
     history.push("/home");
   };
 
