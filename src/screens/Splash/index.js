@@ -70,6 +70,8 @@ const Splash = (props) => {
         checkUser(user);
       } else if (doc !== null) {
         setNewRoute("/home");
+      } else {
+        setNewRoute("/onboarding");
       }
     }
   }, [userState]);
