@@ -60,6 +60,7 @@ For example, on `https://docs.google.com/spreadsheets/d/1qffzsCf2siRv-loAAMLeGzs
 
 1. Go to the [Google Developers Console](https://console.developers.google.com/)
 2. Select your project or create a new one (and then select it)
+   <br>
    ![](https://i.imgur.com/2L3jidY.png)![](https://i.imgur.com/YEBjmMp.png)
 3. Enable the Sheets API for your project
 4. In the sidebar on the left, select APIs & Services > Library
