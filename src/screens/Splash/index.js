@@ -24,11 +24,13 @@ const Splash = (props) => {
         type: DispatchTypes.User.GET_DOC_SUCCESS,
         doc: newDoc,
       });
+      return true;
     } catch (error) {
       userDispatch({
         type: DispatchTypes.User.GET_DOC_ERROR,
         error,
       });
+      return false;
     }
   };
 
@@ -39,7 +41,7 @@ const Splash = (props) => {
       userDispatch({
         type: DispatchTypes.User.GET_DOC_START,
       });
-      setDoc(user);
+      await setDoc(user);
     } else {
       setNewRoute("/onboarding");
     }
@@ -49,12 +51,15 @@ const Splash = (props) => {
     userDispatch({
       type: DispatchTypes.User.SET_USER_START,
     });
-
     const userFromStorage = getUserSession();
     if (userFromStorage) {
       userDispatch({
         type: DispatchTypes.User.SET_USER_SUCCESS,
         user: userFromStorage,
+      });
+    } else {
+      userDispatch({
+        type: DispatchTypes.User.SET_USER_FINISH,
       });
     }
     setTimeout(() => {
@@ -65,12 +70,14 @@ const Splash = (props) => {
   useEffect(() => {
     if (userState) {
       const { user, doc, loading } = userState;
-      if (user && !loading && doc === null) {
-        checkUser(user);
-      } else if (doc !== null) {
-        setNewRoute("/home");
-      } else {
-        setNewRoute("/onboarding");
+      if (!loading) {
+        if (user && doc === null) {
+          checkUser(user);
+        } else if (doc !== null) {
+          setNewRoute("/home");
+        } else {
+          setNewRoute("/onboarding");
+        }
       }
     }
   }, [userState]);

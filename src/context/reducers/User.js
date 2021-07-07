@@ -16,6 +16,9 @@ const UserReducer = (currentState, action) => {
       currentState.user = action.user;
       currentState.loading = false;
       return { ...currentState };
+    case DispatchTypes.User.SET_USER_FINISH:
+      currentState.loading = false;
+      return { ...currentState };
     case DispatchTypes.User.GET_DOC_START:
       currentState.loading = true;
       return { ...currentState };
