@@ -72,7 +72,7 @@ For example, on `https://docs.google.com/spreadsheets/d/1qffzsCf2siRv-loAAMLeGzs
 #### Create a service account for your project
 
 1. In the sidebar on the left, select APIs & Services > Credentials
-2. Click blue "+ CREATE CREDENITALS" and select "Service account" option
+2. Click blue "+ CREATE CREDENITALS" and select "Service account" option <br>
    ![CREATE CREDENITALS button](https://i.imgur.com/z2fipYp.png)
 3. Enter name, description, click "CREATE"
 4. You can skip permissions, click "CONTINUE"
