@@ -9,7 +9,7 @@ import {
 import { HeaderLayout } from "layouts";
 import { getTypes, getTotalByMonth, addRow } from "services";
 import { nowYear, nowMonth, pastMonthYear, todayDate } from "lib/utils/date";
-import { moneyToNumber, formatMoney } from "lib/utils/currency";
+import { moneyToNumber } from "lib/utils/currency";
 
 const Main = () => {
   const [mainLoading, setMainLoading] = useState(true);
