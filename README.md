@@ -60,8 +60,11 @@ For example, on `https://docs.google.com/spreadsheets/d/1qffzsCf2siRv-loAAMLeGzs
 
 1. Go to the [Google Developers Console](https://console.developers.google.com/)
 2. Select your project or create a new one (and then select it)
+   <br>
+   ![](https://i.imgur.com/2L3jidY.png)![](https://i.imgur.com/YEBjmMp.png)
 3. Enable the Sheets API for your project
-4. In the sidebar on the left, select APIs & Services > Library
+4. In the sidebar on the left, select APIs & Services > Library <br>
+   ![](https://i.imgur.com/zdezoMD.png)
 5. Search for "sheets"
 6. Click on "Google Sheets API"
 7. click the blue "Enable" button
@@ -69,18 +72,20 @@ For example, on `https://docs.google.com/spreadsheets/d/1qffzsCf2siRv-loAAMLeGzs
 #### Create a service account for your project
 
 1. In the sidebar on the left, select APIs & Services > Credentials
-2. Click blue "+ CREATE CREDENITALS" and select "Service account" option
+2. Click blue "+ CREATE CREDENITALS" and select "Service account" option <br>
+   ![CREATE CREDENITALS button](https://i.imgur.com/z2fipYp.png)
 3. Enter name, description, click "CREATE"
 4. You can skip permissions, click "CONTINUE"
-5. Click "+ CREATE KEY" button
-6. Select the "JSON" key type option
-7. Click "Create" button
-8. Your JSON key file is generated and downloaded to your machine (it is the only copy!)
-9. click "DONE"
+5. Click "DONE"
+6. Click the name of your credential
+7. Go to keys
+8. Select Add key > Create new key <br>
+   ![Create new key button](https://i.imgur.com/XDXuK5D.png)
+9. Click "DONE"
 
 ## Example
 
-- I have a functional example on [Netlify](https://sleepy-bhaskara-080018.netlify.com/)
+- I have a functional example on [Netlify](http://pwa.billstracker.app/)
 
 ## Next steps
 
