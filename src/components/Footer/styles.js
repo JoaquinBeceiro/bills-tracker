@@ -20,6 +20,12 @@ const MenuItem = styled.button`
   justify-content: center;
   align-items: center;
   height: 100%;
+  path {
+    fill: #aeaeae;
+  }
+  &.active path {
+    fill: #000;
+  }
 `;
 
 export { Container, MenuItem };
