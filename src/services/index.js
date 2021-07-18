@@ -1,6 +1,8 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
-import { moneyToNumber, formatMoney } from "../lib/utils/currency";
+import Utils from "lib/utils";
 import { defaultTypes, sheetHeaders, sheetTitle } from "../config/sheet";
+
+const { moneyToNumber, formatMoney } = Utils.Currency;
 
 const getSheet = (doc) => {
   return doc.sheetsByTitle[sheetTitle];

@@ -8,10 +8,12 @@ import {
 } from "components";
 import { HeaderLayout } from "layouts";
 import { getTypes, getTotalByMonth, addRow } from "services";
-import { nowYear, nowMonth, pastMonthYear, todayDate } from "lib/utils/date";
-import { moneyToNumber } from "lib/utils/currency";
+import Utils from "lib/utils";
 
 const Main = () => {
+  const { moneyToNumber } = Utils.Currency;
+  const { nowYear, nowMonth, pastMonthYear, todayDate } = Utils.Date;
+
   const [mainLoading, setMainLoading] = useState(true);
   const [totalMonth, setTotalMonth] = useState(0);
   const [pastMonth, setPastMonth] = useState(0);
