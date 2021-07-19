@@ -1,3 +1,5 @@
+import { MONTHS } from "./constants";
+
 const addLeftValue = (value) => (`${value}`.length === 1 ? `0${value}` : value);
 
 export const todayDate = () => {
@@ -43,3 +45,5 @@ export const pastMonthYear = () => {
     };
   }
 };
+
+export const monthToText = (month) => MONTHS[month];

@@ -105,3 +105,61 @@ export const getTotalByYear = async (doc, year) => {
     return null;
   }
 };
+
+export const getByTypesMonth = async (doc, month, year) => {
+  if (doc) {
+    const monthString = month.toString().length < 2 ? `0${month}` : `${month}`;
+    const yearString = year.toString();
+    const sheet = getSheet(doc);
+    const fetchedRows = await sheet.getRows();
+    const totalsFiltered = fetchedRows.filter((e) => {
+      const dateSplitted = e.Date.split("/");
+      return dateSplitted[2] === yearString && dateSplitted[1] === monthString;
+    });
+
+    const groupedByType = totalsFiltered.reduce((prev, curr) => {
+      const newObject = { ...prev };
+      newObject[curr.Type] = {
+        value: (newObject[curr.Type]?.value || 0) + moneyToNumber(curr.Amount),
+        count: (newObject[curr.Type]?.count || 0) + 1,
+      };
+      return newObject;
+    }, {});
+
+    return Object.entries(groupedByType)
+      .map((e) => ({ ...e[1], name: e[0] }))
+      .sort((a, b) => b.value - a.value);
+  } else {
+    return null;
+  }
+};
+
+export const getMonthYears = async (doc) => {
+  if (doc) {
+    const sheet = getSheet(doc);
+    const fetchedRows = await sheet.getRows();
+
+    return fetchedRows
+      .map((e) => {
+        const dateSplitted = e.Date.split("/");
+        const month = dateSplitted[1];
+        const year = dateSplitted[2];
+        return { month, year };
+      })
+      .filter(({ month, year }) => month !== undefined && year !== undefined)
+      .reduce((prev, curr) => {
+        const findOnPrev = (prev || []).find(
+          ({ month, year }) => curr.month === month && curr.year === year
+        );
+        if (!findOnPrev) {
+          const newArray = prev || [];
+          newArray.push({ ...curr });
+          return newArray;
+        } else {
+          return prev;
+        }
+      }, []);
+  } else {
+    return [];
+  }
+};

@@ -17,7 +17,7 @@ const Dropdown = styled(SelectComponent)`
   & .Select__value-container {
     text-align: right;
     justify-content: flex-end;
-    min-width: 60px;
+    min-width: 70px;
   }
 
   & .Select__indicator-separator,

@@ -20,7 +20,7 @@ const Dropdown = ({
         options={options}
         {...defaultProps}
         placeholder={placeholder}
-        value={options[0]}
+        value={value}
       />
     ),
   }[type];
