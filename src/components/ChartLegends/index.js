@@ -16,8 +16,8 @@ const ChartLegends = ({ title, value, count, color, total }) => {
   return (
     <S.Container>
       <S.ChartContainer>
-        <ResponsiveContainer width="100%" height={50}>
-          <PieChart width={20} height={20}>
+        <ResponsiveContainer width={50} height={50}>
+          <PieChart width={25} height={25}>
             <svg
               x="40%"
               y={14}

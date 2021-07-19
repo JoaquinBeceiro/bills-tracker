@@ -6,8 +6,8 @@ export const Container = styled.div`
 
 export const ChartContainer = styled.div`
   display: flex;
-  flex: 0.2;
   height: 50px;
+  width: 50px;
 `;
 
 export const Content = styled.div`
