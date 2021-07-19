@@ -20,12 +20,12 @@ const RouterComponent = ({ children }) => (
         </MasterLayout>
       </Route>
       <Route exact path="/home">
-        <MasterLayout footer={true} subTitle="Home" allowSignOut={false}>
+        <MasterLayout footer={true} subTitle="Home" allowSignOut={true}>
           <MainScreen />
         </MasterLayout>
       </Route>
       <Route exact path="/types">
-        <MasterLayout footer={true} subTitle="Types" allowSignOut={false}>
+        <MasterLayout footer={true} subTitle="Types" allowSignOut={true}>
           <TypeScreen />
         </MasterLayout>
       </Route>
@@ -33,7 +33,7 @@ const RouterComponent = ({ children }) => (
         <MasterLayout
           footer={true}
           subTitle="Analytics"
-          allowSignOut={false}
+          allowSignOut={true}
         ></MasterLayout>
       </Route>
     </Switch>
