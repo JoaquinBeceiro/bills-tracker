@@ -20,6 +20,7 @@ const Content = styled.div`
   height: 100%;
   overflow-y: auto;
   margin-bottom: 50px;
+  min-height: calc(100vh - 190px);
 `;
 
 export { Container, Content };

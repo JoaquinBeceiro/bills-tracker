@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useCallback } from "react";
 import { Content, Container } from "./styles";
 import { HeaderComponent, FooterComponent, ModalComponent } from "components";
 import { GlobalContext, DispatchTypes } from "context";
@@ -19,35 +19,41 @@ const Master = ({
   const [modalState] = context.globalModal;
   const [userState, userDispatch] = context.globalUser;
 
-  const setDoc = async (user) => {
-    try {
-      const { jsonFile, spreadsheetId } = user;
-      const newDoc = await createDoc(jsonFile, spreadsheetId);
-      setUserSession(user);
-      userDispatch({
-        type: DispatchTypes.User.GET_DOC_SUCCESS,
-        doc: newDoc,
-      });
-    } catch (error) {
-      userDispatch({
-        type: DispatchTypes.User.GET_DOC_ERROR,
-        error,
-      });
-    }
-  };
+  const setDoc = useCallback(
+    async (user) => {
+      try {
+        const { jsonFile, spreadsheetId } = user;
+        const newDoc = await createDoc(jsonFile, spreadsheetId);
+        setUserSession(user);
+        userDispatch({
+          type: DispatchTypes.User.GET_DOC_SUCCESS,
+          doc: newDoc,
+        });
+      } catch (error) {
+        userDispatch({
+          type: DispatchTypes.User.GET_DOC_ERROR,
+          error,
+        });
+      }
+    },
+    [userDispatch]
+  );
 
-  const checkUser = async (user) => {
-    const { spreadsheetId, jsonFile } = user;
-    const valid = await checkCredentials(jsonFile, spreadsheetId);
-    if (valid) {
-      userDispatch({
-        type: DispatchTypes.User.GET_DOC_START,
-      });
-      setDoc(user);
-    } else {
-      history.push("/onboarding");
-    }
-  };
+  const checkUser = useCallback(
+    async (user) => {
+      const { spreadsheetId, jsonFile } = user;
+      const valid = await checkCredentials(jsonFile, spreadsheetId);
+      if (valid) {
+        userDispatch({
+          type: DispatchTypes.User.GET_DOC_START,
+        });
+        setDoc(user);
+      } else {
+        history.push("/onboarding");
+      }
+    },
+    [history, setDoc, userDispatch]
+  );
 
   useEffect(() => {
     if (userState) {
@@ -56,7 +62,7 @@ const Master = ({
         checkUser(user);
       }
     }
-  }, [userState]);
+  }, [checkUser, userState]);
 
   useEffect(() => {
     const userFromStorage = getUserSession();

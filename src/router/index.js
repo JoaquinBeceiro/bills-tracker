@@ -1,7 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { MasterLayout } from "layouts";
-import { SplashScreen, OnboardingScreen, MainScreen } from "screens";
+import {
+  SplashScreen,
+  OnboardingScreen,
+  MainScreen,
+  TypeScreen,
+} from "screens";
 
 const RouterComponent = ({ children }) => (
   <Router>
@@ -20,11 +25,9 @@ const RouterComponent = ({ children }) => (
         </MasterLayout>
       </Route>
       <Route exact path="/types">
-        <MasterLayout
-          footer={true}
-          subTitle="Types"
-          allowSignOut={false}
-        ></MasterLayout>
+        <MasterLayout footer={true} subTitle="Types" allowSignOut={false}>
+          <TypeScreen />
+        </MasterLayout>
       </Route>
       <Route exact path="/analytics">
         <MasterLayout

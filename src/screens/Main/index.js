@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback} from "react";
 import { GlobalContext, DispatchTypes } from "context";
 import {
   ArrowIndicatorIcon,
@@ -8,10 +8,12 @@ import {
 } from "components";
 import { HeaderLayout } from "layouts";
 import { getTypes, getTotalByMonth, addRow } from "services";
-import { nowYear, nowMonth, pastMonthYear, todayDate } from "lib/utils/date";
-import { moneyToNumber, formatMoney } from "lib/utils/currency";
+import Utils from "lib/utils";
 
 const Main = () => {
+  const { moneyToNumber } = Utils.Currency;
+  const { nowYear, nowMonth, pastMonthYear, todayDate } = Utils.Date;
+
   const [mainLoading, setMainLoading] = useState(true);
   const [totalMonth, setTotalMonth] = useState(0);
   const [pastMonth, setPastMonth] = useState(0);
@@ -42,7 +44,7 @@ const Main = () => {
   const [, modalDispatch] = context.globalModal;
   const { user, doc, loading } = userState;
 
-  const getStartData = async (doc) => {
+  const getStartData = useCallback(async (doc) => {
     setMainLoading(true);
 
     const types = await getTypes(doc);
@@ -66,7 +68,7 @@ const Main = () => {
     );
 
     setMainLoading(false);
-  };
+  }, [moneyToNumber, nowMonth, nowYear, pastMonthYear]);
 
   useEffect(() => {
     if (!loading) {
@@ -74,7 +76,7 @@ const Main = () => {
         getStartData(doc);
       }
     }
-  }, [doc, loading]);
+  }, [doc, loading, getStartData]);
 
   const headerBoxProps = {
     primaryValue: `$${totalMonth}`,
