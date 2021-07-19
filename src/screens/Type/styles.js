@@ -1,7 +1,23 @@
 import styled from "styled-components";
 
-const Container = styled.div`
+export const Container = styled.div`
   width: 100%;
 `;
 
-export { Container };
+export const TitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  > div {
+    flex: 1;
+    :last-child {
+      display: flex;
+    }
+  }
+`;
+
+export const Title = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+`;
