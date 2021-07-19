@@ -4,6 +4,7 @@ import { NoHeaderLayout } from "layouts";
 import { InputComponent, ButtonComponent } from "components";
 import { useHistory } from "react-router-dom";
 import { checkCredentials } from "services";
+import * as S from "./styles";
 
 const Onboarding = () => {
   const history = useHistory();
@@ -53,37 +54,39 @@ const Onboarding = () => {
 
   return (
     <NoHeaderLayout>
-      <div>
-        <InputComponent
-          name="name"
-          title="Name"
-          placeholder="Name"
-          type="text"
-          value={values.name || ""}
-          onChange={handleChange("name")}
-        />
-        <InputComponent
-          name="sId"
-          title="Spreadsheet ID"
-          placeholder="Spreadheet ID"
-          type="bigtext"
-          value={values.spreadsheetId || ""}
-          onChange={handleChange("spreadsheetId")}
-        />
-        <InputComponent
-          name="json"
-          title="JSON"
-          placeholder="JSON File"
-          type="textarea"
-          value={values.jsonFile || ""}
-          onChange={handleChange("jsonFile")}
-        />
-        <ButtonComponent text="Start" action={handleStart} />
-      </div>
-      <div>
-        <p className="text-center mb-0 mt-4">Need help?</p>
-        <ButtonComponent text="Setup guide" type="text" />
-      </div>
+      <S.Content>
+        <div>
+          <InputComponent
+            name="name"
+            title="Name"
+            placeholder="Name"
+            type="text"
+            value={values.name || ""}
+            onChange={handleChange("name")}
+          />
+          <InputComponent
+            name="sId"
+            title="Spreadsheet ID"
+            placeholder="Spreadheet ID"
+            type="bigtext"
+            value={values.spreadsheetId || ""}
+            onChange={handleChange("spreadsheetId")}
+          />
+          <InputComponent
+            name="json"
+            title="JSON"
+            placeholder="JSON File"
+            type="textarea"
+            value={values.jsonFile || ""}
+            onChange={handleChange("jsonFile")}
+          />
+          <ButtonComponent text="Start" action={handleStart} />
+        </div>
+        <div>
+          <p className="text-center mb-0 mt-4">Need help?</p>
+          <ButtonComponent text="Setup guide" type="text" />
+        </div>
+      </S.Content>
     </NoHeaderLayout>
   );
 };

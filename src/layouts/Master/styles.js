@@ -14,7 +14,6 @@ const Container = styled.div`
 
 const Content = styled.div`
   min-height: calc(100vh - 110px);
-  height: calc(100vh - 110px);
   display: flex;
 `;
 
