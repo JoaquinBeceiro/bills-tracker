@@ -1,8 +1,11 @@
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import * as S from "./styles";
+import Utils from "lib/utils";
 
 const ChartLegends = ({ title, value, count, color, total }) => {
+  const { formatMoney } = Utils.Currency;
+
   const data = [
     { name: "Value", value, color },
     { name: "Total", value: total - value, color: "#C4C4C4" },
@@ -46,10 +49,18 @@ const ChartLegends = ({ title, value, count, color, total }) => {
           </PieChart>
         </ResponsiveContainer>
       </S.ChartContainer>
-      <S.TitleContainer>
-        <S.Title>{title}</S.Title>
-        <S.SubTitle>{`${percent}% of budget`}</S.SubTitle>
-      </S.TitleContainer>
+      <S.Content>
+        <S.TitleContainer>
+          <S.Title>{title}</S.Title>
+          <S.SubTitle>{`${percent}% of budget`}</S.SubTitle>
+        </S.TitleContainer>
+        <S.DataContainer>
+          <span>{`$${formatMoney(value)}`}</span>
+          <span>{`${count} ${
+            count > 1 ? "transactions" : "transaction"
+          }`}</span>
+        </S.DataContainer>
+      </S.Content>
     </S.Container>
   );
 };

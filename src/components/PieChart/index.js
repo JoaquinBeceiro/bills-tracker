@@ -41,13 +41,15 @@ const PieChartComponent = ({ data }) => {
     );
   };
 
+  const chartHeight = 285;
+
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%" height={chartHeight}>
       <PieChart>
         <g>
           <text
             x="50%"
-            y={195}
+            y={chartHeight / 2}
             textAnchor="middle"
             dominantBaseline="middle"
             font-size="16"
@@ -57,7 +59,7 @@ const PieChartComponent = ({ data }) => {
           </text>
           <text
             x="50%"
-            y={210}
+            y={chartHeight / 2 + 15}
             textAnchor="middle"
             dominantBaseline="middle"
             font-size="11"

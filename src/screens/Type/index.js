@@ -5,10 +5,11 @@ import * as S from "./styles";
 
 const Type = () => {
   const data = [
-    { name: "Rent", value: 400, v: 89, color: "#F7885B" },
-    { name: "Others", value: 300, v: 100, color: "#5455FF" },
-    { name: "Car", value: 100, v: 200, color: "#4CE2AD" },
-    { name: "Market", value: 300, v: 20, color: "#8F5AFF" },
+    { name: "Rent", value: 24000, v: 89, color: "#F7885B", transactions: 1 },
+    { name: "Others", value: 10200, v: 100, color: "#5455FF", transactions: 4 },
+    { name: "Car", value: 700, v: 200, color: "#4CE2AD", transactions: 2 },
+    { name: "Market", value: 8540, v: 20, color: "#8F5AFF", transactions: 8 },
+    { name: "Pharmacy", value: 1300, v: 20, color: "#CDDC39", transactions: 4 },
   ];
 
   const total = data.reduce((prev, cur) => prev + cur.value, 0);
@@ -26,6 +27,7 @@ const Type = () => {
               value={item.value}
               color={item.color}
               total={total}
+              count={item.transactions}
             />
           ))}
         </div>
