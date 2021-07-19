@@ -13,13 +13,13 @@ const Content = styled.div`
   background: #ffffff;
   border-radius: 30px 30px 0px 0px;
   width: 100%;
-  padding: 30px;
+  padding: 25px 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
   overflow-y: auto;
-  margin-bottom: 50px;
+  margin-bottom: 0px;
   min-height: calc(100vh - 190px);
 `;
 

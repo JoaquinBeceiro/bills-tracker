@@ -4,7 +4,7 @@ import CreatableSelect from "react-select/creatable";
 
 const InputContainer = styled.div`
   box-sizing: border-box;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   border-bottom: 1px solid #c4c4c4;
   width: 100%;
   display: flex;
