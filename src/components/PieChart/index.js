@@ -7,42 +7,6 @@ const { RADIAN } = Utils.Constants;
 const { formatMoney } = Utils.Currency;
 const { monthToText } = Utils.Date;
 
-const renderCustomizedLabel = (props) => {
-  const { cx, cy, midAngle, innerRadius, outerRadius, percent, name } = props;
-  const radius = innerRadius + (outerRadius - innerRadius) * 2;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return percent * 100 < 4 ? (
-    <></>
-  ) : (
-    <g>
-      <text
-        x={x}
-        y={y}
-        textAnchor={x > cx ? "start" : "end"}
-        dominantBaseline="central"
-        fill="#000"
-        fontWeight="bold"
-        fontSize="12"
-      >
-        {`${(percent * 100).toFixed(0)}%`}
-      </text>
-      <text
-        x={x}
-        y={y + 13}
-        textAnchor={x > cx ? "start" : "end"}
-        dominantBaseline="central"
-        fill="#000"
-        fontWeight="light"
-        fontSize="11"
-      >
-        {name}
-      </text>
-    </g>
-  );
-};
-
 const renderActiveShape = (props) => {
   const {
     cx,
@@ -53,7 +17,6 @@ const renderActiveShape = (props) => {
     startAngle,
     endAngle,
     fill,
-    name,
     percent,
     value,
   } = props;

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { GlobalContext, DispatchTypes } from "context";
 import { withRouter } from "react-router";
 import { Container, Content, Title } from "./styles";
@@ -15,37 +15,43 @@ const Splash = (props) => {
   const context = useContext(GlobalContext);
   const [userState, userDispatch] = context.globalUser;
 
-  const setDoc = async (user) => {
-    try {
-      const { jsonFile, spreadsheetId } = user;
-      const newDoc = await createDoc(jsonFile, spreadsheetId);
-      setUserSession(user);
-      userDispatch({
-        type: DispatchTypes.User.GET_DOC_SUCCESS,
-        doc: newDoc,
-      });
-      return true;
-    } catch (error) {
-      userDispatch({
-        type: DispatchTypes.User.GET_DOC_ERROR,
-        error,
-      });
-      return false;
-    }
-  };
+  const setDoc = useCallback(
+    async (user) => {
+      try {
+        const { jsonFile, spreadsheetId } = user;
+        const newDoc = await createDoc(jsonFile, spreadsheetId);
+        setUserSession(user);
+        userDispatch({
+          type: DispatchTypes.User.GET_DOC_SUCCESS,
+          doc: newDoc,
+        });
+        return true;
+      } catch (error) {
+        userDispatch({
+          type: DispatchTypes.User.GET_DOC_ERROR,
+          error,
+        });
+        return false;
+      }
+    },
+    [userDispatch]
+  );
 
-  const checkUser = async (user) => {
-    const { spreadsheetId, jsonFile } = user;
-    const valid = await checkCredentials(jsonFile, spreadsheetId);
-    if (valid) {
-      userDispatch({
-        type: DispatchTypes.User.GET_DOC_START,
-      });
-      await setDoc(user);
-    } else {
-      setNewRoute("/onboarding");
-    }
-  };
+  const checkUser = useCallback(
+    async (user) => {
+      const { spreadsheetId, jsonFile } = user;
+      const valid = await checkCredentials(jsonFile, spreadsheetId);
+      if (valid) {
+        userDispatch({
+          type: DispatchTypes.User.GET_DOC_START,
+        });
+        await setDoc(user);
+      } else {
+        setNewRoute("/onboarding");
+      }
+    },
+    [setDoc, userDispatch]
+  );
 
   useEffect(() => {
     userDispatch({
@@ -80,7 +86,7 @@ const Splash = (props) => {
         }
       }
     }
-  }, [userState]);
+  }, [checkUser, userState]);
 
   useEffect(() => {
     if (newRoute && splashFinish) {

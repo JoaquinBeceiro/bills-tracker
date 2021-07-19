@@ -26,7 +26,7 @@ const Type = () => {
   const [data, setData] = useState([]);
   const context = useContext(GlobalContext);
   const [userState] = context.globalUser;
-  const { user, doc, loading } = userState;
+  const { doc, loading } = userState;
 
   const getStartData = useCallback(
     async (doc) => {
@@ -56,7 +56,7 @@ const Type = () => {
       setData(typesMonthWithColors);
       setMainLoading(false);
     },
-    [addColors, selectedDate]
+    [MONTHS, addColors, selectedDate.month, selectedDate.year]
   );
 
   const total = data.reduce((prev, cur) => prev + cur.value, 0);

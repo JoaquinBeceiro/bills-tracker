@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback} from "react";
 import { GlobalContext, DispatchTypes } from "context";
 import {
   ArrowIndicatorIcon,
@@ -44,7 +44,7 @@ const Main = () => {
   const [, modalDispatch] = context.globalModal;
   const { user, doc, loading } = userState;
 
-  const getStartData = async (doc) => {
+  const getStartData = useCallback(async (doc) => {
     setMainLoading(true);
 
     const types = await getTypes(doc);
@@ -68,7 +68,7 @@ const Main = () => {
     );
 
     setMainLoading(false);
-  };
+  }, [moneyToNumber, nowMonth, nowYear, pastMonthYear]);
 
   useEffect(() => {
     if (!loading) {
@@ -76,7 +76,7 @@ const Main = () => {
         getStartData(doc);
       }
     }
-  }, [doc, loading]);
+  }, [doc, loading, getStartData]);
 
   const headerBoxProps = {
     primaryValue: `$${totalMonth}`,
