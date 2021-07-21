@@ -12,6 +12,7 @@ const Header = ({
 }) => {
   const context = useContext(GlobalContext);
   const [, userDispatch] = context.globalUser;
+  const [, modalDispatch] = context.globalModal;
 
   const history = useHistory();
 
@@ -24,11 +25,32 @@ const Header = ({
   window.addEventListener("scroll", changeNavbarColor);
 
   const signOut = () => {
-    deleteUserSession();
-    userDispatch({
-      type: DispatchTypes.Global.RESET,
+    modalDispatch({
+      type: DispatchTypes.Modal.MODAL_SHOW,
+      title: "Really want to exit?",
+      content: "If you sign out, you will need to setup the credentials again.",
+      actions: [
+        {
+          type: "secondary",
+          text: "Cancel",
+          action: () => {
+            modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
+          },
+        },
+        {
+          type: "text",
+          text: "Sign Out",
+          action: () => {
+            modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
+            deleteUserSession();
+            userDispatch({
+              type: DispatchTypes.Global.RESET,
+            });
+            history.push("/");
+          },
+        },
+      ],
     });
-    history.push("/");
   };
 
   return (

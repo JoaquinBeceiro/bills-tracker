@@ -34,10 +34,12 @@ export const ActionsContainer = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  align-items: center;
   button {
     margin: 5px 0;
     height: 30px;
     font-weight: 500;
     font-size: 12px;
+    max-width: 150px;
   }
 `;
