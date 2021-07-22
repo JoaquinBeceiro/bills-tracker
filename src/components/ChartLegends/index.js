@@ -3,7 +3,7 @@ import { PieChart, Pie, Cell } from "recharts";
 import * as S from "./styles";
 import Utils from "lib/utils";
 
-const ChartLegends = ({ title, value, count, color, total }) => {
+const ChartLegends = ({ title, value, count, color, total, action }) => {
   const { formatMoney } = Utils.Currency;
 
   const data = [
@@ -14,7 +14,7 @@ const ChartLegends = ({ title, value, count, color, total }) => {
   const percent = ((value * 100) / total).toFixed(1);
 
   return (
-    <S.Container>
+    <S.Container onClick={action}>
       <S.ChartContainer>
         <PieChart width={50} height={50}>
           <svg

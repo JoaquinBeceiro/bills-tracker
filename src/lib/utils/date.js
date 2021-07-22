@@ -47,3 +47,12 @@ export const pastMonthYear = () => {
 };
 
 export const monthToText = (month) => MONTHS[month];
+
+export const dateToText = (date) => {
+  const splitDate = date.split("/");
+  const day = splitDate[0];
+  const month = parseInt(splitDate[1]) - 1;
+  const year = splitDate[2];
+
+  return `${day} ${monthToText(month)} ${year}`;
+};
