@@ -3,6 +3,7 @@ import Utils from "lib/utils";
 import { defaultTypes, sheetHeaders, sheetTitle } from "../config/sheet";
 
 const { moneyToNumber, formatMoney } = Utils.Currency;
+const { dateSort } = Utils.Date;
 
 const getSheet = (doc) => {
   return doc.sheetsByTitle[sheetTitle];
@@ -189,7 +190,9 @@ export const getDetailsBuTypeDate = async (doc, month, year, type) => {
       })
     );
 
-    return mappedData;
+    const dataSorted = mappedData.sort(dateSort);
+
+    return dataSorted;
   } else {
     return null;
   }

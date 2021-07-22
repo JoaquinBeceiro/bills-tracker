@@ -56,3 +56,12 @@ export const dateToText = (date) => {
 
   return `${day} ${monthToText(month)} ${year}`;
 };
+
+export const dateSort = (a, b) => {
+  const dateASplit = a.Date.split("/");
+  const dateBSplit = b.Date.split("/");
+  const aNumber = parseInt(`${dateASplit[2]}${dateASplit[1]}${dateASplit[0]}`);
+  const bNumber = parseInt(`${dateBSplit[2]}${dateBSplit[1]}${dateBSplit[0]}`);
+
+  return bNumber - aNumber;
+};

@@ -26,9 +26,11 @@ export const Modal = styled.div`
 
 export const Title = styled.h3`
   text-align: center;
+  margin-bottom: 30px;
 `;
 
 export const Content = styled.div`
   overflow-y: scroll;
   flex: 1;
+  padding-bottom: 20px;
 `;
