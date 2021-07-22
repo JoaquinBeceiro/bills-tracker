@@ -19,6 +19,7 @@ export const Title = styled.h3`
   font-style: normal;
   font-weight: normal;
   font-size: 13px;
+  margin-bottom: 0px;
 `;
 
 export const Amount = styled.div`
