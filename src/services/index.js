@@ -163,3 +163,34 @@ export const getMonthYears = async (doc) => {
     return [];
   }
 };
+
+export const getDetailsBuTypeDate = async (doc, month, year, type) => {
+  if (doc) {
+    const monthString = month.toString().length < 2 ? `0${month}` : `${month}`;
+    const yearString = year.toString();
+    const sheet = getSheet(doc);
+    const fetchedRows = await sheet.getRows();
+    const totalsFiltered = fetchedRows.filter((e) => {
+      const dateSplitted = e.Date.split("/");
+      return (
+        dateSplitted[2] === yearString &&
+        dateSplitted[1] === monthString &&
+        e.Type === type
+      );
+    });
+
+    const mappedData = totalsFiltered.map(
+      ({ Amount, Date, Detail, Type, Who }) => ({
+        Amount,
+        Date,
+        Detail,
+        Type,
+        Who,
+      })
+    );
+
+    return mappedData;
+  } else {
+    return null;
+  }
+};
