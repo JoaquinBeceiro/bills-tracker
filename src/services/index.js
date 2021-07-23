@@ -197,3 +197,21 @@ export const getDetailsBuTypeDate = async (doc, month, year, type) => {
     return null;
   }
 };
+
+export const getYears = async (doc) => {
+  if (doc) {
+    const sheet = getSheet(doc);
+    const fetchedRows = await sheet.getRows();
+    const years = fetchedRows
+      .map((e) => {
+        const dateSplitted = e.Date.split("/");
+        const year = dateSplitted[2];
+        return year;
+      })
+      .filter((year) => year !== undefined);
+
+    return [...new Set(years)];
+  } else {
+    return [];
+  }
+};
