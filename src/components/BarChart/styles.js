@@ -7,6 +7,10 @@ export const Tooltip = styled.div`
   filter: drop-shadow(0px 0px 7px rgba(0, 0, 0, 0.25));
   min-width: 50px;
   text-align: center;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 11px;
   :before {
     content: "";
     position: absolute;

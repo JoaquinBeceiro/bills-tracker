@@ -1,21 +1,20 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 import {
   BarChart,
   Bar,
-  Cell,
   XAxis,
-  YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import * as S from "./styles";
+import Utils from "lib/utils";
 
-const customElement = (props) => {
+const { formatMoney } = Utils.Currency;
+
+const CustomTooltip = (props) => {
   const amount = props?.payload[0]?.value || 0;
-
-  return <S.Tooltip>{amount}</S.Tooltip>;
+  return <S.Tooltip>{`$${formatMoney(amount)}`}</S.Tooltip>;
 };
 
 const BarChartComponent = ({ data, isLoading }) => {
@@ -25,10 +24,14 @@ const BarChartComponent = ({ data, isLoading }) => {
     <ResponsiveContainer width="100%" height={chartHeight}>
       <BarChart width={150} height={40} data={data}>
         <CartesianGrid strokeDasharray="2 2" vertical={false} />
-        <XAxis dataKey="name" />
+        <XAxis
+          dataKey="name"
+          tickLine={false}
+          tick={{ fontFamily: "Roboto", fontSize: 11, fill: "#7E7E7E" }}
+        />
         <Tooltip
           offset={-25}
-          content={customElement}
+          content={CustomTooltip}
           allowEscapeViewBox={{ x: true, y: true }}
           position={{ y: 10 }}
         />

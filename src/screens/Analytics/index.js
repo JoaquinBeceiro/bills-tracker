@@ -49,7 +49,7 @@ const Analytics = () => {
 
   const data = [...Array(12)].map((e, idx) => ({
     name: `${idx+1}`,
-    amount: Math.floor(Math.random() * 400) + 100,
+    amount: Math.floor(Math.random() * 110000) + 20000,
   }));
 
 
