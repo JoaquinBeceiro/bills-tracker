@@ -10,8 +10,10 @@ import * as S from "./styles";
 import { GlobalContext } from "context";
 import { getYears, getAllMonthByYear } from "services";
 import Utils from "lib/utils";
+import { useHistory } from "react-router-dom";
 
 const Analytics = () => {
+  const history = useHistory();
   const context = useContext(GlobalContext);
   const [userState] = context.globalUser;
   const { doc, loading } = userState;
@@ -94,6 +96,12 @@ const Analytics = () => {
                 month={name}
                 amount={value}
                 year={selectedYear}
+                action={() => {
+                  history.push({
+                    pathname: "/types",
+                    state: { defaultMonth: name, defaultYear: selectedYear },
+                  });
+                }}
               />
             ))}
           </S.LeggendsContainer>

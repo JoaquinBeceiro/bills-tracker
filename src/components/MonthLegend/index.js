@@ -3,11 +3,9 @@ import * as S from "./styles";
 import Utils from "lib/utils";
 import { CalendarIcon, NavigateIcon } from "components";
 
-const MonthLegend = ({ month, year, amount }) => {
+const MonthLegend = ({ month, year, amount, action }) => {
   const { formatMoney } = Utils.Currency;
   const { monthToText } = Utils.Date;
-
-  const action = () => console.log("test");
 
   const monthText = `${monthToText(month - 1).substring(0, 3)}.`;
 
