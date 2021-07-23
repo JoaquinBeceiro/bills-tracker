@@ -7,7 +7,7 @@ import {
 } from "components";
 import * as S from "./styles";
 import { GlobalContext } from "context";
-import { getYears } from "services";
+import { getYears, getAllMonthByYear } from "services";
 import Utils from "lib/utils";
 
 const Analytics = () => {
@@ -20,18 +20,35 @@ const Analytics = () => {
   const [mainLoading, setMainLoading] = useState(false);
   const [selectedYear, setSelectedYear] = useState(nowYear);
   const [yearsOption, setYearsOption] = useState([]);
+  const [chartData, setChartData] = useState([]);
 
   const getStartData = async (doc) => {
     setMainLoading(true);
     const years = await getYears(doc);
     const newYearsOptions = years.map((y) => ({ label: y, value: y }));
     setYearsOption(newYearsOptions);
+    const newChartData = await getAllMonthByYear(doc, selectedYear);
+    const chartDataWithAllMonths = [...Array(11)].map((i, index) => {
+      const findElement = newChartData.find(
+        ({ name }) => parseInt(name) === index + 1
+      );
+      const newName = index + 1 < 10 ? `0${index + 1}` : index + 1;
+      return findElement ? findElement : { name: newName, value: 0, count: 0 };
+    });
+
+    setChartData(
+      chartDataWithAllMonths.map(({ value, name }, idx) => ({
+        name,
+        amount: value,
+      }))
+    );
+
     setMainLoading(false);
   };
 
   useEffect(() => {
     if (doc) {
-      // getStartData(doc);
+      getStartData(doc);
     }
   }, [doc]);
 
@@ -44,14 +61,6 @@ const Analytics = () => {
   );
 
   const screenLoading = mainLoading || loading;
-
-
-
-  const data = [...Array(12)].map((e, idx) => ({
-    name: `${idx+1}`,
-    amount: Math.floor(Math.random() * 110000) + 20000,
-  }));
-
 
   return (
     <>
@@ -69,7 +78,7 @@ const Analytics = () => {
               value={yearSelectedValueOption}
             />
           </S.TitleContainer>
-          <BarChartComponent data={data} />
+          <BarChartComponent data={chartData} isLoading={screenLoading} />
         </S.Container>
       </NoHeaderLayout>
 

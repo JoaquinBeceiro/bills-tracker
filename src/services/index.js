@@ -215,3 +215,28 @@ export const getYears = async (doc) => {
     return [];
   }
 };
+
+export const getAllMonthByYear = async (doc, year) => {
+  if (doc) {
+    const sheet = getSheet(doc);
+    const fetchedRows = await sheet.getRows();
+    const totalsFiltered = fetchedRows.filter((e) => {
+      const dateSplitted = e.Date.split("/");
+      return dateSplitted[2] === year.toString();
+    });
+
+    const groupedByMonth = totalsFiltered.reduce((prev, curr) => {
+      const newObject = { ...prev };
+      const month = curr.Date.split("/")[1];
+      newObject[month] = {
+        value: (newObject[month]?.value || 0) + moneyToNumber(curr.Amount),
+        count: (newObject[month]?.count || 0) + 1,
+      };
+      return newObject;
+    }, {});
+
+    return Object.entries(groupedByMonth).map((e) => ({ ...e[1], name: e[0] }));
+  } else {
+    return null;
+  }
+};
