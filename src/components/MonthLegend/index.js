@@ -1,7 +1,7 @@
 import React from "react";
 import * as S from "./styles";
 import Utils from "lib/utils";
-import { CalendarIcon } from "components";
+import { CalendarIcon, NavigateIcon } from "components";
 
 const MonthLegend = ({ month, year, amount }) => {
   const { formatMoney } = Utils.Currency;
@@ -20,6 +20,9 @@ const MonthLegend = ({ month, year, amount }) => {
         {monthText}, {year}
       </S.DateContainer>
       <S.AmountContainer>{`$${formatMoney(amount)}`}</S.AmountContainer>
+      <S.NavigateContainer>
+        <NavigateIcon />
+      </S.NavigateContainer>
     </S.Container>
   );
 };

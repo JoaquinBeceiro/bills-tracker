@@ -30,3 +30,9 @@ export const AmountContainer = styled.div`
   font-weight: normal;
   font-size: 18px;
 `;
+
+export const NavigateContainer = styled.div`
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+`;
