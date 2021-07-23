@@ -6,6 +6,7 @@ import {
   OnboardingScreen,
   MainScreen,
   TypeScreen,
+  AnalyticsScreen,
 } from "screens";
 
 const RouterComponent = ({ children }) => (
@@ -30,11 +31,9 @@ const RouterComponent = ({ children }) => (
         </MasterLayout>
       </Route>
       <Route exact path="/analytics">
-        <MasterLayout
-          footer={true}
-          subTitle="Analytics"
-          allowSignOut={true}
-        ></MasterLayout>
+        <MasterLayout footer={true} subTitle="Analytics" allowSignOut={true}>
+          <AnalyticsScreen />
+        </MasterLayout>
       </Route>
     </Switch>
   </Router>

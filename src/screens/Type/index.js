@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useCallback } from "react";
 import { NoHeaderLayout } from "layouts";
 import {
   PieChartComponent,
-  ChartLegendsComponent,
+  ChartLegendComponent,
   DropdownComponent,
   LoadingComponent,
   BigModalComponent,
@@ -12,16 +12,27 @@ import * as S from "./styles";
 import { GlobalContext } from "context";
 import { getByTypesMonth, getMonthYears, getDetailsBuTypeDate } from "services";
 import Utils from "lib/utils";
+import { useLocation } from "react-router-dom";
 
 const Type = () => {
+  const location = useLocation();
+
   const { nowYear, nowMonth, dateToText } = Utils.Date;
+
+  const locationStateMonth = parseInt(location?.state?.defaultMonth) - 1;
+
+  const defaultMonth = isNaN(locationStateMonth)
+    ? parseInt(nowMonth()) - 1
+    : locationStateMonth;
+  const defaultYear = location?.state?.defaultYear || nowYear().toString();
+
   const { addColors } = Utils.Colors;
   const { MONTHS } = Utils.Constants;
 
   const [mainLoading, setMainLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState({
-    month: parseInt(nowMonth()) - 1,
-    year: nowYear().toString(),
+    month: defaultMonth,
+    year: defaultYear,
   });
 
   const [monthsOptions, setMonthsOptions] = useState([]);
@@ -104,7 +115,8 @@ const Type = () => {
     .flat()
     .find(
       ({ value }) =>
-        value.year === selectedDate.year && value.month === selectedDate.month
+        parseInt(value.year) === parseInt(selectedDate.year) &&
+        parseInt(value.month) === parseInt(selectedDate.month)
     );
 
   const handleCloseDetail = () => {
@@ -138,7 +150,7 @@ const Type = () => {
           />
           <div>
             {data.map((item, index) => (
-              <ChartLegendsComponent
+              <ChartLegendComponent
                 key={`legend-${index}`}
                 title={item.name}
                 value={item.value}
