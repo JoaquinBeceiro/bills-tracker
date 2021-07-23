@@ -22,35 +22,40 @@ const Analytics = () => {
   const [yearsOption, setYearsOption] = useState([]);
   const [chartData, setChartData] = useState([]);
 
-  const getStartData = async (doc) => {
-    setMainLoading(true);
-    const years = await getYears(doc);
-    const newYearsOptions = years.map((y) => ({ label: y, value: y }));
-    setYearsOption(newYearsOptions);
-    const newChartData = await getAllMonthByYear(doc, selectedYear);
-    const chartDataWithAllMonths = [...Array(11)].map((i, index) => {
-      const findElement = newChartData.find(
-        ({ name }) => parseInt(name) === index + 1
+  const getStartData = useCallback(
+    async (doc) => {
+      setMainLoading(true);
+      const years = await getYears(doc);
+      const newYearsOptions = years.map((y) => ({ label: y, value: y }));
+      setYearsOption(newYearsOptions);
+      const newChartData = await getAllMonthByYear(doc, selectedYear);
+      const chartDataWithAllMonths = [...Array(12)].map((i, index) => {
+        const findElement = newChartData.find(
+          ({ name }) => parseInt(name) === index + 1
+        );
+        const newName = index + 1 < 10 ? `0${index + 1}` : index + 1;
+        return findElement
+          ? findElement
+          : { name: newName, value: 0, count: 0 };
+      });
+
+      setChartData(
+        chartDataWithAllMonths.map(({ value, name }, idx) => ({
+          name,
+          amount: value,
+        }))
       );
-      const newName = index + 1 < 10 ? `0${index + 1}` : index + 1;
-      return findElement ? findElement : { name: newName, value: 0, count: 0 };
-    });
 
-    setChartData(
-      chartDataWithAllMonths.map(({ value, name }, idx) => ({
-        name,
-        amount: value,
-      }))
-    );
-
-    setMainLoading(false);
-  };
+      setMainLoading(false);
+    },
+    [selectedYear]
+  );
 
   useEffect(() => {
     if (doc) {
       getStartData(doc);
     }
-  }, [doc]);
+  }, [doc, getStartData, selectedYear]);
 
   const onChangeYear = (newYear) => {
     setSelectedYear(newYear);
