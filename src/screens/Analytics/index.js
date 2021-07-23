@@ -4,6 +4,7 @@ import {
   DropdownComponent,
   LoadingComponent,
   BarChartComponent,
+  MonthLegendComponent,
 } from "components";
 import * as S from "./styles";
 import { GlobalContext } from "context";
@@ -20,7 +21,7 @@ const Analytics = () => {
   const [mainLoading, setMainLoading] = useState(false);
   const [selectedYear, setSelectedYear] = useState(nowYear);
   const [yearsOption, setYearsOption] = useState([]);
-  const [chartData, setChartData] = useState([]);
+  const [data, setData] = useState([]);
 
   const getStartData = useCallback(
     async (doc) => {
@@ -38,14 +39,7 @@ const Analytics = () => {
           ? findElement
           : { name: newName, value: 0, count: 0 };
       });
-
-      setChartData(
-        chartDataWithAllMonths.map(({ value, name }, idx) => ({
-          name,
-          amount: value,
-        }))
-      );
-
+      setData(chartDataWithAllMonths);
       setMainLoading(false);
     },
     [selectedYear]
@@ -64,6 +58,15 @@ const Analytics = () => {
   const yearSelectedValueOption = yearsOption.find(
     ({ value }) => value === selectedYear.toString()
   );
+
+  const chartData = data.map(({ value, name }) => ({
+    name,
+    amount: value,
+  }));
+
+  const leggendsData = data
+    .filter(({ value }) => value > 0)
+    .sort((a, b) => (parseInt(b.name) > parseInt(a.name) ? 1 : -1));
 
   const screenLoading = mainLoading || loading;
 
@@ -84,6 +87,16 @@ const Analytics = () => {
             />
           </S.TitleContainer>
           <BarChartComponent data={chartData} isLoading={screenLoading} />
+          <S.LeggendsContainer>
+            {leggendsData.map(({ name, value }, index) => (
+              <MonthLegendComponent
+                key={`${name}-${index}`}
+                month={name}
+                amount={value}
+                year={selectedYear}
+              />
+            ))}
+          </S.LeggendsContainer>
         </S.Container>
       </NoHeaderLayout>
 

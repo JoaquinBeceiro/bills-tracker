@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState, useCallback } from "react";
 import { NoHeaderLayout } from "layouts";
 import {
   PieChartComponent,
-  ChartLegendsComponent,
+  ChartLegendComponent,
   DropdownComponent,
   LoadingComponent,
   BigModalComponent,
@@ -138,7 +138,7 @@ const Type = () => {
           />
           <div>
             {data.map((item, index) => (
-              <ChartLegendsComponent
+              <ChartLegendComponent
                 key={`legend-${index}`}
                 title={item.name}
                 value={item.value}

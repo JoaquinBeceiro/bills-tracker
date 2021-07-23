@@ -22,3 +22,7 @@ export const Title = styled.div`
   font-weight: normal;
   font-size: 18px;
 `;
+
+export const LeggendsContainer = styled.div`
+  margin-top: 25px;
+`;
