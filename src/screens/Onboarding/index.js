@@ -5,18 +5,36 @@ import { InputComponent, ButtonComponent } from "components";
 import { useHistory } from "react-router-dom";
 import { checkCredentials } from "services";
 import * as S from "./styles";
+import Utils from "lib/utils";
 
 const Onboarding = () => {
   const history = useHistory();
 
   const context = useContext(GlobalContext);
   const [userState, userDispatch] = context.globalUser;
+  const [, modalDispatch] = context.globalModal;
 
   const [values, setValues] = useState({
     name: "",
     spreadsheetId: "",
     jsonFile: "",
   });
+
+  const alertModal = (title, content) => {
+    modalDispatch({
+      type: DispatchTypes.Modal.MODAL_SHOW,
+      title,
+      content,
+      actions: [
+        {
+          text: "Ok",
+          action: () => {
+            modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
+          },
+        },
+      ],
+    });
+  };
 
   useEffect(() => {
     const { user } = userState;
@@ -27,6 +45,11 @@ const Onboarding = () => {
         const valid = await checkCredentials(jsonFile, spreadsheetId);
         if (valid) {
           history.push("/home");
+        } else {
+          alertModal(
+            "Invalid credentials",
+            "Please check your credentials and try again."
+          );
         }
       };
 
@@ -39,17 +62,37 @@ const Onboarding = () => {
   };
 
   const handleStart = () => {
-    userDispatch({ type: DispatchTypes.User.SET_USER_START });
-    const newUserContext = {
-      spreadsheetId: values.spreadsheetId,
-      name: values.name,
-      jsonFile: values.jsonFile && JSON.parse(values.jsonFile),
-    };
-    userDispatch({
-      type: DispatchTypes.User.SET_USER_SUCCESS,
-      user: newUserContext,
-    });
-    history.push("/home");
+    if (
+      values.name === "" ||
+      values.spreadsheetId === "" ||
+      values.jsonFile === ""
+    ) {
+      alertModal(
+        "All fields are required",
+        "You need to fill all fields to continue."
+      );
+    } else {
+      const isJson = Utils.Common.isJsonString(values.jsonFile);
+
+      if (!isJson) {
+        alertModal(
+          "Invalid JSON format",
+          "JSON field must be a valid JSON file."
+        );
+      } else {
+        userDispatch({ type: DispatchTypes.User.SET_USER_START });
+        const newUserContext = {
+          spreadsheetId: values.spreadsheetId,
+          name: values.name,
+          jsonFile: values.jsonFile && JSON.parse(values.jsonFile),
+        };
+        userDispatch({
+          type: DispatchTypes.User.SET_USER_SUCCESS,
+          user: newUserContext,
+        });
+        history.push("/home");
+      }
+    }
   };
 
   return (
@@ -79,6 +122,7 @@ const Onboarding = () => {
             type="textarea"
             value={values.jsonFile || ""}
             onChange={handleChange("jsonFile")}
+            required
           />
           <ButtonComponent text="Start" action={handleStart} />
         </div>
