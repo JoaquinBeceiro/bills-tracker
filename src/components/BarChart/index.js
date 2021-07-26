@@ -18,7 +18,7 @@ const CustomTooltip = (props) => {
 };
 
 const BarChartComponent = ({ data, isLoading }) => {
-  const chartHeight = 285;
+  const chartHeight = 210;
 
   return (
     <ResponsiveContainer width="100%" height={chartHeight}>

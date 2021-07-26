@@ -19,6 +19,7 @@ const Analytics = () => {
   const { doc, loading } = userState;
 
   const { nowYear } = Utils.Date;
+  const { formatSymbol } = Utils.Currency;
 
   const [mainLoading, setMainLoading] = useState(false);
   const [selectedYear, setSelectedYear] = useState(nowYear);
@@ -70,6 +71,8 @@ const Analytics = () => {
     .filter(({ value }) => value > 0)
     .sort((a, b) => (parseInt(b.name) > parseInt(a.name) ? 1 : -1));
 
+  const totalYear = data.reduce((acc, cur) => acc + cur.value, 0);
+
   const screenLoading = mainLoading || loading;
 
   return (
@@ -88,6 +91,12 @@ const Analytics = () => {
               value={yearSelectedValueOption}
             />
           </S.TitleContainer>
+          <S.SubTitleContainer>
+            <S.SubTitle>{`Resume of ${selectedYear}`}</S.SubTitle>
+            <S.ResumeTotal>
+              <span>${formatSymbol(totalYear)}</span> this year
+            </S.ResumeTotal>
+          </S.SubTitleContainer>
           <BarChartComponent data={chartData} isLoading={screenLoading} />
           <S.LeggendsContainer>
             {leggendsData.map(({ name, value }, index) => (
