@@ -16,7 +16,7 @@ export const TitleContainer = styled.div`
   }
 `;
 
-export const Title = styled.div`
+export const Title = styled.h2`
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -25,4 +25,26 @@ export const Title = styled.div`
 
 export const LeggendsContainer = styled.div`
   margin-top: 25px;
+`;
+
+export const SubTitleContainer = styled.div`
+  margin: 20px 0px;
+`;
+
+export const SubTitle = styled.h3`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 24px;
+  margin: 0px;
+`;
+
+export const ResumeTotal = styled.h4`
+  font-family: Roboto;
+  font-weight: 300;
+  font-size: 10px;
+  span {
+  font-weight: 500;
+    color: #6fcf97;
+  }
 `;
