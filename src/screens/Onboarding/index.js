@@ -1,72 +1,93 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { GlobalContext, DispatchTypes } from "context";
+import { NoHeaderLayout } from "layouts";
+import { InputComponent, ButtonComponent } from "components";
+import { useHistory } from "react-router-dom";
+import { checkCredentials } from "services";
+import * as S from "./styles";
 
-import FormControl from "@material-ui/core/FormControl";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
+const Onboarding = () => {
+  const history = useHistory();
 
-import UserContext from "../../components/userContext";
+  const context = useContext(GlobalContext);
+  const [userState, userDispatch] = context.globalUser;
 
-const Onboarding = props => {
-  const userContext = useContext(UserContext);
-
-  const { newUser } = userContext;
-
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     name: "",
     spreadsheetId: "",
-    jsonFile: ""
+    jsonFile: "",
   });
 
-  const handleChange = prop => event => {
-    setValues({ ...values, [prop]: event.target.value });
+  useEffect(() => {
+    const { user } = userState;
+    if (user?.name && user?.spreadsheetId && user?.jsonFile) {
+      const { name, spreadsheetId, jsonFile } = user;
+      setValues({ name, spreadsheetId, jsonFile: JSON.stringify(jsonFile) });
+      const checkUser = async (jsonFile, spreadsheetId) => {
+        const valid = await checkCredentials(jsonFile, spreadsheetId);
+        if (valid) {
+          history.push("/home");
+        }
+      };
+
+      checkUser(jsonFile, spreadsheetId);
+    }
+  }, [userState, history]);
+
+  const handleChange = (prop) => (name, value) => {
+    setValues({ ...values, [prop]: value });
+  };
+
+  const handleStart = () => {
+    userDispatch({ type: DispatchTypes.User.SET_USER_START });
+    const newUserContext = {
+      spreadsheetId: values.spreadsheetId,
+      name: values.name,
+      jsonFile: values.jsonFile && JSON.parse(values.jsonFile),
+    };
+    userDispatch({
+      type: DispatchTypes.User.SET_USER_SUCCESS,
+      user: newUserContext,
+    });
+    history.push("/home");
   };
 
   return (
-    <div className="formContainer">
-      <FormControl>
-        <TextField
-          className="input"
-          label="Nombre"
-          value={values.name}
-          onChange={handleChange("name")}
-        />
-      </FormControl>
-      <FormControl>
-        <TextField
-          className="input"
-          label="Spreadsheet ID"
-          value={values.spreadsheetId}
-          onChange={handleChange("spreadsheetId")}
-        />
-      </FormControl>
-      <FormControl>
-        <TextField
-          className="input"
-          label="JSON file"
-          multiline
-          rows="10"
-          value={values.jsonFile}
-          onChange={handleChange("jsonFile")}
-        />
-      </FormControl>
-      <FormControl>
-        <Button
-          className="input"
-          variant="contained"
-          color="primary"
-          onClick={() => {
-            const newUserContext = {
-              spreadsheetId: values.spreadsheetId,
-              name: values.name,
-              jsonFile: JSON.parse(values.jsonFile)
-            };
-            newUser(newUserContext);
-          }}
-        >
-          GUARDAR
-        </Button>
-      </FormControl>
-    </div>
+    <NoHeaderLayout>
+      <S.Content>
+        <div>
+          <InputComponent
+            name="name"
+            title="Name"
+            placeholder="Name"
+            type="text"
+            value={values.name || ""}
+            onChange={handleChange("name")}
+          />
+          <InputComponent
+            name="sId"
+            title="Spreadsheet ID"
+            placeholder="Spreadheet ID"
+            type="bigtext"
+            value={values.spreadsheetId || ""}
+            onChange={handleChange("spreadsheetId")}
+          />
+          <InputComponent
+            name="json"
+            title="JSON"
+            placeholder="JSON File"
+            type="textarea"
+            value={values.jsonFile || ""}
+            onChange={handleChange("jsonFile")}
+          />
+          <ButtonComponent text="Start" action={handleStart} />
+        </div>
+        <div>
+          <p className="text-center mb-0 mt-4">Need help?</p>
+          <ButtonComponent text="Setup guide" type="text" />
+        </div>
+      </S.Content>
+    </NoHeaderLayout>
   );
 };
 
