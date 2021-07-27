@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import { GlobalContext, DispatchTypes } from "context";
 import { NoHeaderLayout } from "layouts";
 import { InputComponent, ButtonComponent } from "components";
@@ -20,21 +20,24 @@ const Onboarding = () => {
     jsonFile: "",
   });
 
-  const alertModal = (title, content) => {
-    modalDispatch({
-      type: DispatchTypes.Modal.MODAL_SHOW,
-      title,
-      content,
-      actions: [
-        {
-          text: "Ok",
-          action: () => {
-            modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
+  const alertModal = useCallback(
+    (title, content) => {
+      modalDispatch({
+        type: DispatchTypes.Modal.MODAL_SHOW,
+        title,
+        content,
+        actions: [
+          {
+            text: "Ok",
+            action: () => {
+              modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
+            },
           },
-        },
-      ],
-    });
-  };
+        ],
+      });
+    },
+    [modalDispatch]
+  );
 
   useEffect(() => {
     const { user } = userState;
@@ -55,7 +58,7 @@ const Onboarding = () => {
 
       checkUser(jsonFile, spreadsheetId);
     }
-  }, [userState, history]);
+  }, [userState, history, alertModal]);
 
   const handleChange = (prop) => (name, value) => {
     setValues({ ...values, [prop]: value });
