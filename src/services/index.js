@@ -3,7 +3,7 @@ import Utils from "lib/utils";
 import { defaultTypes, sheetHeaders, sheetTitle } from "../config/sheet";
 
 const { moneyToNumber, formatMoney } = Utils.Currency;
-const { dateSort } = Utils.Date;
+const { dateSort, split } = Utils.Date;
 
 const getSheet = (doc) => {
   return doc.sheetsByTitle[sheetTitle];
@@ -67,11 +67,12 @@ export const addRow = async (doc, date, who, amount, type, detail) => {
 };
 
 export const getTotalByMonth = async (doc, month, year) => {
-  if (doc) {
+    if (doc) {
     const sheet = getSheet(doc);
     const fetchedRows = await sheet.getRows();
     const totalsFiltered = fetchedRows.filter((e) => {
-      const dateSplitted = e.Date.split("/");
+      const dateSplitted = split(e.Date);
+      console.log(dateSplitted)
       return (
         dateSplitted[2] === year.toString() &&
         dateSplitted[1] === month.toString()
@@ -93,7 +94,7 @@ export const getTotalByYear = async (doc, year) => {
     const sheet = getSheet(doc);
     const fetchedRows = await sheet.getRows();
     const totalsFiltered = fetchedRows.filter((e) => {
-      const dateSplitted = e.Date.split("/");
+      const dateSplitted = split(e.Date);
       return dateSplitted[2] === year.toString();
     });
 
@@ -114,7 +115,7 @@ export const getByTypesMonth = async (doc, month, year) => {
     const sheet = getSheet(doc);
     const fetchedRows = await sheet.getRows();
     const totalsFiltered = fetchedRows.filter((e) => {
-      const dateSplitted = e.Date.split("/");
+      const dateSplitted = split(e.Date);
       return dateSplitted[2] === yearString && dateSplitted[1] === monthString;
     });
 
@@ -142,7 +143,7 @@ export const getMonthYears = async (doc) => {
 
     return fetchedRows
       .map((e) => {
-        const dateSplitted = e.Date.split("/");
+        const dateSplitted = split(e.Date);
         const month = dateSplitted[1];
         const year = dateSplitted[2];
         return { month, year };
@@ -172,7 +173,7 @@ export const getDetailsBuTypeDate = async (doc, month, year, type) => {
     const sheet = getSheet(doc);
     const fetchedRows = await sheet.getRows();
     const totalsFiltered = fetchedRows.filter((e) => {
-      const dateSplitted = e.Date.split("/");
+      const dateSplitted = split(e.Date);
       return (
         dateSplitted[2] === yearString &&
         dateSplitted[1] === monthString &&
@@ -204,7 +205,7 @@ export const getYears = async (doc) => {
     const fetchedRows = await sheet.getRows();
     const years = fetchedRows
       .map((e) => {
-        const dateSplitted = e.Date.split("/");
+        const dateSplitted = split(e.Date);
         const year = dateSplitted[2];
         return year;
       })
@@ -221,13 +222,13 @@ export const getAllMonthByYear = async (doc, year) => {
     const sheet = getSheet(doc);
     const fetchedRows = await sheet.getRows();
     const totalsFiltered = fetchedRows.filter((e) => {
-      const dateSplitted = e.Date.split("/");
+      const dateSplitted = split(e.Date);
       return dateSplitted[2] === year.toString();
     });
 
     const groupedByMonth = totalsFiltered.reduce((prev, curr) => {
       const newObject = { ...prev };
-      const month = curr.Date.split("/")[1];
+      const month = split(curr.Date)[1];
       newObject[month] = {
         value: (newObject[month]?.value || 0) + moneyToNumber(curr.Amount),
         count: (newObject[month]?.count || 0) + 1,

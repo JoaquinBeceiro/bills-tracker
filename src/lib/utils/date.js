@@ -2,6 +2,10 @@ import { MONTHS } from "./constants";
 
 const addLeftValue = (value) => (`${value}`.length === 1 ? `0${value}` : value);
 
+const getDateSeparator = (date) => {
+  return [...date].filter(c => isNaN(parseInt(c)))[0]
+}
+
 export const todayDate = () => {
   const nDate = new Date();
   const day = addLeftValue(nDate.getDate());
@@ -11,7 +15,7 @@ export const todayDate = () => {
 };
 
 export const dateParser = (date) => {
-  const splitDate = date.split("/");
+  const splitDate = split(date);
   const newDate = new Date(`${splitDate[2]}-${splitDate[1]}-${splitDate[0]}`);
   return newDate;
 };
@@ -49,7 +53,7 @@ export const pastMonthYear = () => {
 export const monthToText = (month) => MONTHS[month];
 
 export const dateToText = (date) => {
-  const splitDate = date.split("/");
+  const splitDate = split(date);
   const day = splitDate[0];
   const month = parseInt(splitDate[1]) - 1;
   const year = splitDate[2];
@@ -58,10 +62,15 @@ export const dateToText = (date) => {
 };
 
 export const dateSort = (a, b) => {
-  const dateASplit = a.Date.split("/");
-  const dateBSplit = b.Date.split("/");
+  const dateASplit = split(a.Date);
+  const dateBSplit = split(b.Date);
   const aNumber = parseInt(`${dateASplit[2]}${dateASplit[1]}${dateASplit[0]}`);
   const bNumber = parseInt(`${dateBSplit[2]}${dateBSplit[1]}${dateBSplit[0]}`);
 
   return bNumber - aNumber;
 };
+
+export const split = (date) => {
+  const dateSplitted = date.split(getDateSeparator(date));
+  return (dateSplitted[2].length === 4) ? dateSplitted : dateSplitted.reverse();
+}
