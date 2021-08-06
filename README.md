@@ -1,6 +1,6 @@
 <h1 align="center">Bills Tracker</h1>
 
-### This is a project based on a progressive web app to Track and share expenses with Google Drive spreadsheet in a very simple way. Currently working on a new version!.
+### This is a project based on a progressive web app to Track and share expenses with a Google Drive Spreadsheet in a very simple way. Currently working on a new version!
 
 <p align="center">
   <img alt="Stars" src="https://img.shields.io/github/stars/JoaquinBeceiro/Bills-Tracker.svg?style=plasticr"/>
@@ -25,8 +25,8 @@
 - Save bills to a spreadsheet quickly and easily
 - Separate types of expenses
 - Show all the records with graphs
-- Allow use by more than one user on the same spreadsheet
-- Recognize where your money goes!
+- Share your expenses with others on the same spreadsheet 
+- Identify how are you spending your money!
 
 ## Screenshots
 

@@ -1,7 +1,7 @@
 {
   "short_name": "Bills Tracker",
   "name": "Bills Tracker",
-  "description": "Track and share expenses with Google Drive spreadsheet.",
+  "description": "Track and share expenses with a Google Drive Spreadsheet.",
   "orientation": "portrait",
   "display": "fullscreen",
   "icons": [

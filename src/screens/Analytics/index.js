@@ -92,7 +92,7 @@ const Analytics = () => {
             />
           </S.TitleContainer>
           <S.SubTitleContainer>
-            <S.SubTitle>{`Resume of ${selectedYear}`}</S.SubTitle>
+            <S.SubTitle>{`Summary of ${selectedYear}`}</S.SubTitle>
             <S.ResumeTotal>
               <span>${formatSymbol(totalYear)}</span> this year
             </S.ResumeTotal>
