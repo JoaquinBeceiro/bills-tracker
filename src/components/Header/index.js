@@ -27,7 +27,7 @@ const Header = ({
   const signOut = () => {
     modalDispatch({
       type: DispatchTypes.Modal.MODAL_SHOW,
-      title: "Really want to exit?",
+      title: "Are you sure?",
       content: "If you sign out, you will need to setup the credentials again.",
       actions: [
         {

@@ -101,8 +101,8 @@ const Main = () => {
         if (addAction) {
           modalDispatch({
             type: DispatchTypes.Modal.MODAL_SHOW,
-            title: "Bill added",
-            content: "Your bill was added to spreadsheet sucssesfully!",
+            title: "Bill Added",
+            content: "Your bill was successfully added!",
             actions: [
               {
                 text: "Ok",
