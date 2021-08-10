@@ -47,7 +47,7 @@ const Main = () => {
   const getStartData = useCallback(async (doc) => {
     setMainLoading(true);
 
-    const types = await (await getTypes(doc)).sort();
+    const types = await (await getTypes(doc)).sort((a,b) => (a.toLowerCase() > b.toLowerCase()) ? 1 : -1);
     const pastMonthYearValue = pastMonthYear();
 
     const totalMonthValue = await getTotalByMonth(doc, nowMonth(), nowYear());
