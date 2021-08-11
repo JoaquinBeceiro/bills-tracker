@@ -126,7 +126,6 @@ const Main = () => {
   };
 
   const screenLoading = mainLoading || loading;
-console.log(billsTypes)
   return (
     <>
       <HeaderLayout headerBox={headerBoxProps}>
@@ -141,7 +140,7 @@ console.log(billsTypes)
           type="dropdown"
           name="type"
           title="Type"
-          options={billsTypes.sort((a,b) => (a.value.toLowerCase() > b.value.toLowerCase()) ? 1 : -1)}
+          options={billsTypes}
           value={billsTypes && form.type && billsTypes[form.type]}
           onChange={onChange}
         />
