@@ -126,6 +126,7 @@ const Main = () => {
   };
 
   const screenLoading = mainLoading || loading;
+  
   return (
     <>
       <HeaderLayout headerBox={headerBoxProps}>
