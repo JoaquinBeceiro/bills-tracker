@@ -47,7 +47,7 @@ const Main = () => {
   const getStartData = useCallback(async (doc) => {
     setMainLoading(true);
 
-    const types = await (await getTypes(doc)).sort((a,b) => (a.toLowerCase() > b.toLowerCase()) ? 1 : -1);
+    const types = await getTypes(doc);
     const pastMonthYearValue = pastMonthYear();
 
     const totalMonthValue = await getTotalByMonth(doc, nowMonth(), nowYear());
@@ -126,7 +126,7 @@ const Main = () => {
   };
 
   const screenLoading = mainLoading || loading;
-
+console.log(billsTypes)
   return (
     <>
       <HeaderLayout headerBox={headerBoxProps}>
@@ -141,7 +141,7 @@ const Main = () => {
           type="dropdown"
           name="type"
           title="Type"
-          options={billsTypes}
+          options={billsTypes.sort((a,b) => (a.value.toLowerCase() > b.value.toLowerCase()) ? 1 : -1)}
           value={billsTypes && form.type && billsTypes[form.type]}
           onChange={onChange}
         />
