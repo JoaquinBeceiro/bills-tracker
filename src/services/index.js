@@ -45,7 +45,7 @@ export const getTypes = async (doc) => {
     const fetchedRows = await sheet.getRows();
     const newTypes = fetchedRows.map((e) => e.Type);
     const combinedTypes = Array.from(new Set(newTypes.concat(defaultTypes)));
-    return combinedTypes;
+    return combinedTypes.sort((a,b) => (a.toLowerCase() > b.toLowerCase()) ? 1 : -1);
   } else {
     return null;
   }
