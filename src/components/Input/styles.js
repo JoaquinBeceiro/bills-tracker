@@ -107,9 +107,14 @@ const Date = styled(InputBox)`
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
+  text-align: right;
   ::-webkit-calendar-picker-indicator {
     color: #333333;
     margin-left: 10px;
+    text-align: right;
+  }
+  ::-webkit-date-and-time-value {
+    text-align: right;
   }
 `;
 
