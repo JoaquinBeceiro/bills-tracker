@@ -34,3 +34,22 @@ export const Content = styled.div`
   flex: 1;
   padding-bottom: 20px;
 `;
+
+export const TitleWithSubtitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+`;
+
+export const TitleWithSubtitle = styled.div`
+  text-align: left;
+  font-weight: 400;
+  font-size: 18px;
+`;
+
+export const SubTitle = styled.div`
+  text-align: right;
+  font-weight: 300;
+  font-size: 18px;
+  color: #7E7E7E;
+`;
