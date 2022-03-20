@@ -45,7 +45,7 @@ export const getTypes = async (doc) => {
     const fetchedRows = await sheet.getRows();
     const newTypes = fetchedRows.map((e) => e.Type);
     const combinedTypes = Array.from(new Set(newTypes.concat(defaultTypes)));
-    return combinedTypes.sort((a,b) => (a.toLowerCase() > b.toLowerCase()) ? 1 : -1);
+    return combinedTypes.sort((a, b) => (a.toLowerCase() > b.toLowerCase()) ? 1 : -1);
   } else {
     return null;
   }
@@ -67,7 +67,7 @@ export const addRow = async (doc, date, who, amount, type, detail) => {
 };
 
 export const getTotalByMonth = async (doc, month, year) => {
-    if (doc) {
+  if (doc) {
     const sheet = getSheet(doc);
     const fetchedRows = await sheet.getRows();
     const totalsFiltered = fetchedRows.filter((e) => {
@@ -165,7 +165,7 @@ export const getMonthYears = async (doc) => {
   }
 };
 
-export const getDetailsBuTypeDate = async (doc, month, year, type) => {
+export const getDetailsByTypeDate = async (doc, month, year, type) => {
   if (doc) {
     const monthString = month.toString().length < 2 ? `0${month}` : `${month}`;
     const yearString = year.toString();
@@ -185,7 +185,6 @@ export const getDetailsBuTypeDate = async (doc, month, year, type) => {
         Amount,
         Date,
         Detail,
-        Type,
         Who,
       })
     );
@@ -236,6 +235,39 @@ export const getAllMonthByYear = async (doc, year) => {
     }, {});
 
     return Object.entries(groupedByMonth).map((e) => ({ ...e[1], name: e[0] }));
+  } else {
+    return null;
+  }
+};
+
+
+export const getDetailsByMonth = async (doc, month, year) => {
+  if (doc) {
+    const monthString = month.toString().length < 2 ? `0${month}` : `${month}`;
+    const yearString = year.toString();
+    const sheet = getSheet(doc);
+    const fetchedRows = await sheet.getRows();
+    const totalsFiltered = fetchedRows.filter((e) => {
+      const dateSplitted = split(e.Date);
+      return (
+        dateSplitted[2] === yearString &&
+        dateSplitted[1] === monthString
+      );
+    });
+
+    const mappedData = totalsFiltered.map(
+      ({ Amount, Date, Detail, Type, Who }) => ({
+        Amount,
+        Date,
+        Detail,
+        Type,
+        Who,
+      })
+    );
+
+    const dataSorted = mappedData.sort(dateSort);
+
+    return dataSorted;
   } else {
     return null;
   }

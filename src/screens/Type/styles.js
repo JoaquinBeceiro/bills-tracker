@@ -22,3 +22,8 @@ export const Title = styled.h2`
   font-weight: normal;
   font-size: 18px;
 `;
+
+
+export const ShowAllContainer = styled.div`
+  margin-top: 10px;
+`;

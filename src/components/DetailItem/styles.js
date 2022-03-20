@@ -32,6 +32,15 @@ export const Amount = styled.div`
 
 export const Date = styled.div`
   display: flex;
+  flex: 1;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 13px;
+`;
+
+export const SubTitle = styled.div`
+  display: flex;
   font-family: Roboto;
   font-style: normal;
   font-weight: 300;

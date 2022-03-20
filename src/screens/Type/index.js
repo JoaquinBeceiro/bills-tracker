@@ -7,17 +7,18 @@ import {
   LoadingComponent,
   BigModalComponent,
   DetailItemComponent,
+  ButtonComponent,
 } from "components";
 import * as S from "./styles";
 import { GlobalContext } from "context";
-import { getByTypesMonth, getMonthYears, getDetailsBuTypeDate } from "services";
+import { getByTypesMonth, getMonthYears, getDetailsByTypeDate, getDetailsByMonth } from "services";
 import Utils from "lib/utils";
 import { useLocation } from "react-router-dom";
 
 const Type = () => {
   const location = useLocation();
 
-  const { nowYear, nowMonth, dateToText } = Utils.Date;
+  const { nowYear, nowMonth, dateToText, monthToText } = Utils.Date;
 
   const locationStateMonth = parseInt(location?.state?.defaultMonth) - 1;
 
@@ -42,8 +43,8 @@ const Type = () => {
   const { doc, loading } = userState;
   const [showDetail, setShowDetail] = useState(false);
   const [detailData, setDetailData] = useState([]);
-  const [detailTypeSelected, setDetailTypeSelected] = useState("");
-  const [detailTypeSelectedCount, setDetailTypeSelectedCount] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalSubtitle, setModalSubtitle] = useState("");
 
   const getStartData = useCallback(
     async (doc) => {
@@ -78,9 +79,9 @@ const Type = () => {
 
   const getDetailData = async (type) => {
     setMainLoading(true);
-    setDetailTypeSelected(type);
+    setModalTitle(type);
     const selectedMonth = parseInt(selectedDate.month) + 1;
-    const data = await getDetailsBuTypeDate(
+    const data = await getDetailsByTypeDate(
       doc,
       selectedMonth,
       selectedDate.year,
@@ -90,7 +91,7 @@ const Type = () => {
     setMainLoading(false);
     setShowDetail(true);
     const subTitle = `${data.length} transactions`;
-    setDetailTypeSelectedCount(subTitle);
+    setModalSubtitle(subTitle);
   };
 
   const total = data.reduce((prev, cur) => prev + cur.value, 0);
@@ -125,9 +126,30 @@ const Type = () => {
   const handleCloseDetail = () => {
     setShowDetail(false);
     setDetailData([]);
-    setDetailTypeSelected("");
-    setDetailTypeSelectedCount("");
+    setModalTitle("");
+    setModalSubtitle("");
   };
+
+  const showAllDetails = async () => {
+    setMainLoading(true);
+
+    const title = `${monthToText(parseInt(selectedDate.month))} ${selectedDate.year}`;
+    setModalTitle(title);
+
+    const selectedMonth = parseInt(selectedDate.month) + 1;
+    const data = await getDetailsByMonth(
+      doc,
+      selectedMonth,
+      selectedDate.year,
+    );
+
+
+    setShowDetail(true);
+    setDetailData(data);
+    const subTitle = `${data.length} transactions`;
+    setModalSubtitle(subTitle);
+    setMainLoading(false);
+  }
 
   return (
     <>
@@ -164,21 +186,25 @@ const Type = () => {
                 action={() => getDetailData(item.name)}
               />
             ))}
+            <S.ShowAllContainer>
+              <ButtonComponent type="text" text="Show all" action={showAllDetails} />
+            </S.ShowAllContainer>
           </div>
         </S.Container>
       </NoHeaderLayout>
       {showDetail && (
         <BigModalComponent
-          title={detailTypeSelected}
-          subTitle={detailTypeSelectedCount}
+          title={modalTitle}
+          subTitle={modalSubtitle}
           handleClose={() => handleCloseDetail()}
         >
-          {detailData.map(({ Amount, Date, Detail }, index) => (
+          {detailData.map(({ Amount, Date, Detail, Type }, index) => (
             <DetailItemComponent
               key={`${index}-${Detail}`}
               amount={Amount}
               date={dateToText(Date)}
               title={Detail}
+              subTitle={Type}
             />
           ))}
         </BigModalComponent>

@@ -1,7 +1,7 @@
 import React from "react";
 import * as S from "./styles";
 
-const DetailItem = ({ title, date, amount }) => {
+const DetailItem = ({ title, date, amount, subTitle }) => {
   return (
     <S.Container>
       <S.Row>
@@ -10,6 +10,7 @@ const DetailItem = ({ title, date, amount }) => {
       </S.Row>
       <S.Row>
         <S.Date>{date}</S.Date>
+        <S.SubTitle>{subTitle}</S.SubTitle>
       </S.Row>
     </S.Container>
   );
