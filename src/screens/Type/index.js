@@ -43,6 +43,7 @@ const Type = () => {
   const [showDetail, setShowDetail] = useState(false);
   const [detailData, setDetailData] = useState([]);
   const [detailTypeSelected, setDetailTypeSelected] = useState("");
+  const [detailTypeSelectedCount, setDetailTypeSelectedCount] = useState("");
 
   const getStartData = useCallback(
     async (doc) => {
@@ -88,6 +89,8 @@ const Type = () => {
     setDetailData(data);
     setMainLoading(false);
     setShowDetail(true);
+    const subTitle = `${data.length} transactions`;
+    setDetailTypeSelectedCount(subTitle);
   };
 
   const total = data.reduce((prev, cur) => prev + cur.value, 0);
@@ -123,6 +126,7 @@ const Type = () => {
     setShowDetail(false);
     setDetailData([]);
     setDetailTypeSelected("");
+    setDetailTypeSelectedCount("");
   };
 
   return (
@@ -166,6 +170,7 @@ const Type = () => {
       {showDetail && (
         <BigModalComponent
           title={detailTypeSelected}
+          subTitle={detailTypeSelectedCount}
           handleClose={() => handleCloseDetail()}
         >
           {detailData.map(({ Amount, Date, Detail }, index) => (
