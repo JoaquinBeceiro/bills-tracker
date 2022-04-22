@@ -1,6 +1,6 @@
 <h1 align="center">Bills Tracker</h1>
 
-### This is a project based on a progressive web app to Track and share expenses with a Google Drive Spreadsheet in a very simple way. Currently working on a new version!
+### This is a project based on a progressive web app to Track and share expenses with a Google Drive Spreadsheet in a very simple way.
 
 <p align="center">
   <img alt="Stars" src="https://img.shields.io/github/stars/JoaquinBeceiro/Bills-Tracker.svg?style=plasticr"/>
