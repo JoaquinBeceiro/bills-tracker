@@ -10,6 +10,7 @@ export const Container = styled.div`
   left: 0px;
   height: 100vh;
   width: 100vw;
+  z-index: 999;
 `;
 
 export const Modal = styled.div`
