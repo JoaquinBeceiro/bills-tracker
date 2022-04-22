@@ -22,8 +22,10 @@ const InputContainer = styled.div`
   }
   &.date {
     color: #333333;
+    z-index: 300;
     input {
       background-color: transparent;
+      z-index: 300;
     }
   }
   &.textarea,
