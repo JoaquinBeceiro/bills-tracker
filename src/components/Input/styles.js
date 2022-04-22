@@ -127,6 +127,7 @@ const SelectComponent = (props) => (
 const DropdownBox = styled(SelectComponent)`
   border: none;
   border-style: unset;
+  z-index: 400;
   & .Select__control {
     border: none;
     border-style: unset;

@@ -54,4 +54,5 @@ const Dropdown = styled(SelectComponent)`
 export const Default = styled(Dropdown)`
   display: flex;
   justify-content: flex-end;
+  z-index: 400;
 `;
