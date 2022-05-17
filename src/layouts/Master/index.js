@@ -4,7 +4,7 @@ import { HeaderComponent, FooterComponent, ModalComponent } from "components";
 import { GlobalContext, DispatchTypes } from "context";
 import { createDoc } from "services";
 import { setUserSession, getUserSession } from "config/localStorage";
-import { checkCredentials, storeSheetData } from "services";
+import { checkCredentials } from "services";
 import { withRouter } from "react-router";
 
 const Master = ({
@@ -25,7 +25,6 @@ const Master = ({
         const { jsonFile, spreadsheetId } = user;
         const newDoc = await createDoc(jsonFile, spreadsheetId);
         setUserSession(user);
-        await storeSheetData(newDoc);
         userDispatch({
           type: DispatchTypes.User.GET_DOC_SUCCESS,
           doc: newDoc,

@@ -10,7 +10,7 @@ const getSheet = (doc) => {
   return doc.sheetsByTitle[sheetTitle];
 };
 
-export const storeSheetData = async (doc) => {
+const storeSheetData = async (doc) => {
   if (doc) {
     const sheet = getSheet(doc);
     const fetchedRows = await sheet.getRows();
@@ -63,6 +63,7 @@ export const createDoc = async (jsonFile, spreadsheetId) => {
         headerValues: sheetHeaders,
       });
     }
+    await storeSheetData(doc);
     return doc;
   } catch (error) {
     throw error;
