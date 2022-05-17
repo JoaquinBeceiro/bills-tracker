@@ -10,7 +10,7 @@ const getSheet = (doc) => {
   return doc.sheetsByTitle[sheetTitle];
 };
 
-export const storeSheetData = async (doc) => {
+const storeSheetData = async (doc) => {
   if (doc) {
     const sheet = getSheet(doc);
     const fetchedRows = await sheet.getRows();
