@@ -1,6 +1,7 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import Utils from "lib/utils";
-import { defaultTypes, sheetHeaders, sheetTitle } from "../config/sheet";
+import { defaultTypes, sheetHeaders, sheetTitle } from "config/sheet";
+import { setSheetData, getSheetData } from "config/localStorage";
 
 const { moneyToNumber, formatMoney } = Utils.Currency;
 const { dateSort, split } = Utils.Date;
@@ -8,6 +9,35 @@ const { dateSort, split } = Utils.Date;
 const getSheet = (doc) => {
   return doc.sheetsByTitle[sheetTitle];
 };
+
+export const storeSheetData = async (doc) => {
+  if (doc) {
+    const sheet = getSheet(doc);
+    const fetchedRows = await sheet.getRows();
+    const mappedData = fetchedRows.map(
+      ({ Amount, Date, Detail, Type, Who }) => ({
+        Amount,
+        Date,
+        Type,
+        Detail,
+        Who,
+      })
+    );
+    setSheetData(mappedData);
+    return mappedData;
+  } else {
+    return null;
+  }
+}
+
+const getLocalSheetData = async () => {
+  const data = getSheetData();
+  if (data) {
+    return data;
+  } else {
+    return await storeSheetData();
+  }
+}
 
 export const checkCredentials = async (jsonFile, spreadsheetId) => {
   try {
@@ -41,8 +71,7 @@ export const createDoc = async (jsonFile, spreadsheetId) => {
 
 export const getTypes = async (doc) => {
   if (doc) {
-    const sheet = getSheet(doc);
-    const fetchedRows = await sheet.getRows();
+    const fetchedRows = await getLocalSheetData();
     const newTypes = fetchedRows.map((e) => e.Type);
     const combinedTypes = Array.from(new Set(newTypes.concat(defaultTypes)));
     return combinedTypes.sort((a, b) => (a.toLowerCase() > b.toLowerCase()) ? 1 : -1);
@@ -54,13 +83,14 @@ export const getTypes = async (doc) => {
 export const addRow = async (doc, date, who, amount, type, detail) => {
   if (doc) {
     const sheet = getSheet(doc);
-    return await sheet.addRow({
+    await sheet.addRow({
       Date: date,
       Who: who,
       Amount: `$${amount}`,
       Type: type,
       Detail: detail,
-    });
+    })
+    return await storeSheetData(doc)
   } else {
     return null;
   }
@@ -68,8 +98,7 @@ export const addRow = async (doc, date, who, amount, type, detail) => {
 
 export const getTotalByMonth = async (doc, month, year) => {
   if (doc) {
-    const sheet = getSheet(doc);
-    const fetchedRows = await sheet.getRows();
+    const fetchedRows = await getLocalSheetData();
     const totalsFiltered = fetchedRows.filter((e) => {
       const dateSplitted = split(e.Date);
       return (
@@ -90,8 +119,7 @@ export const getTotalByMonth = async (doc, month, year) => {
 
 export const getTotalByYear = async (doc, year) => {
   if (doc) {
-    const sheet = getSheet(doc);
-    const fetchedRows = await sheet.getRows();
+    const fetchedRows = await getLocalSheetData();
     const totalsFiltered = fetchedRows.filter((e) => {
       const dateSplitted = split(e.Date);
       return dateSplitted[2] === year.toString();
@@ -111,8 +139,7 @@ export const getByTypesMonth = async (doc, month, year) => {
   if (doc) {
     const monthString = month.toString().length < 2 ? `0${month}` : `${month}`;
     const yearString = year.toString();
-    const sheet = getSheet(doc);
-    const fetchedRows = await sheet.getRows();
+    const fetchedRows = await getLocalSheetData();
     const totalsFiltered = fetchedRows.filter((e) => {
       const dateSplitted = split(e.Date);
       return dateSplitted[2] === yearString && dateSplitted[1] === monthString;
@@ -137,8 +164,7 @@ export const getByTypesMonth = async (doc, month, year) => {
 
 export const getMonthYears = async (doc) => {
   if (doc) {
-    const sheet = getSheet(doc);
-    const fetchedRows = await sheet.getRows();
+    const fetchedRows = await getLocalSheetData();
 
     return fetchedRows
       .map((e) => {
@@ -169,8 +195,7 @@ export const getDetailsByTypeDate = async (doc, month, year, type) => {
   if (doc) {
     const monthString = month.toString().length < 2 ? `0${month}` : `${month}`;
     const yearString = year.toString();
-    const sheet = getSheet(doc);
-    const fetchedRows = await sheet.getRows();
+    const fetchedRows = await getLocalSheetData();
     const totalsFiltered = fetchedRows.filter((e) => {
       const dateSplitted = split(e.Date);
       return (
@@ -199,8 +224,7 @@ export const getDetailsByTypeDate = async (doc, month, year, type) => {
 
 export const getYears = async (doc) => {
   if (doc) {
-    const sheet = getSheet(doc);
-    const fetchedRows = await sheet.getRows();
+    const fetchedRows = await getLocalSheetData();
     const years = fetchedRows
       .map((e) => {
         const dateSplitted = split(e.Date);
@@ -217,8 +241,7 @@ export const getYears = async (doc) => {
 
 export const getAllMonthByYear = async (doc, year) => {
   if (doc) {
-    const sheet = getSheet(doc);
-    const fetchedRows = await sheet.getRows();
+    const fetchedRows = await getLocalSheetData();
     const totalsFiltered = fetchedRows.filter((e) => {
       const dateSplitted = split(e.Date);
       return dateSplitted[2] === year.toString();
@@ -245,8 +268,7 @@ export const getDetailsByMonth = async (doc, month, year) => {
   if (doc) {
     const monthString = month.toString().length < 2 ? `0${month}` : `${month}`;
     const yearString = year.toString();
-    const sheet = getSheet(doc);
-    const fetchedRows = await sheet.getRows();
+    const fetchedRows = await getLocalSheetData();
     const totalsFiltered = fetchedRows.filter((e) => {
       const dateSplitted = split(e.Date);
       return (
