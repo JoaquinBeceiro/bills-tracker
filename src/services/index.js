@@ -63,6 +63,7 @@ export const createDoc = async (jsonFile, spreadsheetId) => {
         headerValues: sheetHeaders,
       });
     }
+    await storeSheetData(doc);
     return doc;
   } catch (error) {
     throw error;

@@ -25,7 +25,6 @@ const Master = ({
         const { jsonFile, spreadsheetId } = user;
         const newDoc = await createDoc(jsonFile, spreadsheetId);
         setUserSession(user);
-        await storeSheetData(newDoc);
         userDispatch({
           type: DispatchTypes.User.GET_DOC_SUCCESS,
           doc: newDoc,
