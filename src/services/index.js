@@ -85,14 +85,19 @@ export const getTypes = async (doc) => {
 export const addRow = async (doc, date, who, amount, type, detail) => {
   if (doc) {
     const sheet = getSheet(doc);
-    await sheet.addRow({
+    const newRow = {
       Date: date,
       Who: who,
       Amount: `$${amount}`,
       Type: type,
       Detail: detail,
-    })
-    return await storeSheetData(doc)
+    };
+    await sheet.addRow(newRow);
+    const newData = await getLocalSheetData();
+    const lastId = newData[newData.length - 1].id;
+    newData.push({ ...newRow, id: lastId + 1 });
+    setSheetData(newData);
+    return newData;
   } else {
     return null;
   }
