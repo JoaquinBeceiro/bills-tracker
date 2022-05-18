@@ -15,12 +15,13 @@ const storeSheetData = async (doc) => {
     const sheet = getSheet(doc);
     const fetchedRows = await sheet.getRows();
     const mappedData = fetchedRows.map(
-      ({ Amount, Date, Detail, Type, Who }) => ({
+      ({ Amount, Date, Detail, Type, Who, _rowNumber }) => ({
         Amount,
         Date,
         Type,
         Detail,
         Who,
+        id: _rowNumber
       })
     );
     setSheetData(mappedData);
