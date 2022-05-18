@@ -11,7 +11,7 @@ import {
 } from "components";
 import * as S from "./styles";
 import { GlobalContext } from "context";
-import { getByTypesMonth, getMonthYears, getDetailsByTypeDate, getDetailsByMonth } from "services";
+import { getByTypesMonth, getMonthYears, getDetailsByTypeDate, getDetailsByMonth, deleteRow } from "services";
 import Utils from "lib/utils";
 import { useLocation } from "react-router-dom";
 
@@ -41,7 +41,7 @@ const Type = () => {
   const context = useContext(GlobalContext);
   const [userState] = context.globalUser;
   const { doc, loading } = userState;
-  const [showDetail, setShowDetail] = useState(false);
+  const [showDetail, setShowDetail] = useState("");
   const [detailData, setDetailData] = useState([]);
   const [modalTitle, setModalTitle] = useState("");
   const [modalSubtitle, setModalSubtitle] = useState("");
@@ -89,7 +89,7 @@ const Type = () => {
     );
     setDetailData(data);
     setMainLoading(false);
-    setShowDetail(true);
+    setShowDetail("single");
     const subTitle = `${data.length} transactions`;
     setModalSubtitle(subTitle);
   };
@@ -124,7 +124,7 @@ const Type = () => {
     );
 
   const handleCloseDetail = () => {
-    setShowDetail(false);
+    setShowDetail("");
     setDetailData([]);
     setModalTitle("");
     setModalSubtitle("");
@@ -142,12 +142,19 @@ const Type = () => {
       selectedMonth,
       selectedDate.year,
     );
-
-
-    setShowDetail(true);
+    setShowDetail("all");
     setDetailData(data);
     const subTitle = `${data.length} transactions`;
     setModalSubtitle(subTitle);
+    setMainLoading(false);
+  }
+
+  const deleteRecord = async (id) => {
+    setMainLoading(true);
+    const deleteResult = await deleteRow(doc, id);
+    console.log("deleteResult", deleteResult);
+    getStartData(doc);
+    showAllDetails();
     setMainLoading(false);
   }
 
@@ -198,13 +205,19 @@ const Type = () => {
           subTitle={modalSubtitle}
           handleClose={() => handleCloseDetail()}
         >
-          {detailData.map(({ Amount, Date, Detail, Type }, index) => (
+          {detailData.map(({ Amount, Date, Detail, Type, Id }, index) => (
             <DetailItemComponent
               key={`${index}-${Detail}`}
               amount={Amount}
               date={dateToText(Date)}
               title={Detail}
               subTitle={Type}
+              deleteAction={
+                showDetail === "all" ?
+                  () => {
+                    deleteRecord(Id)
+                  } : undefined
+              }
             />
           ))}
         </BigModalComponent>

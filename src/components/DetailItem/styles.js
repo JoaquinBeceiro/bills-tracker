@@ -5,7 +5,7 @@ export const Container = styled.div`
   border-bottom: 1px solid #aeaeae;
   margin-bottom: 10px;
   padding: 10px 0;
-  flex-direction: column;
+  flex-direction: row;
 `;
 
 export const Row = styled.div`
@@ -45,4 +45,18 @@ export const SubTitle = styled.div`
   font-style: normal;
   font-weight: 300;
   font-size: 13px;
+`;
+
+export const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
+
+export const ActionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-left: 18px;
 `;
