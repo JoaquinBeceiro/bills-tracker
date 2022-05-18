@@ -301,3 +301,20 @@ export const getDetailsByMonth = async (doc, month, year) => {
     return null;
   }
 };
+
+export const deleteRow = async (doc, id) => {
+
+  if (doc) {
+    const sheet = getSheet(doc);
+    const fetchedRows = await sheet.getRows();
+    const findById = fetchedRows.find(({ _rowNumber }) => _rowNumber === id);
+    if (findById) {
+      findById.delete();
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+
+}
