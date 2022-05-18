@@ -21,7 +21,7 @@ const storeSheetData = async (doc) => {
         Type,
         Detail,
         Who,
-        id: _rowNumber
+        Id: _rowNumber
       })
     );
     setSheetData(mappedData);
@@ -85,14 +85,19 @@ export const getTypes = async (doc) => {
 export const addRow = async (doc, date, who, amount, type, detail) => {
   if (doc) {
     const sheet = getSheet(doc);
-    await sheet.addRow({
+    const newRow = {
       Date: date,
       Who: who,
       Amount: `$${amount}`,
       Type: type,
       Detail: detail,
-    })
-    return await storeSheetData(doc)
+    };
+    await sheet.addRow(newRow);
+    const newData = await getLocalSheetData();
+    const lastId = newData[newData.length - 1].id;
+    newData.push({ ...newRow, Id: lastId + 1 });
+    setSheetData(newData);
+    return newData;
   } else {
     return null;
   }
@@ -280,12 +285,13 @@ export const getDetailsByMonth = async (doc, month, year) => {
     });
 
     const mappedData = totalsFiltered.map(
-      ({ Amount, Date, Detail, Type, Who }) => ({
+      ({ Amount, Date, Detail, Type, Who, Id }) => ({
         Amount,
         Date,
         Detail,
         Type,
         Who,
+        Id
       })
     );
 
@@ -296,3 +302,27 @@ export const getDetailsByMonth = async (doc, month, year) => {
     return null;
   }
 };
+
+export const deleteRow = async (doc, id) => {
+
+  if (doc) {
+    const sheet = getSheet(doc);
+    const fetchedRows = await sheet.getRows();
+    const findById = fetchedRows.find(({ _rowNumber }) => _rowNumber === id);
+    if (findById) {
+      try {
+        await findById.delete();
+        const newData = await storeSheetData(doc);
+        return newData;
+      } catch (error) {
+        return false;
+      }
+
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+
+}

@@ -4,7 +4,7 @@ import * as S from "./styles";
 const BigModal = ({ title, subTitle, children, handleClose }) => {
   return (
     <S.Container onClick={handleClose}>
-      <S.Modal>
+      <S.Modal onClick={e => e.preventDefault()} >
         {
           subTitle ?
             <S.TitleWithSubtitleContainer>
