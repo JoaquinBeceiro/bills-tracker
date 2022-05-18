@@ -10,7 +10,7 @@ import {
   ButtonComponent,
 } from "components";
 import * as S from "./styles";
-import { GlobalContext } from "context";
+import { GlobalContext, DispatchTypes } from "context";
 import { getByTypesMonth, getMonthYears, getDetailsByTypeDate, getDetailsByMonth, deleteRow } from "services";
 import Utils from "lib/utils";
 import { useLocation } from "react-router-dom";
@@ -40,6 +40,7 @@ const Type = () => {
   const [data, setData] = useState([]);
   const context = useContext(GlobalContext);
   const [userState] = context.globalUser;
+  const [, modalDispatch] = context.globalModal;
   const { doc, loading } = userState;
   const [showDetail, setShowDetail] = useState("");
   const [detailData, setDetailData] = useState([]);
@@ -150,12 +151,34 @@ const Type = () => {
   }
 
   const deleteRecord = async (id) => {
-    setMainLoading(true);
-    const deleteResult = await deleteRow(doc, id);
-    console.log("deleteResult", deleteResult);
-    getStartData(doc);
-    showAllDetails();
-    setMainLoading(false);
+    modalDispatch({
+      type: DispatchTypes.Modal.MODAL_SHOW,
+      title: "Confirmation",
+      content: "Do you really want to delete this record?",
+      actions: [
+        {
+          type: "secondary",
+          text: "Delete",
+          action: async () => {
+            modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
+            setMainLoading(true);
+            await deleteRow(doc, id);
+            getStartData(doc);
+            showAllDetails();
+            setMainLoading(false);
+          },
+        },
+        {
+          type: "text",
+          text: "Cancel",
+          action: () => {
+            modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
+
+          },
+        },
+      ],
+    });
+
   }
 
   return (
