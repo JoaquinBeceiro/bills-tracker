@@ -150,7 +150,7 @@ const Type = () => {
     setMainLoading(false);
   }
 
-  const deleteRecord = async (id) => {
+  const deleteRecord = async (id, type) => {
     modalDispatch({
       type: DispatchTypes.Modal.MODAL_SHOW,
       title: "Confirmation",
@@ -164,7 +164,11 @@ const Type = () => {
             setMainLoading(true);
             await deleteRow(doc, id);
             getStartData(doc);
-            showAllDetails();
+            if(showDetail === 'all'){
+              showAllDetails();
+            } else {
+              getDetailData(type);
+            }
             setMainLoading(false);
           },
         },
@@ -234,13 +238,8 @@ const Type = () => {
               amount={Amount}
               date={dateToText(Date)}
               title={Detail}
-              subTitle={Type}
-              deleteAction={
-                showDetail === "all" ?
-                  () => {
-                    deleteRecord(Id)
-                  } : undefined
-              }
+              subTitle={showDetail === 'all' && Type}
+              deleteAction={() => deleteRecord(Id, Type)}
             />
           ))}
         </BigModalComponent>
