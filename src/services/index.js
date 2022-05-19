@@ -94,7 +94,7 @@ export const addRow = async (doc, date, who, amount, type, detail) => {
     };
     await sheet.addRow(newRow);
     const newData = await getLocalSheetData();
-    const lastId = newData[newData.length - 1].id;
+    const lastId = newData[newData.length - 1].Id;
     newData.push({ ...newRow, Id: lastId + 1 });
     setSheetData(newData);
     return newData;
@@ -213,11 +213,13 @@ export const getDetailsByTypeDate = async (doc, month, year, type) => {
     });
 
     const mappedData = totalsFiltered.map(
-      ({ Amount, Date, Detail, Type, Who }) => ({
+      ({ Amount, Date, Detail, Type, Who, Id }) => ({
         Amount,
         Date,
         Detail,
         Who,
+        Id,
+        Type,
       })
     );
 
