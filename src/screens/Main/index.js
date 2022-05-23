@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useCallback} from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { GlobalContext, DispatchTypes } from "context";
 import {
   ArrowIndicatorIcon,
@@ -44,30 +44,37 @@ const Main = () => {
   const [, modalDispatch] = context.globalModal;
   const { user, doc, loading } = userState;
 
+
   const getStartData = useCallback(async (doc) => {
     setMainLoading(true);
+    try {
 
-    const types = await getTypes(doc);
-    const pastMonthYearValue = pastMonthYear();
 
-    const totalMonthValue = await getTotalByMonth(doc, nowMonth(), nowYear());
-    const totalPastMonthValue = await getTotalByMonth(
-      doc,
-      pastMonthYearValue.month,
-      pastMonthYearValue.year
-    );
+      const types = await getTypes(doc);
+      const pastMonthYearValue = pastMonthYear();
 
-    const typesFormatted = types.map((type) => ({ value: type, label: type }));
+      const totalMonthValue = await getTotalByMonth(doc, nowMonth(), nowYear());
+      const totalPastMonthValue = await getTotalByMonth(
+        doc,
+        pastMonthYearValue.month,
+        pastMonthYearValue.year
+      );
 
-    setBillsTypes(typesFormatted);
-    setTotalMonth(totalMonthValue);
-    setPastMonth(totalPastMonthValue);
+      const typesFormatted = types.map((type) => ({ value: type, label: type }));
 
-    setGratherThanPastMonth(
-      moneyToNumber(totalMonthValue) > moneyToNumber(totalPastMonthValue)
-    );
+      setBillsTypes(typesFormatted);
+      setTotalMonth(totalMonthValue);
+      setPastMonth(totalPastMonthValue);
 
-    setMainLoading(false);
+      setGratherThanPastMonth(
+        moneyToNumber(totalMonthValue) > moneyToNumber(totalPastMonthValue)
+      );
+
+      setMainLoading(false);
+    } catch (e) {
+      setMainLoading(false);
+
+    }
   }, [moneyToNumber, nowMonth, nowYear, pastMonthYear]);
 
   useEffect(() => {

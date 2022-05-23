@@ -7,7 +7,12 @@ import { checkCredentials } from "services";
 import * as S from "./styles";
 import Utils from "lib/utils";
 
+import GoogleLogin from 'react-google-login';
+import { GoogleSpreadsheet } from "google-spreadsheet";
+
+
 const Onboarding = () => {
+
   const history = useHistory();
 
   const context = useContext(GlobalContext);
@@ -17,7 +22,9 @@ const Onboarding = () => {
   const [values, setValues] = useState({
     name: "",
     spreadsheetId: "",
-    jsonFile: "",
+    access_token: "",
+    expires_at: "",
+    refresh_token: "",
   });
 
   const alertModal = useCallback(
@@ -47,7 +54,7 @@ const Onboarding = () => {
       const checkUser = async (jsonFile, spreadsheetId) => {
         const valid = await checkCredentials(jsonFile, spreadsheetId);
         if (valid) {
-          history.push("/home");
+          // history.push("/home");
         } else {
           alertModal(
             "Invalid credentials",
@@ -98,6 +105,84 @@ const Onboarding = () => {
     }
   };
 
+  const clientId = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID;
+
+  const responseGoogle = (response) => {
+    userDispatch({ type: DispatchTypes.User.SET_USER_START });
+
+
+    if (response.tokenObj) {
+      const { access_token, expires_at } = response.tokenObj;
+      const newCredentials = { ...values, access_token, expires_at };
+
+      setValues(newCredentials);
+    }
+
+    if (response.code) {
+      const { code } = response;
+      const newCredentials = { ...values, refresh_token: code };
+
+      setValues(newCredentials);
+    }
+
+  }
+
+  useEffect(
+    () => {
+
+      const { access_token, expires_at, refresh_token } = values;
+
+      if (access_token && expires_at && refresh_token) {
+        credentiaslCheck();
+      }
+
+
+    },
+    [values]
+  )
+
+  const credentiaslCheck = async () => {
+
+    const { name, access_token, refresh_token, expires_at, spreadsheetId } = values
+
+    try {
+
+      const valid = await checkCredentials(access_token, refresh_token, expires_at, spreadsheetId);
+      if (valid) {
+        const newUserContext = {
+          spreadsheetId: spreadsheetId,
+          name: name,
+          access_token,
+          refresh_token,
+          expires_at
+        };
+
+        userDispatch({
+          type: DispatchTypes.User.SET_USER_SUCCESS,
+          user: newUserContext,
+        });
+        history.push("/home");
+
+      } else {
+        alertModal(
+          "Invalid credentials",
+          "Please check your credentials and try again later."
+        );
+      }
+
+    } catch (e) {
+      alertModal(
+        "Invalid credentials",
+        "Please check your credentials and try again later."
+      );
+    }
+
+  }
+
+  const buttonDisabled =
+    values.name === "" ||
+    values.spreadsheetId === "";
+
   return (
     <NoHeaderLayout>
       <S.Content>
@@ -118,24 +203,29 @@ const Onboarding = () => {
             value={values.spreadsheetId || ""}
             onChange={handleChange("spreadsheetId")}
           />
-          <InputComponent
-            name="json"
-            title="JSON"
-            placeholder="JSON File"
-            type="textarea"
-            value={values.jsonFile || ""}
-            onChange={handleChange("jsonFile")}
-            required
+          <GoogleLogin
+            clientId={clientId}
+            buttonText="Login"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            cookiePolicy={'single_host_origin'}
+            isSignedIn={true}
+            uxMode="redirect"
+            accessType="offline"
+            responseType="code"
+            scope="profile email https://www.googleapis.com/auth/spreadsheets"
+            disabled={buttonDisabled}
           />
-          <ButtonComponent text="Start" action={handleStart} />
+          {/* <ButtonComponent text="Start" action={handleStart} /> */}
         </div>
         <div>
-          <p className="text-center mb-0 mt-4">Need help?</p>
-          <ButtonComponent text="Setup guide" type="text" />
+          {/* <p className="text-center mb-0 mt-4">Need help?</p> */}
+          {/* <ButtonComponent text="Setup guide" type="text" /> */}
         </div>
       </S.Content>
     </NoHeaderLayout>
   );
+
 };
 
 export default Onboarding;

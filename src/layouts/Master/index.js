@@ -22,8 +22,8 @@ const Master = ({
   const setDoc = useCallback(
     async (user) => {
       try {
-        const { jsonFile, spreadsheetId } = user;
-        const newDoc = await createDoc(jsonFile, spreadsheetId);
+        const { access_token, refresh_token, expires_at, spreadsheetId } = user;
+        const newDoc = await createDoc(access_token, refresh_token, expires_at, spreadsheetId);
         setUserSession(user);
         userDispatch({
           type: DispatchTypes.User.GET_DOC_SUCCESS,
@@ -41,8 +41,8 @@ const Master = ({
 
   const checkUser = useCallback(
     async (user) => {
-      const { spreadsheetId, jsonFile } = user;
-      const valid = await checkCredentials(jsonFile, spreadsheetId);
+      const { spreadsheetId, access_token, refresh_token, expires_at } = user;
+      const valid = await checkCredentials(access_token, refresh_token, expires_at, spreadsheetId);
       if (valid) {
         userDispatch({
           type: DispatchTypes.User.GET_DOC_START,

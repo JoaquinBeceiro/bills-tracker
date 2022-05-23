@@ -2,6 +2,7 @@ import { GoogleSpreadsheet } from "google-spreadsheet";
 import Utils from "lib/utils";
 import { defaultTypes, sheetHeaders, sheetTitle } from "config/sheet";
 import { setSheetData, getSheetData } from "config/localStorage";
+const { OAuth2Client } = require('google-auth-library');
 
 const { moneyToNumber, formatMoney } = Utils.Currency;
 const { dateSort, split } = Utils.Date;
@@ -40,21 +41,42 @@ const getLocalSheetData = async () => {
   }
 }
 
-export const checkCredentials = async (jsonFile, spreadsheetId) => {
+export const checkCredentials = async (access_token, refresh_token, expires_at, spreadsheetId) => {
   try {
+
+    const oauthClient = new OAuth2Client({
+      clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET
+    });
+
+    oauthClient.credentials.access_token = access_token;
+    oauthClient.credentials.refresh_token = refresh_token;
+    oauthClient.credentials.expiry_date = expires_at;
+
     const doc = new GoogleSpreadsheet(spreadsheetId);
-    await doc.useServiceAccountAuth(jsonFile);
+    doc.useOAuth2Client(oauthClient);
+
     await doc.loadInfo();
+
     return true;
   } catch (error) {
     return false;
   }
 };
 
-export const createDoc = async (jsonFile, spreadsheetId) => {
+export const createDoc = async (access_token, refresh_token, expires_at, spreadsheetId) => {
   try {
+    const oauthClient = new OAuth2Client({
+      clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET
+    });
+
+    oauthClient.credentials.access_token = access_token;
+    oauthClient.credentials.refresh_token = refresh_token;
+    oauthClient.credentials.expiry_date = expires_at;
+
     const doc = new GoogleSpreadsheet(spreadsheetId);
-    await doc.useServiceAccountAuth(jsonFile);
+    doc.useOAuth2Client(oauthClient);
     await doc.loadInfo();
 
     const newSheet = getSheet(doc);
