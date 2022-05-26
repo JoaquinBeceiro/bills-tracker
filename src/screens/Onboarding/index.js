@@ -98,8 +98,6 @@ const Onboarding = () => {
 
   const responseGoogle = (response) => {
 
-    console.log("RESPONSE", response);
-
     if (response.tokenObj) {
       const { access_token, expires_at } = response.tokenObj;
       const newCredentials = { ...values, access_token, expires_at };
@@ -112,6 +110,14 @@ const Onboarding = () => {
       const newCredentials = { ...values, refresh_token: code };
       setValues(newCredentials);
       credentiaslCheck(newCredentials);
+    }
+
+    if (response.error) {
+      const { error, details } = response;
+      alertModal(
+        "Error",
+        `Error code: ${error}. ${details && `Error message: ${details}`}`
+      );
     }
 
   }
