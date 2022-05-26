@@ -68,7 +68,7 @@ const InputContainer = styled.div`
   &.money:focus-within,
   &.dropdown:focus-within {
     border-bottom: 2px solid #38b44e;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 `;
 
@@ -179,12 +179,14 @@ const BigTextBox = styled.textarea`
   padding: 10px;
   font-weight: normal;
   font-size: 13px;
+  margin-bottom: 20px;
   ::placeholder {
     color: #7e7e7e;
   }
   &:focus {
     outline: none;
     border-bottom: 2px solid #38b44e;
+    margin-bottom: 15px;
     ::placeholder {
       color: #000;
     }

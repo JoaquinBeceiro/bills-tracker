@@ -5,11 +5,8 @@ import { InputComponent, ButtonComponent } from "components";
 import { useHistory } from "react-router-dom";
 import { checkCredentials } from "services";
 import * as S from "./styles";
-import Utils from "lib/utils";
-
 import GoogleLogin from 'react-google-login';
-import { GoogleSpreadsheet } from "google-spreadsheet";
-
+import { sheetScope } from "config/sheet";
 
 const Onboarding = () => {
 
@@ -69,40 +66,6 @@ const Onboarding = () => {
 
   const handleChange = (prop) => (name, value) => {
     setValues({ ...values, [prop]: value });
-  };
-
-  const handleStart = () => {
-    if (
-      values.name === "" ||
-      values.spreadsheetId === "" ||
-      values.jsonFile === ""
-    ) {
-      alertModal(
-        "All fields are required",
-        "You need to fill all fields to continue."
-      );
-    } else {
-      const isJson = Utils.Common.isJsonString(values.jsonFile);
-
-      if (!isJson) {
-        alertModal(
-          "Invalid JSON format",
-          "JSON field must be a valid JSON file."
-        );
-      } else {
-        userDispatch({ type: DispatchTypes.User.SET_USER_START });
-        const newUserContext = {
-          spreadsheetId: values.spreadsheetId,
-          name: values.name,
-          jsonFile: values.jsonFile && JSON.parse(values.jsonFile),
-        };
-        userDispatch({
-          type: DispatchTypes.User.SET_USER_SUCCESS,
-          user: newUserContext,
-        });
-        history.push("/home");
-      }
-    }
   };
 
   const clientId = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID;
@@ -213,14 +176,17 @@ const Onboarding = () => {
             uxMode="redirect"
             accessType="offline"
             responseType="code"
-            scope="profile email https://www.googleapis.com/auth/spreadsheets"
+            scope={sheetScope}
             disabled={buttonDisabled}
+            className="googleButton"
           />
-          {/* <ButtonComponent text="Start" action={handleStart} /> */}
+          <S.GoogleDisclaimer>
+            Google will ask permissions to share your name, email address, languaje preference and profile picture with BillsTracker. We don’t save or track any information about you.
+          </S.GoogleDisclaimer>
         </div>
         <div>
-          {/* <p className="text-center mb-0 mt-4">Need help?</p> */}
-          {/* <ButtonComponent text="Setup guide" type="text" /> */}
+          <p className="text-center mb-0 mt-4">Need help?</p>
+          <ButtonComponent text="Setup guide" type="text" />
         </div>
       </S.Content>
     </NoHeaderLayout>
