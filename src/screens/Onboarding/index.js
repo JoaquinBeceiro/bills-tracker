@@ -97,6 +97,7 @@ const Onboarding = () => {
   };
 
   const responseGoogle = (response) => {
+    console.log("::RESPONSE::", response)
 
     if (response.tokenObj) {
       const { access_token, expires_at } = response.tokenObj;
@@ -113,10 +114,10 @@ const Onboarding = () => {
     }
 
     if (response.error) {
-      const { error, details } = response;
+      const { error } = response;
       alertModal(
         "Error",
-        `Error code: ${error}. ${details && `Error message: ${details}`}`
+        `Error code: ${error}.`
       );
     }
 
