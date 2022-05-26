@@ -31,8 +31,13 @@ const UserReducer = (currentState, action) => {
       currentState.loading = false;
       return { ...currentState };
     case DispatchTypes.Global.RESET:
-      currentState = { ...userInitialState };
-      return { ...userInitialState };
+      currentState = {
+        error: null,
+        user: null,
+        loading: false,
+        doc: null,
+      };
+      return { ...currentState };
     default:
       return currentState;
   }
