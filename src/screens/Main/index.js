@@ -49,7 +49,6 @@ const Main = () => {
     setMainLoading(true);
     try {
 
-
       const types = await getTypes(doc);
       const pastMonthYearValue = pastMonthYear();
 

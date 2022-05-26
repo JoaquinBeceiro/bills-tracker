@@ -41,20 +41,20 @@ const getLocalSheetData = async () => {
   }
 }
 
-export const checkCredentials = async (access_token, refresh_token, expires_at, spreadsheetId) => {
+export const checkCredentials = async (access_token, expires_at, refresh_token, spreadsheetId) => {
   try {
 
-    const oauthClient = new OAuth2Client({
+    const oAuth2Client = new OAuth2Client({
       clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
       clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET
     });
-
-    oauthClient.credentials.access_token = access_token;
-    oauthClient.credentials.refresh_token = refresh_token;
-    oauthClient.credentials.expiry_date = expires_at;
+    
+    oAuth2Client.credentials.access_token = access_token;
+    oAuth2Client.credentials.refresh_token = refresh_token;
+    oAuth2Client.credentials.expiry_date = expires_at;
 
     const doc = new GoogleSpreadsheet(spreadsheetId);
-    doc.useOAuth2Client(oauthClient);
+    doc.useOAuth2Client(oAuth2Client);
 
     await doc.loadInfo();
 

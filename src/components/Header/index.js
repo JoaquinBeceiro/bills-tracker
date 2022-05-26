@@ -4,17 +4,48 @@ import { SignOutIcon } from "../";
 import { deleteUserSession } from "config/localStorage";
 import { useHistory } from "react-router-dom";
 import { GlobalContext, DispatchTypes } from "context";
+import { useGoogleLogout } from 'react-google-login';
 
 const Header = ({
   title = "BillsTracker",
   subTitle = "Home",
   allowSignOut = true,
 }) => {
+
+  const clientId = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID;
+
   const context = useContext(GlobalContext);
   const [, userDispatch] = context.globalUser;
   const [, modalDispatch] = context.globalModal;
 
   const history = useHistory();
+
+  const logOutSuccess = () => {
+    deleteUserSession();
+    userDispatch({
+      type: DispatchTypes.Global.RESET,
+    });
+    history.push("/");
+  }
+
+  const { signOut } = useGoogleLogout({
+    clientId,
+    onLogoutSuccess: logOutSuccess
+    // jsSrc,
+    // onFailure,
+    // cookiePolicy,
+    // loginHint,
+    // hostedDomain,
+    // fetchBasicProfile,
+    // discoveryDocs,
+    // uxMode,
+    // redirectUri,
+    // scope,
+    // accessType,
+  })
+
+
+
 
   const [colorChange, setColorchange] = useState(false);
 
@@ -24,7 +55,7 @@ const Header = ({
 
   window.addEventListener("scroll", changeNavbarColor);
 
-  const signOut = () => {
+  const handleSignOut = () => {
     modalDispatch({
       type: DispatchTypes.Modal.MODAL_SHOW,
       title: "Are you sure?",
@@ -42,11 +73,7 @@ const Header = ({
           text: "Sign Out",
           action: () => {
             modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
-            deleteUserSession();
-            userDispatch({
-              type: DispatchTypes.Global.RESET,
-            });
-            history.push("/");
+            signOut();
           },
         },
       ],
@@ -55,13 +82,16 @@ const Header = ({
 
   return (
     <Main colorChange={colorChange}>
-      {/* <ActionContainer></ActionContainer> */}
+      {
+        allowSignOut &&
+        <ActionContainer></ActionContainer>
+      }
       <TitleContainer>
         <h1>{title}</h1>
         <h2>{subTitle}</h2>
       </TitleContainer>
       {allowSignOut && (
-        <ActionContainer onClick={() => signOut()}>
+        <ActionContainer onClick={() => handleSignOut()}>
           <SignOutIcon />
         </ActionContainer>
       )}
