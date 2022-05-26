@@ -6,3 +6,13 @@ export const isJsonString = (str) => {
   }
   return true;
 };
+
+export const getSpreadsheetId = url => {
+  if( url.slice(0,4) === "http" ){
+    const matches = /\/([\w-_]{18,})\/(.*?gid=(\d+))?/.exec(url);
+    return matches[1];
+  } else {
+    return url;
+  }
+
+}

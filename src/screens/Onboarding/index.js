@@ -9,6 +9,7 @@ import GoogleLogin from 'react-google-login';
 import { sheetScope } from "config/sheet";
 import { getUserSession } from "config/localStorage";
 import { getAuthErrorMessage } from "config/errors";
+import Utils from "lib/utils";
 
 const Onboarding = () => {
 
@@ -52,15 +53,18 @@ const Onboarding = () => {
   const credentiaslCheck = useCallback(async (newValues) => {
 
     const { name, access_token, refresh_token, expires_at, spreadsheetId } = newValues;
+
     if (access_token && spreadsheetId) {
+      const normalizedId = Utils.Common.getSpreadsheetId(spreadsheetId);
+
 
       userDispatch({ type: DispatchTypes.User.SET_USER_START });
 
       try {
-        const valid = await checkCredentials(access_token, expires_at, refresh_token, spreadsheetId);
+        const valid = await checkCredentials(access_token, expires_at, refresh_token, normalizedId);
         if (valid) {
           const newUserContext = {
-            spreadsheetId: spreadsheetId,
+            spreadsheetId: normalizedId,
             name: name,
             access_token,
             expires_at
@@ -116,7 +120,7 @@ const Onboarding = () => {
 
     if (response.error) {
       const { error } = response;
-      const errorMessage = getAuthErrorMessage(error); 
+      const errorMessage = getAuthErrorMessage(error);
       alertModal(
         "Error",
         errorMessage
@@ -143,8 +147,8 @@ const Onboarding = () => {
           />
           <InputComponent
             name="sId"
-            title="Spreadsheet ID"
-            placeholder="Spreadheet ID"
+            title="Spreadsheet ID or URL"
+            placeholder="Spreadheet ID or URL"
             type="bigtext"
             value={values.spreadsheetId || ""}
             onChange={handleChange("spreadsheetId")}
