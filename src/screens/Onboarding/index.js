@@ -8,6 +8,7 @@ import * as S from "./styles";
 import GoogleLogin from 'react-google-login';
 import { sheetScope } from "config/sheet";
 import { getUserSession } from "config/localStorage";
+import { getAuthErrorMessage } from "config/errors";
 
 const Onboarding = () => {
 
@@ -115,9 +116,10 @@ const Onboarding = () => {
 
     if (response.error) {
       const { error } = response;
+      const errorMessage = getAuthErrorMessage(error); 
       alertModal(
         "Error",
-        `Error code: ${error}.`
+        errorMessage
       );
     }
 
