@@ -1,11 +1,13 @@
 import { DispatchTypes } from "../";
 
-export const userInitialState = {
+const internalUserInitialState = {
   error: null,
   user: null,
   loading: false,
   doc: null,
 };
+
+export const userInitialState = { ...internalUserInitialState };
 
 const UserReducer = (currentState, action) => {
   switch (action.type) {

@@ -102,7 +102,6 @@ const Onboarding = () => {
   };
 
   const responseGoogle = (response) => {
-    console.log("::RESPONSE::", response)
 
     if (response.tokenObj) {
       const { access_token, expires_at } = response.tokenObj;
