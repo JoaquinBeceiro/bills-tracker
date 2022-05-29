@@ -40,7 +40,7 @@ const Splash = (props) => {
   const checkUser = useCallback(
     async (user) => {
       const { access_token, expires_at, refresh_token, spreadsheetId } = user;
-      const valid = await checkCredentials(access_token, expires_at, refresh_token, spreadsheetId);
+      const valid = await checkCredentials({ access_token, expires_at, refresh_token, spreadsheetId });
       if (valid) {
         userDispatch({
           type: DispatchTypes.User.GET_DOC_START,

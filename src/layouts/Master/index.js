@@ -42,7 +42,7 @@ const Master = ({
   const checkUser = useCallback(
     async (user) => {
       const { spreadsheetId, access_token, refresh_token, expires_at } = user;
-      const valid = await checkCredentials(access_token, refresh_token, expires_at, spreadsheetId);
+      const valid = await checkCredentials({access_token, refresh_token, expires_at, spreadsheetId});
       if (valid) {
         userDispatch({
           type: DispatchTypes.User.GET_DOC_START,
