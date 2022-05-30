@@ -186,10 +186,10 @@ const Onboarding = () => {
             cookiePolicy={'single_host_origin'}
             uxMode="popup"
             accessType="offline"
-            // responseType="code"
             scope={sheetScope}
             disabled={buttonDisabled}
             className="googleButton"
+            isSignedIn={true}
           />
           <S.GoogleDisclaimer>
             Google will ask permissions to share your name, email address, languaje preference and profile picture with BillsTracker. We don’t save or track any information about you.
