@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback } from "react";
+import React, { useContext, useState, useCallback, useEffect } from "react";
 import { GlobalContext, DispatchTypes } from "context";
 import { NoHeaderLayout } from "layouts";
 import { InputComponent, ButtonComponent } from "components";
@@ -54,20 +54,21 @@ const Onboarding = () => {
 
     const { name, access_token, refresh_token, expires_at, spreadsheetId } = newValues;
 
-    if (access_token && spreadsheetId) {
+    if (spreadsheetId) {
       const normalizedId = Utils.Common.getSpreadsheetId(spreadsheetId);
 
 
       userDispatch({ type: DispatchTypes.User.SET_USER_START });
 
       try {
-        const valid = await checkCredentials(access_token, expires_at, refresh_token, normalizedId);
+        const valid = await checkCredentials({ access_token, expires_at, refresh_token, spreadsheetId: normalizedId });
         if (valid) {
           const newUserContext = {
             spreadsheetId: normalizedId,
             name: name,
             access_token,
-            expires_at
+            expires_at,
+            refresh_token
           };
 
           userDispatch({
@@ -101,11 +102,11 @@ const Onboarding = () => {
     setValues({ ...values, [prop]: value });
   };
 
-  const responseGoogle = (response) => {
+  const responseGoogle = async (response) => {
 
     if (response.tokenObj) {
-      const { access_token, expires_at } = response.tokenObj;
-      const newCredentials = { ...values, access_token, expires_at };
+      const { access_token, expires_at, id_token } = response.tokenObj;
+      const newCredentials = { ...values, access_token, expires_at, refresh_token: id_token };
       setValues(newCredentials);
       credentiaslCheck(newCredentials);
     }
@@ -127,6 +128,31 @@ const Onboarding = () => {
     }
 
   }
+
+  const checkCredentialsOnLoad = useCallback(async (user) => {
+
+    const { access_token, refresh_token, expires_at, spreadsheetId } = user;
+
+    if (spreadsheetId) {
+      const normalizedId = Utils.Common.getSpreadsheetId(spreadsheetId);
+
+      try {
+        const valid = await checkCredentials({ access_token, expires_at, refresh_token, spreadsheetId: normalizedId });
+        if (valid) {
+          history.push("/home");
+        }
+
+      } catch (e) {
+      }
+
+    }
+  }, [history])
+
+  useEffect(() => {
+    if (userFromStorage) {
+      checkCredentialsOnLoad(userFromStorage)
+    }
+  }, [checkCredentialsOnLoad, userFromStorage])
 
   const buttonDisabled =
     values.name === "" ||
@@ -163,6 +189,7 @@ const Onboarding = () => {
             scope={sheetScope}
             disabled={buttonDisabled}
             className="googleButton"
+            isSignedIn={true}
           />
           <S.GoogleDisclaimer>
             Google will ask permissions to share your name, email address, languaje preference and profile picture with BillsTracker. We don’t save or track any information about you.
