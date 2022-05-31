@@ -15,6 +15,7 @@
 - [Screenshots](#Screenshots)
 - [Architecture](#Architecture)
 - [Onboarding](#Onboarding)
+- [Information](#Information)
 - [Example](#Example)
 - [Next steps](#Next-steps)
 - [Author](#Author)
@@ -37,6 +38,7 @@
   <img src="public/img/screens/home_success.png" width="200" height="355" />
   <img src="public/img/screens/analytics.png" width="200" height="355" /> 
   <img src="public/img/screens/types.png" width="200" height="355" />
+  <img src="public/img/screens/types_details.png" width="200" height="355" />
 </p>
 
 ## Architecture
@@ -45,43 +47,33 @@
 
 ## Onboarding
 
-### 1. Create a spreadsheet and share it
+### 1. Create a spreadsheet
 
-Share your spreadsheet with link sharing: _Anyone with th link can edit_.
-![Image spreadsheet](public/img/spreadsheetSS.png)
+- Create a new Google Spreadsheet or copy from [here](https://docs.google.com/spreadsheets/d/1zR8NCRoiVZszVN1FlqUdSk9r9jfn_h_eR3gYCgJuvqY/copy).
+- Copy the spreadsheet ID or URL, you will need it later.
+- The ID is on the URL of the spreadsheet.
+https://docs.google.com/spreadsheets/d/1qffzsCf2siRv-loAAMLeGzsSsmwcT3odSfmXBASO0fg/edit#gid=0. You can also use the full URL.
 
-### 2. Copy spreadsheet ID
 
-For example, on `https://docs.google.com/spreadsheets/d/1qffzsCf2siRv-loAAMLeGzsSsmwcT3odSfmXBASO0fg/edit#gid=0` the ID is `1qffzsCf2siRv-loAAMLeGzsSsmwcT3odSfmXBASO0fg`.
+### 2. Onboarding process
+#### Insert data into onboarding fields.
 
-### 3. Generate JSON file
+- Insert you name in the "NAME" field
+- Insert the spreadsheet ID or URL
+- Click "Login" and magic!
 
-#### Set up project and enable sheets API
+## Information
 
-1. Go to the [Google Developers Console](https://console.developers.google.com/)
-2. Select your project or create a new one (and then select it)
-   <br>
-   ![](https://i.imgur.com/2L3jidY.png)![](https://i.imgur.com/YEBjmMp.png)
-3. Enable the Sheets API for your project
-4. In the sidebar on the left, select APIs & Services > Library <br>
-   ![](https://i.imgur.com/zdezoMD.png)
-5. Search for "sheets"
-6. Click on "Google Sheets API"
-7. click the blue "Enable" button
+**You can use the app with shared data if 2 or more users enter the same SpreadsheetID/URL using different names.**
 
-#### Create a service account for your project
+BillsTracker don’t save or track any information about you.
+All the data entered in the application belongs only and solely to the user, BillsTracker does not store any type of information since we do not have a database to do so.
+The code of the app is public and open source, we don’t have any back-end, it’s just front-end.
 
-1. In the sidebar on the left, select APIs & Services > Credentials
-2. Click blue "+ CREATE CREDENITALS" and select "Service account" option <br>
-   ![CREATE CREDENITALS button](https://i.imgur.com/z2fipYp.png)
-3. Enter name, description, click "CREATE"
-4. You can skip permissions, click "CONTINUE"
-5. Click "DONE"
-6. Click the name of your credential
-7. Go to keys
-8. Select Add key > Create new key <br>
-   ![Create new key button](https://i.imgur.com/XDXuK5D.png)
-9. Click "DONE"
+
+
+If you want to collaborate or support the project in any way, feel free to do so through the GitHub profile
+
 
 ## Example
 
