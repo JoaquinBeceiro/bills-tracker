@@ -1,7 +1,7 @@
 import React, { useContext, useState, useCallback, useEffect } from "react";
 import { GlobalContext, DispatchTypes } from "context";
 import { NoHeaderLayout } from "layouts";
-import { InputComponent, ButtonComponent } from "components";
+import { InputComponent, ButtonComponent, LoadingComponent } from "components";
 import { useHistory } from "react-router-dom";
 import { checkCredentials } from "services";
 import * as S from "./styles";
@@ -22,6 +22,8 @@ const Onboarding = () => {
   const [, modalDispatch] = context.globalModal;
 
   const userFromStorage = getUserSession();
+
+  const [customLoading, setCustomLoading] = useState(false);
 
   const [values, setValues] = useState({
     name: userFromStorage?.name || "",
@@ -104,21 +106,26 @@ const Onboarding = () => {
 
   const responseGoogle = async (response) => {
 
+    setCustomLoading(true)
+
     if (response.tokenObj) {
       const { access_token, expires_at, id_token } = response.tokenObj;
       const newCredentials = { ...values, access_token, expires_at, refresh_token: id_token };
       setValues(newCredentials);
-      credentiaslCheck(newCredentials);
+      await credentiaslCheck(newCredentials);
+      setCustomLoading(false);
     }
 
     if (response.code) {
       const { code } = response;
       const newCredentials = { ...values, refresh_token: code };
       setValues(newCredentials);
-      credentiaslCheck(newCredentials);
+      await credentiaslCheck(newCredentials);
+      setCustomLoading(false);
     }
 
     if (response.error) {
+      setCustomLoading(false);
       const { error } = response;
       const errorMessage = getAuthErrorMessage(error);
       alertModal(
@@ -200,6 +207,7 @@ const Onboarding = () => {
           <ButtonComponent text="Setup guide" type="text" />
         </div>
       </S.Content>
+      {customLoading && <LoadingComponent />}
     </NoHeaderLayout>
   );
 
