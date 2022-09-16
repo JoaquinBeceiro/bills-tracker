@@ -11,6 +11,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "gapi-script": "^1.2.0",
     "google-auth-library": "^8.0.2",
     "google-spreadsheet": "^3.0.10",
     "mongoose": "^5.9.7",

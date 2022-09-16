@@ -10,6 +10,8 @@ import { sheetScope } from "config/sheet";
 import { getUserSession } from "config/localStorage";
 import { getAuthErrorMessage } from "config/errors";
 import Utils from "lib/utils";
+import { gapi } from 'gapi-script';
+import { loadAuth2 } from 'gapi-script';
 
 const Onboarding = () => {
 
@@ -106,7 +108,12 @@ const Onboarding = () => {
 
   const responseGoogle = async (response) => {
 
-    setCustomLoading(true)
+    setCustomLoading(true);
+
+    let auth2 = await loadAuth2(gapi, clientId, sheetScope);
+
+    console.log("auth2",auth2);
+
 
     if (response.tokenObj) {
       const { access_token, expires_at, id_token } = response.tokenObj;
@@ -156,6 +163,16 @@ const Onboarding = () => {
   }, [history])
 
   useEffect(() => {
+    const initClient = () => {
+      gapi.client.init({
+        clientId: clientId,
+        scope: sheetScope
+      });
+    };
+    gapi.load('client:auth2', initClient);
+  });
+
+  useEffect(() => {
     if (userFromStorage) {
       checkCredentialsOnLoad(userFromStorage)
     }
@@ -191,8 +208,8 @@ const Onboarding = () => {
             onSuccess={responseGoogle}
             onFailure={responseGoogle}
             cookiePolicy={'single_host_origin'}
-            uxMode="popup"
-            accessType="offline"
+            // uxMode="popup"
+            // accessType="offline"
             scope={sheetScope}
             disabled={buttonDisabled}
             className="googleButton"
