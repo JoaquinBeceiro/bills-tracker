@@ -8,19 +8,21 @@ export const Content = styled.div`
     flex:1;
   }
   .googleButton {
-    width: 100%;
+    width: 100% !important;
     height: 60px;
     margin-top: 30px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
-    div {
-      position: absolute;
-    }
     span {
       text-align: center;
       width: 100%;
       color: #000;
       font-size: 18px;
-    }
+    } 
+  }
+
+  .buttonDisabled {
+    span {
+      opacity: 0.4;
+    } 
   }
 `;
 

@@ -5,17 +5,18 @@ import { InputComponent, ButtonComponent, LoadingComponent } from "components";
 import { useHistory } from "react-router-dom";
 import { checkCredentials } from "services";
 import * as S from "./styles";
-import GoogleLogin from 'react-google-login';
 import { sheetScope } from "config/sheet";
 import { getUserSession } from "config/localStorage";
 import { getAuthErrorMessage } from "config/errors";
 import Utils from "lib/utils";
-import { gapi } from 'gapi-script';
-import { loadAuth2 } from 'gapi-script';
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "config/firebase";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import GoogleButton from 'react-google-button'
 
 const Onboarding = () => {
 
-  const clientId = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID;
+  const app = initializeApp(firebaseConfig);
 
   const history = useHistory();
 
@@ -106,43 +107,6 @@ const Onboarding = () => {
     setValues({ ...values, [prop]: value });
   };
 
-  const responseGoogle = async (response) => {
-
-    setCustomLoading(true);
-
-    let auth2 = await loadAuth2(gapi, clientId, sheetScope);
-
-    console.log("auth2",auth2);
-
-
-    if (response.tokenObj) {
-      const { access_token, expires_at, id_token } = response.tokenObj;
-      const newCredentials = { ...values, access_token, expires_at, refresh_token: id_token };
-      setValues(newCredentials);
-      await credentiaslCheck(newCredentials);
-      setCustomLoading(false);
-    }
-
-    if (response.code) {
-      const { code } = response;
-      const newCredentials = { ...values, refresh_token: code };
-      setValues(newCredentials);
-      await credentiaslCheck(newCredentials);
-      setCustomLoading(false);
-    }
-
-    if (response.error) {
-      setCustomLoading(false);
-      const { error } = response;
-      const errorMessage = getAuthErrorMessage(error);
-      alertModal(
-        "Error",
-        errorMessage
-      );
-    }
-
-  }
-
   const checkCredentialsOnLoad = useCallback(async (user) => {
 
     const { access_token, refresh_token, expires_at, spreadsheetId } = user;
@@ -163,24 +127,44 @@ const Onboarding = () => {
   }, [history])
 
   useEffect(() => {
-    const initClient = () => {
-      gapi.client.init({
-        clientId: clientId,
-        scope: sheetScope
-      });
-    };
-    gapi.load('client:auth2', initClient);
-  });
-
-  useEffect(() => {
     if (userFromStorage) {
       checkCredentialsOnLoad(userFromStorage)
     }
   }, [checkCredentialsOnLoad, userFromStorage])
 
+  const handleGoogleLogin = () => {
+
+    setCustomLoading(true);
+
+    const provider = new GoogleAuthProvider();
+    provider.addScope(sheetScope);
+
+    const auth = getAuth();
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const { accessToken, idToken } = credential;
+        const newCredentials = { ...values, access_token: accessToken, refresh_token: idToken };
+        setValues(newCredentials);
+        await credentiaslCheck(newCredentials);
+        setCustomLoading(false);
+      }).catch((error) => {
+        const errorCode = error.code;
+        // const errorMessage = error.message;
+        const errorMessage = getAuthErrorMessage(errorCode);
+        alertModal(
+          "Error",
+          errorMessage
+        );
+        setCustomLoading(false);
+      });
+
+  }
+
   const buttonDisabled =
     values.name === "" ||
-    values.spreadsheetId === "";
+    values.spreadsheetId === "" ||
+    app === undefined;
 
   return (
     <NoHeaderLayout>
@@ -202,18 +186,12 @@ const Onboarding = () => {
             value={values.spreadsheetId || ""}
             onChange={handleChange("spreadsheetId")}
           />
-          <GoogleLogin
-            clientId={clientId}
-            buttonText="Login"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
-            cookiePolicy={'single_host_origin'}
-            // uxMode="popup"
-            // accessType="offline"
-            scope={sheetScope}
+          <GoogleButton
             disabled={buttonDisabled}
-            className="googleButton"
-            isSignedIn={true}
+            type="light" // can be light or dark
+            onClick={handleGoogleLogin}
+            className={`googleButton ${buttonDisabled ? 'buttonDisabled' : ''}`}
+            label="Login"
           />
           <S.GoogleDisclaimer>
             Google will ask permissions to share your name, email address, languaje preference and profile picture with BillsTracker. We don’t save or track any information about you.
