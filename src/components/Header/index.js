@@ -31,17 +31,6 @@ const Header = ({
   const { signOut } = useGoogleLogout({
     clientId,
     onLogoutSuccess: logOutSuccess
-    // jsSrc,
-    // onFailure,
-    // cookiePolicy,
-    // loginHint,
-    // hostedDomain,
-    // fetchBasicProfile,
-    // discoveryDocs,
-    // uxMode,
-    // redirectUri,
-    // scope,
-    // accessType,
   })
 
 
