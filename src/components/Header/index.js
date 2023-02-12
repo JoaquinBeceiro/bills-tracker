@@ -4,19 +4,18 @@ import { SignOutIcon } from "../";
 import { deleteUserSession } from "config/localStorage";
 import { useHistory } from "react-router-dom";
 import { GlobalContext, DispatchTypes } from "context";
-import { useGoogleLogout } from 'react-google-login';
+import { getAuth, signOut } from "firebase/auth";
 
 const Header = ({
   title = "BillsTracker",
   subTitle = "Home",
   allowSignOut = true,
 }) => {
-
-  const clientId = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID;
-
   const context = useContext(GlobalContext);
   const [, userDispatch] = context.globalUser;
   const [, modalDispatch] = context.globalModal;
+
+  const app = context.getApp;
 
   const history = useHistory();
 
@@ -26,15 +25,20 @@ const Header = ({
       type: DispatchTypes.Global.RESET,
     });
     history.push("/");
-  }
-
-  const { signOut } = useGoogleLogout({
-    clientId,
-    onLogoutSuccess: logOutSuccess
-  })
-
-
-
+  };
+  const signOutAction = () => {
+    if (app) {
+      const auth = getAuth();
+      signOut(auth)
+        .then(() => {
+          logOutSuccess();
+          return true;
+        })
+        .catch((error) => {
+          return false;
+        });
+    }
+  };
 
   const [colorChange, setColorchange] = useState(false);
 
@@ -62,7 +66,7 @@ const Header = ({
           text: "Sign Out",
           action: () => {
             modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
-            signOut();
+            signOutAction();
           },
         },
       ],
@@ -71,10 +75,7 @@ const Header = ({
 
   return (
     <Main colorChange={colorChange}>
-      {
-        allowSignOut &&
-        <ActionContainer></ActionContainer>
-      }
+      {allowSignOut && <ActionContainer></ActionContainer>}
       <TitleContainer>
         <h1>{title}</h1>
         <h2>{subTitle}</h2>

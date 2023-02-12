@@ -2,7 +2,7 @@ import { GoogleSpreadsheet } from "google-spreadsheet";
 import Utils from "lib/utils";
 import { defaultTypes, sheetHeaders, sheetTitle } from "config/sheet";
 import { setSheetData, getSheetData } from "config/localStorage";
-const { OAuth2Client } = require('google-auth-library');
+const { OAuth2Client } = require("google-auth-library");
 
 const { moneyToNumber, formatMoney } = Utils.Currency;
 const { dateSort, split } = Utils.Date;
@@ -22,7 +22,7 @@ const storeSheetData = async (doc) => {
         Type,
         Detail,
         Who,
-        Id: _rowNumber
+        Id: _rowNumber,
       })
     );
     setSheetData(mappedData);
@@ -30,7 +30,7 @@ const storeSheetData = async (doc) => {
   } else {
     return null;
   }
-}
+};
 
 const getLocalSheetData = async () => {
   const data = getSheetData();
@@ -39,11 +39,15 @@ const getLocalSheetData = async () => {
   } else {
     return await storeSheetData();
   }
-}
+};
 
-export const checkCredentials = async ({ access_token, expires_at, refresh_token, spreadsheetId }) => {
+export const checkCredentials = async ({
+  access_token,
+  expires_at,
+  refresh_token,
+  spreadsheetId,
+}) => {
   try {
-
     const oAuth2Client = new OAuth2Client({
       clientId: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID,
       clientSecret: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET,
@@ -60,15 +64,21 @@ export const checkCredentials = async ({ access_token, expires_at, refresh_token
 
     return true;
   } catch (error) {
+    console.log("ERROR", error);
     return false;
   }
 };
 
-export const createDoc = async (access_token, refresh_token, expires_at, spreadsheetId) => {
+export const createDoc = async (
+  access_token,
+  refresh_token,
+  expires_at,
+  spreadsheetId
+) => {
   try {
     const oauthClient = new OAuth2Client({
       clientId: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID,
-      clientSecret: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET
+      clientSecret: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET,
     });
 
     oauthClient.credentials.access_token = access_token;
@@ -98,7 +108,9 @@ export const getTypes = async (doc) => {
     const fetchedRows = await getLocalSheetData();
     const newTypes = fetchedRows.map((e) => e.Type);
     const combinedTypes = Array.from(new Set(newTypes.concat(defaultTypes)));
-    return combinedTypes.sort((a, b) => (a.toLowerCase() > b.toLowerCase()) ? 1 : -1);
+    return combinedTypes.sort((a, b) =>
+      a.toLowerCase() > b.toLowerCase() ? 1 : -1
+    );
   } else {
     return null;
   }
@@ -294,7 +306,6 @@ export const getAllMonthByYear = async (doc, year) => {
   }
 };
 
-
 export const getDetailsByMonth = async (doc, month, year) => {
   if (doc) {
     const monthString = month.toString().length < 2 ? `0${month}` : `${month}`;
@@ -302,10 +313,7 @@ export const getDetailsByMonth = async (doc, month, year) => {
     const fetchedRows = await getLocalSheetData();
     const totalsFiltered = fetchedRows.filter((e) => {
       const dateSplitted = split(e.Date);
-      return (
-        dateSplitted[2] === yearString &&
-        dateSplitted[1] === monthString
-      );
+      return dateSplitted[2] === yearString && dateSplitted[1] === monthString;
     });
 
     const mappedData = totalsFiltered.map(
@@ -315,7 +323,7 @@ export const getDetailsByMonth = async (doc, month, year) => {
         Detail,
         Type,
         Who,
-        Id
+        Id,
       })
     );
 
@@ -328,7 +336,6 @@ export const getDetailsByMonth = async (doc, month, year) => {
 };
 
 export const deleteRow = async (doc, id) => {
-
   if (doc) {
     const sheet = getSheet(doc);
     const fetchedRows = await sheet.getRows();
@@ -341,12 +348,10 @@ export const deleteRow = async (doc, id) => {
       } catch (error) {
         return false;
       }
-
     } else {
       return false;
     }
   } else {
     return false;
   }
-
-}
+};

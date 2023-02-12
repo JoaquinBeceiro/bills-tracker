@@ -5,6 +5,7 @@ const internalUserInitialState = {
   user: null,
   loading: false,
   doc: null,
+  app: null,
 };
 
 export const userInitialState = { ...internalUserInitialState };
@@ -31,6 +32,10 @@ const UserReducer = (currentState, action) => {
     case DispatchTypes.User.GET_DOC_ERROR:
       currentState.error = action.error;
       currentState.loading = false;
+      return { ...currentState };
+    case DispatchTypes.User.SET_APP:
+      currentState.loading = false;
+      currentState.app = action.app;
       return { ...currentState };
     case DispatchTypes.Global.RESET:
       currentState = {
