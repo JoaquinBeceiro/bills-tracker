@@ -60,7 +60,7 @@ const Analytics = () => {
       setData(chartDataWithAllMonths);
       setMainLoading(false);
     },
-    [last12MonthOption, selectedYear]
+    [selectedYear]
   );
 
   useEffect(() => {
