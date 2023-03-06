@@ -5,7 +5,7 @@ import { setSheetData, getSheetData } from "config/localStorage";
 const { OAuth2Client } = require("google-auth-library");
 
 const { moneyToNumber, formatMoney } = Utils.Currency;
-const { dateSort, split } = Utils.Date;
+const { dateSort, split, month12Ago } = Utils.Date;
 
 const getSheet = (doc) => {
   return doc.sheetsByTitle[sheetTitle];
@@ -296,11 +296,39 @@ export const getAllMonthByYear = async (doc, year) => {
       newObject[month] = {
         value: (newObject[month]?.value || 0) + moneyToNumber(curr.Amount),
         count: (newObject[month]?.count || 0) + 1,
+        year,
       };
       return newObject;
     }, {});
 
     return Object.entries(groupedByMonth).map((e) => ({ ...e[1], name: e[0] }));
+  } else {
+    return null;
+  }
+};
+
+export const getLast12Months = async (doc) => {
+  if (doc) {
+    const fetchedRows = await getLocalSheetData();
+    const totalsFiltered = fetchedRows.filter((e) => {
+      const date = new Date(e.Date);
+      const ago = month12Ago();
+      return date >= ago;
+    });
+
+    const grouped = totalsFiltered.reduce((prev, curr) => {
+      const newObject = { ...prev };
+      const month = split(curr.Date)[1];
+      const year = split(curr.Date)[2];
+      newObject[month] = {
+        value: (newObject[month]?.value || 0) + moneyToNumber(curr.Amount),
+        count: (newObject[month]?.count || 0) + 1,
+        year,
+      };
+      return newObject;
+    }, {});
+
+    return Object.entries(grouped).map((e) => ({ ...e[1], name: e[0] }));
   } else {
     return null;
   }

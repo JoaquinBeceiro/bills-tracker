@@ -3,8 +3,8 @@ import { MONTHS } from "./constants";
 const addLeftValue = (value) => (`${value}`.length === 1 ? `0${value}` : value);
 
 const getDateSeparator = (date) => {
-  return [...date].filter(c => isNaN(parseInt(c)))[0]
-}
+  return [...date].filter((c) => isNaN(parseInt(c)))[0];
+};
 
 export const todayDate = () => {
   const nDate = new Date();
@@ -72,5 +72,10 @@ export const dateSort = (a, b) => {
 
 export const split = (date) => {
   const dateSplitted = date.split(getDateSeparator(date));
-  return (dateSplitted[2].length === 4) ? dateSplitted : dateSplitted.reverse();
-}
+  return dateSplitted[2].length === 4 ? dateSplitted : dateSplitted.reverse();
+};
+
+export const month12Ago = () => {
+  const today = new Date();
+  return new Date(today.setMonth(today.getMonth() - 12));
+};
