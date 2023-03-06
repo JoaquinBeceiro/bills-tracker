@@ -27,3 +27,8 @@ export const MONTHS = [
   "November",
   "December",
 ];
+
+export const LAST_12_MONTHS_OPTION = {
+  label: "Last 12M",
+  value: "last12months",
+};

@@ -19,11 +19,10 @@ const Analytics = () => {
   const { doc, loading } = userState;
 
   const { formatSymbol } = Utils.Currency;
-
-  const last12MonthOption = { label: "Last 12M", value: "last12months" };
+  const { LAST_12_MONTHS_OPTION } = Utils.Constants;
 
   const [mainLoading, setMainLoading] = useState(false);
-  const [selectedYear, setSelectedYear] = useState(last12MonthOption.value);
+  const [selectedYear, setSelectedYear] = useState(LAST_12_MONTHS_OPTION.value);
   const [yearsOption, setYearsOption] = useState([]);
   const [data, setData] = useState([]);
 
@@ -32,7 +31,7 @@ const Analytics = () => {
       setMainLoading(true);
       const years = await getYears(doc);
       const newYearsOptions = years.map((y) => ({ label: y, value: y }));
-      newYearsOptions.push(last12MonthOption);
+      newYearsOptions.push(LAST_12_MONTHS_OPTION);
       setYearsOption(newYearsOptions);
 
       const newChartData =
@@ -60,7 +59,7 @@ const Analytics = () => {
       setData(chartDataWithAllMonths);
       setMainLoading(false);
     },
-    [selectedYear]
+    [LAST_12_MONTHS_OPTION, selectedYear]
   );
 
   useEffect(() => {
