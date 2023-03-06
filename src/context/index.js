@@ -32,7 +32,7 @@ const AppContextProvider = ({ children }) => {
   const values = {
     globalUser: [userState, userDispatch],
     globalModal: [modalState, modalDispatch],
-    getApp: getApp(),
+    getApp,
   };
 
   return (

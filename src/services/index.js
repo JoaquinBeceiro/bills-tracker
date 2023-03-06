@@ -64,7 +64,7 @@ export const checkCredentials = async ({
 
     return true;
   } catch (error) {
-    console.log("ERROR", error);
+    console.log("ERROR ee", error);
     return false;
   }
 };

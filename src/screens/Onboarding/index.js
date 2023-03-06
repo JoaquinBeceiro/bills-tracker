@@ -24,9 +24,22 @@ const Onboarding = () => {
   const context = useContext(GlobalContext);
   const [, userDispatch] = context.globalUser;
   const [, modalDispatch] = context.globalModal;
+  const [app, setApp] = useState(null);
+  const [auth, setAuth] = useState(null);
 
-  const app = context.getApp;
-  const auth = getAuth();
+  useEffect(() => {
+    if (app === null) {
+      const newApp = context.getApp();
+      setApp(newApp);
+    }
+  }, [app, context]);
+
+  useEffect(() => {
+    if (auth === null && app !== null) {
+      const newAuth = getAuth(app);
+      setAuth(newAuth);
+    }
+  }, [app, auth]);
 
   const userFromStorage = getUserSession();
 
@@ -116,6 +129,7 @@ const Onboarding = () => {
   const checkCredentialsOnLoad = useCallback(
     async (user) => {
       const { access_token, refresh_token, expires_at, spreadsheetId } = user;
+      console.log("user", user);
 
       if (spreadsheetId) {
         const normalizedId = Utils.Common.getSpreadsheetId(spreadsheetId);
@@ -130,7 +144,9 @@ const Onboarding = () => {
           if (valid) {
             history.push("/home");
           }
-        } catch (e) {}
+        } catch (e) {
+          console.log("E", e);
+        }
       }
     },
     [history]

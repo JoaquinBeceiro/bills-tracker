@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Main, TitleContainer, ActionContainer } from "./styles";
 import { SignOutIcon } from "../";
 import { deleteUserSession } from "config/localStorage";
@@ -14,8 +14,14 @@ const Header = ({
   const context = useContext(GlobalContext);
   const [, userDispatch] = context.globalUser;
   const [, modalDispatch] = context.globalModal;
+  const [app, setApp] = useState(null);
 
-  const app = context.getApp;
+  useEffect(() => {
+    if (app === null) {
+      const newApp = context.getApp();
+      setApp(newApp);
+    }
+  }, [app, context]);
 
   const history = useHistory();
 
@@ -26,9 +32,10 @@ const Header = ({
     });
     history.push("/");
   };
+
   const signOutAction = () => {
     if (app) {
-      const auth = getAuth();
+      const auth = getAuth(app);
       signOut(auth)
         .then(() => {
           logOutSuccess();
