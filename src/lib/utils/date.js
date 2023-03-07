@@ -77,5 +77,8 @@ export const split = (date) => {
 
 export const month12Ago = () => {
   const today = new Date();
-  return new Date(today.setMonth(today.getMonth() - 12));
+  const ago = new Date(today.setMonth(today.getMonth() - 11));
+  const month = ago.getMonth();
+  const year = ago.getFullYear();
+  return new Date(year, month, 0, 0, 0, 0, 1);
 };

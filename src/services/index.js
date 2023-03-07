@@ -5,7 +5,7 @@ import { setSheetData, getSheetData } from "config/localStorage";
 const { OAuth2Client } = require("google-auth-library");
 
 const { moneyToNumber, formatMoney } = Utils.Currency;
-const { dateSort, split, month12Ago } = Utils.Date;
+const { dateSort, split, month12Ago, dateParser } = Utils.Date;
 
 const getSheet = (doc) => {
   return doc.sheetsByTitle[sheetTitle];
@@ -309,11 +309,11 @@ export const getAllMonthByYear = async (doc, year) => {
 
 export const getLast12Months = async (doc) => {
   if (doc) {
+    const ago = month12Ago();
     const fetchedRows = await getLocalSheetData();
     const totalsFiltered = fetchedRows.filter((e) => {
-      const date = new Date(e.Date);
-      const ago = month12Ago();
-      return date >= ago;
+      const dateFromSpreadsheet = dateParser(e.Date);
+      return dateFromSpreadsheet.getTime() >= ago.getTime();
     });
 
     const grouped = totalsFiltered.reduce((prev, curr) => {
