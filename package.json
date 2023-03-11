@@ -15,7 +15,6 @@
     "firebase": "^9.14.0",
     "google-auth-library": "^8.0.2",
     "google-spreadsheet": "^3.3.0",
-    "mongoose": "^5.9.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-google-button": "^0.7.2",

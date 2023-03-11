@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 import { checkCredentials, getRefreshToken, getNewTokens } from "services";
 import * as S from "./styles";
 import { sheetScope } from "config/sheet";
-import { getUserSession, setUserSession } from "config/localStorage";
+import { getUserSession } from "config/localStorage";
 import { getAuthErrorMessage } from "config/errors";
 import Utils from "lib/utils";
 import GoogleButton from "react-google-button";
@@ -138,6 +138,7 @@ const Onboarding = () => {
         }
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [history]
   );
 

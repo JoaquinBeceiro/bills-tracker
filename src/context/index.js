@@ -1,4 +1,4 @@
-import React, { useReducer, createContext, useEffect } from "react";
+import React, { useReducer, createContext } from "react";
 import UserReducer, { userInitialState } from "./reducers/User";
 import ModalReducer, { modalInitialState } from "./reducers/Modal";
 import Types from "./types";

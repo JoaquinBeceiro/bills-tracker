@@ -85,7 +85,7 @@ const Main = () => {
     [moneyToNumber, nowMonth, nowYear, pastMonthYear]
   );
 
-  const createDocHandler = async () => {
+  const createDocHandler = useCallback(async () => {
     try {
       const { access_token, refresh_token, expires_at, spreadsheetId } = user;
       const newDoc = await createDoc(
@@ -103,14 +103,14 @@ const Main = () => {
     } catch (e) {
       console.log("createDoc ERROR", e);
     }
-  };
+  }, [user, userDispatch]);
 
   useEffect(() => {
     if (doc === null && user && !checked) {
       setChecked(true);
       createDocHandler();
     }
-  }, [doc, user, checked]);
+  }, [doc, user, checked, createDocHandler]);
 
   useEffect(() => {
     if (!loading && doc) {

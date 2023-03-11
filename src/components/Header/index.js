@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Main, TitleContainer, ActionContainer } from "./styles";
 import { SignOutIcon } from "../";
 import { deleteUserSession } from "config/localStorage";
