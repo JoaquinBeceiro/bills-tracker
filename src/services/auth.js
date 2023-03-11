@@ -1,12 +1,40 @@
-import axios from 'axios';
+import axios from "axios";
 
 const baseURL = process.env.REACT_APP_BASE_URL;
 
 export const getRefreshToken = async (code) => {
-    try {
-        const response = await axios.get(`${baseURL}/oauth2callback?code=${code}`);
-        return response;
-    } catch (error) {
-        return null;
-    }
-}
+  try {
+    const { data } = await axios.get(`${baseURL}/oauth2callback?code=${code}`);
+    return data;
+  } catch (error) {
+    console.log("ERROR: ", error);
+    return null;
+  }
+};
+
+export const getNewTokens = async ({
+  access_token,
+  expiry_date,
+  id_token,
+  refresh_token,
+  scope,
+  token_type,
+}) => {
+  try {
+    const tokens = {
+      access_token,
+      expiry_date,
+      id_token,
+      refresh_token,
+      scope,
+      token_type,
+    };
+    const { data } = await axios.get(`${baseURL}/refresh`, {
+      params: { tokens },
+    });
+    return data;
+  } catch (error) {
+    console.log("ERROR: ", error);
+    return null;
+  }
+};

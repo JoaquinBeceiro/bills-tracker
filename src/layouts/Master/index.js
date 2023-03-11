@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useCallback } from "react";
+import React, { useContext, useEffect, useCallback, useState } from "react";
 import { Content, Container } from "./styles";
 import { HeaderComponent, FooterComponent, ModalComponent } from "components";
 import { GlobalContext, DispatchTypes } from "context";
@@ -18,12 +18,18 @@ const Master = ({
   const context = useContext(GlobalContext);
   const [modalState] = context.globalModal;
   const [userState, userDispatch] = context.globalUser;
+  const [checked, setChecked] = useState(false);
 
   const setDoc = useCallback(
     async (user) => {
       try {
         const { access_token, refresh_token, expires_at, spreadsheetId } = user;
-        const newDoc = await createDoc(access_token, refresh_token, expires_at, spreadsheetId);
+        const newDoc = await createDoc(
+          access_token,
+          refresh_token,
+          expires_at,
+          spreadsheetId
+        );
         setUserSession(user);
         userDispatch({
           type: DispatchTypes.User.GET_DOC_SUCCESS,
@@ -41,8 +47,20 @@ const Master = ({
 
   const checkUser = useCallback(
     async (user) => {
-      const { spreadsheetId, access_token, refresh_token, expires_at } = user;
-      const valid = await checkCredentials({access_token, refresh_token, expires_at, spreadsheetId});
+      const {
+        spreadsheetId,
+        access_token,
+        refresh_token,
+        expires_at,
+        id_token,
+      } = user;
+      const valid = await checkCredentials({
+        access_token,
+        refresh_token,
+        expires_at,
+        id_token,
+        spreadsheetId,
+      });
       if (valid) {
         userDispatch({
           type: DispatchTypes.User.GET_DOC_START,
@@ -58,11 +76,12 @@ const Master = ({
   useEffect(() => {
     if (userState) {
       const { user, doc, loading } = userState;
-      if (user && !loading && doc === null) {
+      if (user && !loading && doc === null && !checked) {
+        setChecked(true);
         checkUser(user);
       }
     }
-  }, [checkUser, userState]);
+  }, [checkUser, userState, checked]);
 
   useEffect(() => {
     const userFromStorage = getUserSession();

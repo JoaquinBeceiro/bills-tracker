@@ -3,20 +3,14 @@ import { GlobalContext, DispatchTypes } from "context";
 import { NoHeaderLayout } from "layouts";
 import { InputComponent, ButtonComponent, LoadingComponent } from "components";
 import { useHistory } from "react-router-dom";
-import { checkCredentials } from "services";
+import { checkCredentials, getRefreshToken, getNewTokens } from "services";
 import * as S from "./styles";
 import { sheetScope } from "config/sheet";
-import { getUserSession } from "config/localStorage";
+import { getUserSession, setUserSession } from "config/localStorage";
 import { getAuthErrorMessage } from "config/errors";
 import Utils from "lib/utils";
-import {
-  getAuth,
-  signInWithPopup,
-  GoogleAuthProvider,
-  setPersistence,
-  browserSessionPersistence,
-} from "firebase/auth";
 import GoogleButton from "react-google-button";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const Onboarding = () => {
   const history = useHistory();
@@ -24,26 +18,11 @@ const Onboarding = () => {
   const context = useContext(GlobalContext);
   const [, userDispatch] = context.globalUser;
   const [, modalDispatch] = context.globalModal;
-  const [app, setApp] = useState(null);
-  const [auth, setAuth] = useState(null);
-
-  useEffect(() => {
-    if (app === null) {
-      const newApp = context.getApp();
-      setApp(newApp);
-    }
-  }, [app, context]);
-
-  useEffect(() => {
-    if (auth === null && app !== null) {
-      const newAuth = getAuth(app);
-      setAuth(newAuth);
-    }
-  }, [app, auth]);
 
   const userFromStorage = getUserSession();
 
   const [customLoading, setCustomLoading] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   const [values, setValues] = useState({
     name: userFromStorage?.name || "",
@@ -51,6 +30,7 @@ const Onboarding = () => {
     access_token: userFromStorage?.access_token || "",
     expires_at: userFromStorage?.expires_at || "",
     refresh_token: userFromStorage?.refresh_token || "",
+    id_token: userFromStorage?.id_token || "",
   });
 
   const alertModal = useCallback(
@@ -74,8 +54,14 @@ const Onboarding = () => {
 
   const credentiaslCheck = useCallback(
     async (newValues) => {
-      const { name, access_token, refresh_token, expires_at, spreadsheetId } =
-        newValues;
+      const {
+        name,
+        access_token,
+        refresh_token,
+        expires_at,
+        id_token,
+        spreadsheetId,
+      } = newValues;
 
       if (spreadsheetId) {
         const normalizedId = Utils.Common.getSpreadsheetId(spreadsheetId);
@@ -86,6 +72,7 @@ const Onboarding = () => {
           const valid = await checkCredentials({
             access_token,
             expires_at,
+            id_token,
             refresh_token,
             spreadsheetId: normalizedId,
           });
@@ -95,6 +82,7 @@ const Onboarding = () => {
               name: name,
               access_token,
               expires_at,
+              id_token,
               refresh_token,
             };
 
@@ -128,9 +116,8 @@ const Onboarding = () => {
 
   const checkCredentialsOnLoad = useCallback(
     async (user) => {
+      setChecked(true);
       const { access_token, refresh_token, expires_at, spreadsheetId } = user;
-      console.log("user", user);
-
       if (spreadsheetId) {
         const normalizedId = Utils.Common.getSpreadsheetId(spreadsheetId);
 
@@ -143,6 +130,8 @@ const Onboarding = () => {
           });
           if (valid) {
             history.push("/home");
+          } else {
+            refreshTokens({ access_token, expires_at, refresh_token });
           }
         } catch (e) {
           console.log("E", e);
@@ -152,50 +141,79 @@ const Onboarding = () => {
     [history]
   );
 
-  useEffect(() => {
-    if (userFromStorage) {
-      checkCredentialsOnLoad(userFromStorage);
+  const refreshTokens = async ({ access_token, expires_at, refresh_token }) => {
+    const tokens = {
+      access_token,
+      expires_at,
+      refresh_token,
+      scope:
+        "https://www.googleapis.com/auth/spreadsheets openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
+      token_type: "Bearer",
+    };
+    try {
+      const newTokens = await getNewTokens(tokens);
+      const newCredentials = {
+        ...values,
+        access_token: newTokens.credentials.access_token,
+        refresh_token: newTokens.credentials.access_token,
+        expires_at: newTokens.credentials.expiry_date,
+        id_token: newTokens.credentials.idToken,
+      };
+      setValues(newCredentials);
+      await credentiaslCheck(newCredentials);
+      setCustomLoading(false);
+    } catch (error) {
+      setCustomLoading(false);
+      console.log("ERROR", error);
+      const errorCode = error.code;
+      const errorMessage = getAuthErrorMessage(errorCode);
+      alertModal("Error", errorMessage);
     }
-  }, [checkCredentialsOnLoad, userFromStorage]);
-
-  const handleGoogleLogin = () => {
-    setCustomLoading(true);
-
-    const provider = new GoogleAuthProvider();
-    provider.addScope(sheetScope);
-
-    setPersistence(auth, browserSessionPersistence)
-      .then(() => {
-        signInWithPopup(auth, provider)
-          .then(async (result) => {
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const { accessToken, idToken } = credential;
-            const newCredentials = {
-              ...values,
-              access_token: accessToken,
-              refresh_token: idToken,
-            };
-            setValues(newCredentials);
-            await credentiaslCheck(newCredentials);
-            setCustomLoading(false);
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = getAuthErrorMessage(errorCode);
-            alertModal("Error", errorMessage);
-            setCustomLoading(false);
-          });
-      })
-      .catch((error) => {
-        console.log("ERROR", error);
-        const errorCode = error.code;
-        const errorMessage = getAuthErrorMessage(errorCode);
-        alertModal("Error", errorMessage);
-      });
   };
 
-  const buttonDisabled =
-    values.name === "" || values.spreadsheetId === "" || app === undefined;
+  useEffect(() => {
+    if (userFromStorage && !checked) {
+      checkCredentialsOnLoad(userFromStorage);
+    }
+  }, [checkCredentialsOnLoad, userFromStorage, checked]);
+
+  const login = useGoogleLogin({
+    onSuccess: (tokenResponse) => handleGoogleLogin(tokenResponse),
+    scope: sheetScope,
+    useOneTap: true,
+    auto_select: true,
+    flow: "auth-code",
+  });
+
+  const handleGoogleLogin = async (tokenResponse) => {
+    setCustomLoading(true);
+
+    console.log("tokenResponse", tokenResponse);
+    const tokens = await getRefreshToken(tokenResponse.code);
+    console.log("tokens", tokens);
+
+    try {
+      const { access_token, expiry_date, refresh_token, id_token } = tokens;
+      const newCredentials = {
+        ...values,
+        access_token,
+        refresh_token,
+        expires_at: expiry_date,
+        id_token,
+      };
+      setValues(newCredentials);
+      await credentiaslCheck(newCredentials);
+      setCustomLoading(false);
+    } catch (error) {
+      setCustomLoading(false);
+      console.log("ERROR", error);
+      const errorCode = error.code;
+      const errorMessage = getAuthErrorMessage(errorCode);
+      alertModal("Error", errorMessage);
+    }
+  };
+
+  const buttonDisabled = values.name === "" || values.spreadsheetId === "";
 
   return (
     <NoHeaderLayout>
@@ -220,7 +238,7 @@ const Onboarding = () => {
           <GoogleButton
             disabled={buttonDisabled}
             type="light" // can be light or dark
-            onClick={handleGoogleLogin}
+            onClick={() => login()}
             className={`googleButton ${buttonDisabled ? "buttonDisabled" : ""}`}
             label="Login"
           />
