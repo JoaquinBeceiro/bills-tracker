@@ -12,6 +12,8 @@ import Utils from "lib/utils";
 import GoogleButton from "react-google-button";
 import { useGoogleLogin } from "@react-oauth/google";
 
+const redirectURI = process.env.REACT_APP_BASE_URL;
+
 const Onboarding = () => {
   const history = useHistory();
 
@@ -184,6 +186,7 @@ const Onboarding = () => {
     useOneTap: true,
     auto_select: true,
     flow: "auth-code",
+    redirect_uri: redirectURI,
   });
 
   const handleGoogleLogin = async (tokenResponse) => {
