@@ -7,7 +7,7 @@ export const getRefreshToken = async (code) => {
     const { data } = await axios.get(`${baseURL}/oauth2callback?code=${code}`);
     return data;
   } catch (error) {
-    console.log("ERROR: ", error);
+    console.log("ERROR:: ", error);
     return null;
   }
 };
