@@ -4,7 +4,7 @@ import { SignOutIcon } from "../";
 import { deleteUserSession } from "config/localStorage";
 import { useHistory } from "react-router-dom";
 import { GlobalContext, DispatchTypes } from "context";
-import { getAuth, signOut } from "firebase/auth";
+import { googleLogout } from "@react-oauth/google";
 
 const Header = ({
   title = "BillsTracker",
@@ -14,37 +14,16 @@ const Header = ({
   const context = useContext(GlobalContext);
   const [, userDispatch] = context.globalUser;
   const [, modalDispatch] = context.globalModal;
-  const [app, setApp] = useState(null);
-
-  useEffect(() => {
-    if (app === null) {
-      const newApp = context.getApp();
-      setApp(newApp);
-    }
-  }, [app, context]);
 
   const history = useHistory();
 
-  const logOutSuccess = () => {
+  const signOutAction = () => {
+    googleLogout();
     deleteUserSession();
     userDispatch({
       type: DispatchTypes.Global.RESET,
     });
     history.push("/");
-  };
-
-  const signOutAction = () => {
-    if (app) {
-      const auth = getAuth(app);
-      signOut(auth)
-        .then(() => {
-          logOutSuccess();
-          return true;
-        })
-        .catch((error) => {
-          return false;
-        });
-    }
   };
 
   const [colorChange, setColorchange] = useState(false);

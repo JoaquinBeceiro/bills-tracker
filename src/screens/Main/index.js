@@ -7,7 +7,7 @@ import {
   InputComponent,
 } from "components";
 import { HeaderLayout } from "layouts";
-import { getTypes, getTotalByMonth, addRow } from "services";
+import { getTypes, getTotalByMonth, addRow, createDoc } from "services";
 import Utils from "lib/utils";
 
 const Main = () => {
@@ -19,6 +19,7 @@ const Main = () => {
   const [pastMonth, setPastMonth] = useState(0);
   const [gratherThanPastMonth, setGratherThanPastMonth] = useState(false);
   const [billsTypes, setBillsTypes] = useState([]);
+  const [checked, setChecked] = useState(false);
 
   const defaultForm = {
     amount: "",
@@ -40,47 +41,80 @@ const Main = () => {
   };
 
   const context = useContext(GlobalContext);
-  const [userState] = context.globalUser;
+  const [userState, userDispatch] = context.globalUser;
   const [, modalDispatch] = context.globalModal;
   const { user, doc, loading } = userState;
 
+  const getStartData = useCallback(
+    async (doc) => {
+      setMainLoading(true);
+      try {
+        const types = await getTypes(doc);
+        const pastMonthYearValue = pastMonthYear();
 
-  const getStartData = useCallback(async (doc) => {
-    setMainLoading(true);
+        const totalMonthValue = await getTotalByMonth(
+          doc,
+          nowMonth(),
+          nowYear()
+        );
+        const totalPastMonthValue = await getTotalByMonth(
+          doc,
+          pastMonthYearValue.month,
+          pastMonthYearValue.year
+        );
+
+        const typesFormatted = types.map((type) => ({
+          value: type,
+          label: type,
+        }));
+
+        setBillsTypes(typesFormatted);
+        setTotalMonth(totalMonthValue);
+        setPastMonth(totalPastMonthValue);
+
+        setGratherThanPastMonth(
+          moneyToNumber(totalMonthValue) > moneyToNumber(totalPastMonthValue)
+        );
+
+        setMainLoading(false);
+      } catch (e) {
+        console.log("getStartData ERROR", e);
+        setMainLoading(false);
+      }
+    },
+    [moneyToNumber, nowMonth, nowYear, pastMonthYear]
+  );
+
+  const createDocHandler = async () => {
     try {
-
-      const types = await getTypes(doc);
-      const pastMonthYearValue = pastMonthYear();
-
-      const totalMonthValue = await getTotalByMonth(doc, nowMonth(), nowYear());
-      const totalPastMonthValue = await getTotalByMonth(
-        doc,
-        pastMonthYearValue.month,
-        pastMonthYearValue.year
+      const { access_token, refresh_token, expires_at, spreadsheetId } = user;
+      const newDoc = await createDoc(
+        access_token,
+        refresh_token,
+        expires_at,
+        spreadsheetId
       );
-
-      const typesFormatted = types.map((type) => ({ value: type, label: type }));
-
-      setBillsTypes(typesFormatted);
-      setTotalMonth(totalMonthValue);
-      setPastMonth(totalPastMonthValue);
-
-      setGratherThanPastMonth(
-        moneyToNumber(totalMonthValue) > moneyToNumber(totalPastMonthValue)
-      );
-
-      setMainLoading(false);
+      if (newDoc) {
+        userDispatch({
+          type: DispatchTypes.User.GET_DOC_SUCCESS,
+          doc: newDoc,
+        });
+      }
     } catch (e) {
-      setMainLoading(false);
-
+      console.log("createDoc ERROR", e);
     }
-  }, [moneyToNumber, nowMonth, nowYear, pastMonthYear]);
+  };
 
   useEffect(() => {
-    if (!loading) {
-      if (doc) {
-        getStartData(doc);
-      }
+    if (doc === null && user && !checked) {
+      setChecked(true);
+      createDocHandler();
+    }
+  }, [doc, user, checked]);
+
+  useEffect(() => {
+    if (!loading && doc) {
+      getStartData(doc);
     }
   }, [doc, loading, getStartData]);
 
@@ -125,7 +159,7 @@ const Main = () => {
         }
         setMainLoading(false);
       } catch (error) {
-        // TODO: Error mesg
+        console.log("addBill ERROR", error);
         setMainLoading(false);
       }
     }

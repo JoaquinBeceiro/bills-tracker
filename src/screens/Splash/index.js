@@ -44,11 +44,18 @@ const Splash = (props) => {
 
   const checkUser = useCallback(
     async (user) => {
-      const { access_token, expires_at, refresh_token, spreadsheetId } = user;
+      const {
+        access_token,
+        expires_at,
+        refresh_token,
+        id_token,
+        spreadsheetId,
+      } = user;
       const valid = await checkCredentials({
         access_token,
         expires_at,
         refresh_token,
+        id_token,
         spreadsheetId,
       });
       if (valid) {
