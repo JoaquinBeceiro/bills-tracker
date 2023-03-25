@@ -45,6 +45,25 @@ const Main = () => {
   const [, modalDispatch] = context.globalModal;
   const { user, doc, loading } = userState;
 
+  const alertModal = useCallback(
+    (title, content) => {
+      modalDispatch({
+        type: DispatchTypes.Modal.MODAL_SHOW,
+        title,
+        content,
+        actions: [
+          {
+            text: "Ok",
+            action: () => {
+              modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
+            },
+          },
+        ],
+      });
+    },
+    [modalDispatch]
+  );
+
   const getStartData = useCallback(
     async (doc) => {
       setMainLoading(true);
@@ -79,10 +98,11 @@ const Main = () => {
         setMainLoading(false);
       } catch (e) {
         console.log("getStartData ERROR", e);
+        alertModal("Error", "There was an error. Please try again later.");
         setMainLoading(false);
       }
     },
-    [moneyToNumber, nowMonth, nowYear, pastMonthYear]
+    [alertModal, moneyToNumber, nowMonth, nowYear, pastMonthYear]
   );
 
   const createDocHandler = useCallback(async () => {
@@ -157,11 +177,19 @@ const Main = () => {
           });
           clearForm();
         } else {
-          // TODO: Error mesg
+          alertModal(
+            "Error",
+            "There was an error trying to add a new bill. Please try again later."
+          );
+          setMainLoading(false);
         }
         setMainLoading(false);
       } catch (error) {
         console.log("addBill ERROR", error);
+        alertModal(
+          "Error",
+          "There was an error trying to add a new bill. Please try again later."
+        );
         setMainLoading(false);
       }
     }
