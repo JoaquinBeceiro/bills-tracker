@@ -12,7 +12,7 @@ import Utils from "lib/utils";
 import GoogleButton from "react-google-button";
 import { useGoogleLogin } from "@react-oauth/google";
 
-const redirectURI = process.env.REACT_APP_BASE_URL;
+const redirectURI = process.env.REACT_APP_REDIRECT_URI;
 
 const Onboarding = () => {
   const history = useHistory();

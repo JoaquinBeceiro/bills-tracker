@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState, useCallback } from "react";
 import { GlobalContext, DispatchTypes } from "context";
 import { withRouter } from "react-router";
 import { Container, Content, Title } from "./styles";
-import { checkCredentials, createDoc } from "services";
 import Logo from "rsc/img/logo.svg";
-import { setUserSession, getUserSession } from "config/localStorage";
+import { getUserSession } from "config/localStorage";
+import { checkUser } from "utils/login";
 
 const Splash = (props) => {
   const [newRoute, setNewRoute] = useState(null);
@@ -14,61 +14,6 @@ const Splash = (props) => {
 
   const context = useContext(GlobalContext);
   const [userState, userDispatch] = context.globalUser;
-
-  const setDoc = useCallback(
-    async (user) => {
-      try {
-        const { access_token, refresh_token, expires_at, spreadsheetId } = user;
-        const newDoc = await createDoc(
-          access_token,
-          refresh_token,
-          expires_at,
-          spreadsheetId
-        );
-        setUserSession(user);
-        userDispatch({
-          type: DispatchTypes.User.GET_DOC_SUCCESS,
-          doc: newDoc,
-        });
-        return true;
-      } catch (error) {
-        userDispatch({
-          type: DispatchTypes.User.GET_DOC_ERROR,
-          error,
-        });
-        return false;
-      }
-    },
-    [userDispatch]
-  );
-
-  const checkUser = useCallback(
-    async (user) => {
-      const {
-        access_token,
-        expires_at,
-        refresh_token,
-        id_token,
-        spreadsheetId,
-      } = user;
-      const valid = await checkCredentials({
-        access_token,
-        expires_at,
-        refresh_token,
-        id_token,
-        spreadsheetId,
-      });
-      if (valid) {
-        userDispatch({
-          type: DispatchTypes.User.GET_DOC_START,
-        });
-        await setDoc(user);
-      } else {
-        setNewRoute("/onboarding");
-      }
-    },
-    [setDoc, userDispatch]
-  );
 
   useEffect(() => {
     userDispatch({
@@ -90,12 +35,37 @@ const Splash = (props) => {
     }, 1000);
   }, [userDispatch]);
 
+  const createDoc = useCallback(
+    async (user) => {
+      userDispatch({
+        type: DispatchTypes.User.GET_DOC_START,
+      });
+      try {
+        const newDoc = checkUser(user);
+        if (newDoc) {
+          userDispatch({
+            type: DispatchTypes.User.GET_DOC_SUCCESS,
+            doc: newDoc,
+          });
+        } else {
+          setNewRoute("/onboarding");
+        }
+      } catch (error) {
+        userDispatch({
+          type: DispatchTypes.User.GET_DOC_ERROR,
+          error,
+        });
+      }
+    },
+    [userDispatch]
+  );
+
   useEffect(() => {
     if (userState) {
       const { user, doc, loading } = userState;
       if (!loading) {
         if (user && doc === null) {
-          checkUser(user);
+          createDoc(user);
         } else if (doc !== null) {
           setNewRoute("/home");
         } else {
@@ -103,7 +73,7 @@ const Splash = (props) => {
         }
       }
     }
-  }, [checkUser, userState]);
+  }, [createDoc, userState]);
 
   useEffect(() => {
     if (newRoute && splashFinish) {
