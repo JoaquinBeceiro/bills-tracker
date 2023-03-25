@@ -252,13 +252,17 @@ const Onboarding = () => {
           />
           <S.GoogleDisclaimer>
             Google will ask permissions to share your name, email address,
-            languaje preference and profile picture with BillsTracker. We don’t
-            save or track any information about you.
+            languaje preference, profile picture and the spreadsheet with
+            BillsTracker. We don’t save or track any information about you.
           </S.GoogleDisclaimer>
         </div>
         <div>
           <p className="text-center mb-0 mt-4">Need help?</p>
-          <ButtonComponent text="Setup guide" type="text" />
+          <ButtonComponent
+            text="Setup guide"
+            type="text"
+            action={() => history.push("/guide")}
+          />
         </div>
       </S.Content>
       {customLoading && <LoadingComponent />}
