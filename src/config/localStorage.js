@@ -1,15 +1,19 @@
+export const getUserSession = () => JSON.parse(localStorage.getItem("user"));
+
 export const setUserSession = (user) => {
-  const userObject = JSON.stringify(user);
+  const userFromStorage = getUserSession();
+  const newUser = {
+    ...userFromStorage,
+    ...user,
+  };
+  const userObject = JSON.stringify(newUser);
   localStorage.setItem("user", userObject);
 };
-
-export const getUserSession = () => JSON.parse(localStorage.getItem("user"));
 
 export const deleteUserSession = () => {
   localStorage.removeItem("data");
   localStorage.removeItem("user");
-}
-
+};
 
 export const setSheetData = (data) => {
   const dataObject = JSON.stringify(data);
