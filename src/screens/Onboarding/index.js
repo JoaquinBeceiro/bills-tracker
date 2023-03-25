@@ -80,7 +80,7 @@ const Onboarding = () => {
           const newDoc = await checkUser(user);
           if (newDoc) {
             const newUserContext = {
-              spreadsheetId,
+              spreadsheetId: normalizedId,
               name: name,
               access_token,
               expires_at,
@@ -198,9 +198,7 @@ const Onboarding = () => {
   const handleGoogleLogin = async (tokenResponse) => {
     setCustomLoading(true);
 
-    console.log("tokenResponse", tokenResponse);
     const tokens = await getRefreshToken(tokenResponse.code);
-    console.log("tokens", tokens);
 
     try {
       const { access_token, expiry_date, refresh_token, id_token } = tokens;

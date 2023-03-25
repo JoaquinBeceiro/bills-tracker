@@ -31,7 +31,6 @@ export const checkUser = async ({
   spreadsheetId,
 }) => {
   const normalizedId = Utils.Common.getSpreadsheetId(spreadsheetId);
-  console.log("normalizedId", normalizedId);
   try {
     const user = {
       access_token,

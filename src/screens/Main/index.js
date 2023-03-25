@@ -88,11 +88,13 @@ const Main = () => {
   const createDocHandler = useCallback(async () => {
     try {
       const { access_token, refresh_token, expires_at, spreadsheetId } = user;
+      const normalizedId = Utils.Common.getSpreadsheetId(spreadsheetId);
+
       const newDoc = await createDoc(
         access_token,
         refresh_token,
         expires_at,
-        spreadsheetId
+        normalizedId
       );
       if (newDoc) {
         userDispatch({
