@@ -1,5 +1,6 @@
 import { checkCredentials, createDoc } from "services";
 import { setUserSession } from "config/localStorage";
+import Utils from "lib/utils";
 
 const setDoc = async ({
   access_token,
@@ -29,13 +30,15 @@ export const checkUser = async ({
   id_token,
   spreadsheetId,
 }) => {
+  const normalizedId = Utils.Common.getSpreadsheetId(spreadsheetId);
+  console.log("normalizedId", normalizedId);
   try {
     const user = {
       access_token,
       expires_at,
       refresh_token,
       id_token,
-      spreadsheetId,
+      spreadsheetId: normalizedId,
     };
     const valid = await checkCredentials(user);
     if (valid) {

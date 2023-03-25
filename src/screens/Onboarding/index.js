@@ -65,24 +65,22 @@ const Onboarding = () => {
         id_token,
         spreadsheetId,
       } = newValues;
-
       if (spreadsheetId) {
-        const normalizedId = Utils.Common.getSpreadsheetId(spreadsheetId);
-
         userDispatch({ type: DispatchTypes.User.SET_USER_START });
 
         try {
+          const normalizedId = Utils.Common.getSpreadsheetId(spreadsheetId);
           const user = {
             access_token,
             expires_at,
             refresh_token,
             id_token,
-            spreadsheetId,
+            spreadsheetId: normalizedId,
           };
           const newDoc = await checkUser(user);
           if (newDoc) {
             const newUserContext = {
-              spreadsheetId: normalizedId,
+              spreadsheetId,
               name: name,
               access_token,
               expires_at,
@@ -129,14 +127,13 @@ const Onboarding = () => {
         id_token,
       } = user;
       if (spreadsheetId) {
-        const normalizedId = Utils.Common.getSpreadsheetId(spreadsheetId);
         try {
           const newDoc = await checkUser({
             access_token,
             expires_at,
             refresh_token,
             id_token,
-            spreadsheetId: normalizedId,
+            spreadsheetId,
           });
 
           if (newDoc) {
