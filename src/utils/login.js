@@ -29,23 +29,21 @@ export const checkUser = async ({
   id_token,
   spreadsheetId,
 }) => {
-  const user = {
-    access_token,
-    expires_at,
-    refresh_token,
-    id_token,
-    spreadsheetId,
-  };
-  const valid = await checkCredentials({
-    access_token,
-    expires_at,
-    refresh_token,
-    id_token,
-    spreadsheetId,
-  });
-  if (valid) {
-    return await setDoc(user);
-  } else {
+  try {
+    const user = {
+      access_token,
+      expires_at,
+      refresh_token,
+      id_token,
+      spreadsheetId,
+    };
+    const valid = await checkCredentials(user);
+    if (valid) {
+      return await setDoc(user);
+    } else {
+      return false;
+    }
+  } catch (error) {
     return false;
   }
 };

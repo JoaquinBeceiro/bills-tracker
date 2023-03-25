@@ -41,7 +41,7 @@ const Splash = (props) => {
         type: DispatchTypes.User.GET_DOC_START,
       });
       try {
-        const newDoc = checkUser(user);
+        const newDoc = await checkUser(user);
         if (newDoc) {
           userDispatch({
             type: DispatchTypes.User.GET_DOC_SUCCESS,

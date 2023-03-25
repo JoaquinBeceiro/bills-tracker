@@ -3,7 +3,7 @@ import { GlobalContext, DispatchTypes } from "context";
 import { NoHeaderLayout } from "layouts";
 import { InputComponent, ButtonComponent, LoadingComponent } from "components";
 import { useHistory } from "react-router-dom";
-import { checkCredentials, getRefreshToken, getNewTokens } from "services";
+import { getRefreshToken, getNewTokens } from "services";
 import * as S from "./styles";
 import { sheetScope } from "config/sheet";
 import { getUserSession } from "config/localStorage";
@@ -11,6 +11,7 @@ import { getAuthErrorMessage } from "config/errors";
 import Utils from "lib/utils";
 import GoogleButton from "react-google-button";
 import { useGoogleLogin } from "@react-oauth/google";
+import { checkUser } from "utils/login";
 
 const redirectURI = process.env.REACT_APP_REDIRECT_URI;
 
@@ -71,14 +72,15 @@ const Onboarding = () => {
         userDispatch({ type: DispatchTypes.User.SET_USER_START });
 
         try {
-          const valid = await checkCredentials({
+          const user = {
             access_token,
             expires_at,
-            id_token,
             refresh_token,
-            spreadsheetId: normalizedId,
-          });
-          if (valid) {
+            id_token,
+            spreadsheetId,
+          };
+          const newDoc = await checkUser(user);
+          if (newDoc) {
             const newUserContext = {
               spreadsheetId: normalizedId,
               name: name,
@@ -119,18 +121,25 @@ const Onboarding = () => {
   const checkCredentialsOnLoad = useCallback(
     async (user) => {
       setChecked(true);
-      const { access_token, refresh_token, expires_at, spreadsheetId } = user;
+      const {
+        access_token,
+        refresh_token,
+        expires_at,
+        spreadsheetId,
+        id_token,
+      } = user;
       if (spreadsheetId) {
         const normalizedId = Utils.Common.getSpreadsheetId(spreadsheetId);
-
         try {
-          const valid = await checkCredentials({
+          const newDoc = await checkUser({
             access_token,
             expires_at,
             refresh_token,
+            id_token,
             spreadsheetId: normalizedId,
           });
-          if (valid) {
+
+          if (newDoc) {
             history.push("/home");
           } else {
             refreshTokens({ access_token, expires_at, refresh_token });
