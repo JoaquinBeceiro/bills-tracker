@@ -117,22 +117,27 @@ export const getTypes = async (doc) => {
 };
 
 export const addRow = async (doc, date, who, amount, type, detail) => {
-  if (doc) {
-    const sheet = getSheet(doc);
-    const newRow = {
-      Date: date,
-      Who: who,
-      Amount: `$${amount}`,
-      Type: type,
-      Detail: detail,
-    };
-    await sheet.addRow(newRow);
-    const newData = await getLocalSheetData();
-    const lastId = newData[newData.length - 1].Id;
-    newData.push({ ...newRow, Id: lastId + 1 });
-    setSheetData(newData);
-    return newData;
-  } else {
+  try {
+    if (doc) {
+      const sheet = getSheet(doc);
+      const newRow = {
+        Date: date,
+        Who: who,
+        Amount: `$${amount}`,
+        Type: type,
+        Detail: detail,
+      };
+      await sheet.addRow(newRow);
+      const newData = await getLocalSheetData();
+      const lastId = newData[newData.length - 1].Id;
+      newData.push({ ...newRow, Id: lastId + 1 });
+      setSheetData(newData);
+      return newData;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.log("ERROR add", error);
     return null;
   }
 };
