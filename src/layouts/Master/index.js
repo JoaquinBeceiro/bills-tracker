@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, { useContext, useEffect, useCallback, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Content, Container } from "./styles";
 import { HeaderComponent, FooterComponent, ModalComponent } from "components";
 import { GlobalContext, DispatchTypes } from "context";
