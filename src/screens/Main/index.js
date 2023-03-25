@@ -46,7 +46,7 @@ const Main = () => {
   const { user, doc, loading } = userState;
 
   const alertModal = useCallback(
-    (title, content) => {
+    (title, content, actions) => {
       modalDispatch({
         type: DispatchTypes.Modal.MODAL_SHOW,
         title,
@@ -56,6 +56,7 @@ const Main = () => {
             text: "Ok",
             action: () => {
               modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
+              actions && actions();
             },
           },
         ],
@@ -161,20 +162,12 @@ const Main = () => {
           description
         );
         if (addAction) {
-          modalDispatch({
-            type: DispatchTypes.Modal.MODAL_SHOW,
-            title: "Bill Added",
-            content: "Your bill was successfully added!",
-            actions: [
-              {
-                text: "Ok",
-                action: () => {
-                  modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
-                  getStartData(doc);
-                },
-              },
-            ],
-          });
+          const modalActionOk = () => getStartData(doc);
+          alertModal(
+            "Bill Added",
+            "Your bill was successfully added!",
+            modalActionOk
+          );
           clearForm();
         } else {
           alertModal(
@@ -192,6 +185,12 @@ const Main = () => {
         );
         setMainLoading(false);
       }
+    } else {
+      console.log("addBill ERROR no user", user);
+      alertModal(
+        "Error",
+        "There was an error trying to add a new bill. Please try again later."
+      );
     }
   };
 
