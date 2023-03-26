@@ -54,7 +54,7 @@ export const OrderList = styled.ol`
   font-weight: 300;
   font-size: 14px;
   margin: 0;
-  padding: 0 0 0 15px;
+  padding: 0 0 0 20px;
 `;
 
 export const Link = styled.a`
