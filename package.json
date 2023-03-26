@@ -23,6 +23,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.0",
     "react-select": "^4.3.1",
+    "react-swipeable": "^7.0.0",
     "react-toastify": "^7.0.3",
     "recharts": "^2.0.10",
     "styled-components": "^5.1.0",
@@ -33,7 +34,8 @@
     "start": "react-scripts start -e .env",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start-sw": "http-server ./build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -53,6 +55,7 @@
   "devDependencies": {
     "dotenv": "^8.2.0",
     "http-proxy-middleware": "^1.0.3",
+    "http-server": "^14.1.1",
     "netlify-lambda": "^1.6.3",
     "npm-run-all": "^4.1.5"
   }

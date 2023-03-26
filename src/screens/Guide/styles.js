@@ -24,13 +24,13 @@ export const ImageContainer = styled.div`
 export const Title = styled.h1`
   font-family: "Roboto";
   font-weight: 400;
-  font-size: 18px;
+  font-size: 21px;
 `;
 
 export const Pharagraph = styled.p`
   font-family: "Roboto";
   font-weight: 300;
-  font-size: 12px;
+  font-size: 14px;
 `;
 
 export const Mark = styled.span`
@@ -40,19 +40,20 @@ export const Mark = styled.span`
 export const Strong = styled.p`
   font-family: "Roboto";
   font-weight: 500;
-  font-size: 12px;
+  font-size: 14px;
 `;
 
 export const OrderList = styled.ol`
   font-family: "Roboto";
   font-weight: 300;
-  font-size: 12px;
+  font-size: 14px;
   margin: 0;
   padding: 0 0 0 15px;
 `;
 
 export const Link = styled.a`
   color: #38b44e;
+  cursor: pointer;
 `;
 
 export const Footer = styled.div`
@@ -84,7 +85,7 @@ export const Navigator = styled.div`
   color: #38b44e;
   font-family: "Roboto";
   font-weight: 500;
-  font-size: 12px;
+  font-size: 14px;
   flex: 1;
   text-align: ${(props) => props.next && "right"};
   height: 100%;
@@ -96,7 +97,7 @@ export const GithubLink = styled.a`
   border-radius: 7px;
   font-family: "Roboto";
   font-weight: 400;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 14px;
   align-items: center;
   text-align: center;

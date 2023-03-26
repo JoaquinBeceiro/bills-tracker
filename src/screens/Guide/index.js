@@ -5,6 +5,7 @@ import SpreadsheetScreenshot from "rsc/img/spreadsheetScreenshot.png";
 import LoginScreenshot from "rsc/img/loginScreenshot.png";
 import GithubIcon from "rsc/icons/github.svg";
 import { useHistory } from "react-router-dom";
+import { useSwipeable } from "react-swipeable";
 
 const Guide = () => {
   const history = useHistory();
@@ -15,8 +16,14 @@ const Guide = () => {
     <S.Container>
       <S.Title>Create a spreadsheet</S.Title>
       <S.Pharagraph>
-        Create a new Google Spreadsheet and copy the spreadsheet ID, you will
-        need it later.
+        Create a new Google Spreadsheet or copy from{" "}
+        <S.Link
+          href="https://docs.google.com/spreadsheets/d/1zR8NCRoiVZszVN1FlqUdSk9r9jfn_h_eR3gYCgJuvqY/copy"
+          target="_blank"
+        >
+          here
+        </S.Link>
+        . Copy the spreadsheet ID/URL, you will need it later.
       </S.Pharagraph>
 
       <S.ImageContainer>
@@ -38,8 +45,8 @@ const Guide = () => {
       <S.Title>Onboarding process</S.Title>
       <S.Strong>Insert data into onboarding fields.</S.Strong>
       <S.OrderList>
-        <li>Insert you name in the "NAME" field</li>
-        <li>Insert the spreadsheet ID or URL</li>
+        <li>Insert your name in the "NAME" field</li>
+        <li>Insert the Spreadsheet ID or URL</li>
         <S.ImageContainer>
           <img src={LoginScreenshot} alt="Login screenshot" />
         </S.ImageContainer>
@@ -98,9 +105,21 @@ const Guide = () => {
     }
   };
 
+  const handlers = useSwipeable({
+    onSwiped: (eventData) => {
+      if (eventData.dir === "Left") {
+        handleNextStep();
+      }
+
+      if (eventData.dir === "Right") {
+        handlePrevStep();
+      }
+    },
+  });
+
   return (
     <NoHeaderLayout>
-      <S.Content>
+      <S.Content {...handlers}>
         {steps.find(({ number }) => number === activeStep).step}
         <S.Footer>
           <S.Navigator onClick={handlePrevStep}>
