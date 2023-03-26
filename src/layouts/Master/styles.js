@@ -19,9 +19,9 @@ const Content = styled.div`
   display: flex;
   @media (display-mode: browser) {
     height: ${({ footer }) =>
-      footer ? "calc(var(--vh) - 110px);" : "calc(var(--vh) - 60px);"};
+      footer ? "calc(var(--vh) - 110px)" : "calc(var(--vh) - 60px)"};
     max-height: ${({ footer }) =>
-      footer ? "calc(var(--vh) - 110px);" : "calc(var(--vh) - 60px);"};
+      footer ? "calc(var(--vh) - 110px)" : "calc(var(--vh) - 60px)"};
   }
 `;
 

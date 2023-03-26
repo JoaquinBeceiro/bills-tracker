@@ -21,6 +21,9 @@ const Content = styled.div`
   overflow-y: auto;
   margin-bottom: 0px;
   min-height: calc(100vh - 190px);
+  @media (display-mode: browser) {
+    min-height: auto;
+  }
 `;
 
 export { Container, Content };
