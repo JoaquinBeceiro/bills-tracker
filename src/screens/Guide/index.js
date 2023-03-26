@@ -3,6 +3,8 @@ import { NoHeaderLayout } from "layouts";
 import * as S from "./styles";
 import SpreadsheetScreenshot from "rsc/img/spreadsheetScreenshot.png";
 import LoginScreenshot from "rsc/img/loginScreenshot.png";
+import IosInstall from "rsc/img/iosInstall.png";
+import AndroidInstall from "rsc/img/androidInstall.png";
 import GithubIcon from "rsc/icons/github.svg";
 import { useHistory } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
@@ -13,6 +15,31 @@ const Guide = () => {
   const [activeStep, setActiveStep] = useState(1);
 
   const Step1 = (
+    <S.Container>
+      <S.Title>Install</S.Title>
+      <S.Pharagraph>
+        If you are on <S.Mark>IOS</S.Mark>, open the site on Safari, click on
+        the Share button and select “Add to Home Screen” from the popup. Lastly,
+        tap "Add" in the top right corner.
+      </S.Pharagraph>
+
+      <S.ImageContainer>
+        <img src={IosInstall} alt="IOS install screenshot" />
+      </S.ImageContainer>
+
+      <S.Pharagraph>
+        If you are on <S.Mark>Andriod</S.Mark>, press the “three dot” icon in
+        the upper right to open the menu. Select “Add to Home screen” and then
+        press the “Add” button in the popup.
+      </S.Pharagraph>
+
+      <S.ImageContainer>
+        <img src={AndroidInstall} alt="Andriod install screenshot" />
+      </S.ImageContainer>
+    </S.Container>
+  );
+
+  const Step2 = (
     <S.Container>
       <S.Title>Create a spreadsheet</S.Title>
       <S.Pharagraph>
@@ -40,7 +67,7 @@ const Guide = () => {
     </S.Container>
   );
 
-  const Step2 = (
+  const Step3 = (
     <S.Container>
       <S.Title>Onboarding process</S.Title>
       <S.Strong>Insert data into onboarding fields.</S.Strong>
@@ -55,7 +82,7 @@ const Guide = () => {
     </S.Container>
   );
 
-  const Step3 = (
+  const Step4 = (
     <S.Container>
       <S.Title>Information</S.Title>
       <S.Pharagraph>
@@ -89,6 +116,7 @@ const Guide = () => {
     { number: 1, step: Step1 },
     { number: 2, step: Step2 },
     { number: 3, step: Step3 },
+    { number: 4, step: Step4 },
   ];
 
   const handleNextStep = () => {
