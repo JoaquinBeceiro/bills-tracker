@@ -5,6 +5,13 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import "typeface-roboto";
 
+let vh = Math.abs(window.visualViewport.height);
+document.documentElement.style.setProperty("--vh", `${vh}px`);
+window.addEventListener("resize", () => {
+  document.documentElement.style.setProperty("--vh", `${vh}px`);
+});
+// Then we set the value in the --vh custom property to the root of the document
+
 ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change

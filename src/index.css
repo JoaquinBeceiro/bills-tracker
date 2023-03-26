@@ -12,6 +12,17 @@ body {
   background-color: #38b44e;
 }
 
+@media (display-mode: browser) {
+
+  body,
+  #root {
+    height: var(--vh);
+    max-height: var(--vh);
+    overflow-y: hidden;
+  }
+
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

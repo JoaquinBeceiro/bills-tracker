@@ -28,9 +28,9 @@ const Guide = () => {
       </S.ImageContainer>
 
       <S.Pharagraph>
-        If you are on <S.Mark>Andriod</S.Mark>, press the “three dot” icon in
-        the upper right to open the menu. Select “Add to Home screen” and then
-        press the “Add” button in the popup.
+        If you are on <S.Mark>Andriod</S.Mark>, open the site on Chrome, press
+        the “three dot” icon in the upper right to open the menu. Select “Add to
+        Home screen” and then press the “Add” button in the popup.
       </S.Pharagraph>
 
       <S.ImageContainer>

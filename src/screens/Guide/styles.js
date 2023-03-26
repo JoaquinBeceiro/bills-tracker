@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 export const Content = styled.div`
   height: calc(100vh - 125px);
+  @media (display-mode: browser) {
+    height: 100%;
+  }
   display: flex;
   flex-direction: column;
   > div:first-child {
@@ -12,6 +15,9 @@ export const Content = styled.div`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
+  overflow-y: scroll;
+  width: 100%;
 `;
 
 export const ImageContainer = styled.div`

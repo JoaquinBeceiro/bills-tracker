@@ -32,12 +32,12 @@ const Master = ({
 
   return (
     <Container footer={footer}>
-      <Content>{children}</Content>
       <HeaderComponent
         title={title}
         subTitle={subTitle}
         allowSignOut={allowSignOut}
       />
+      <Content>{children}</Content>
       {footer && <FooterComponent />}
       {modalState.show && (
         <ModalComponent
