@@ -37,7 +37,7 @@ const Master = ({
         subTitle={subTitle}
         allowSignOut={allowSignOut}
       />
-      <Content>{children}</Content>
+      <Content footer={footer}>{children}</Content>
       {footer && <FooterComponent />}
       {modalState.show && (
         <ModalComponent
