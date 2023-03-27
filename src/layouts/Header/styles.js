@@ -13,7 +13,7 @@ const Content = styled.div`
   background: #ffffff;
   border-radius: 30px 30px 0px 0px;
   width: 100%;
-  padding: 25px 30px;
+  padding: 25px 30px 80px 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
