@@ -7,9 +7,16 @@ const setDoc = async ({
   refresh_token,
   expires_at,
   spreadsheetId,
+  name,
 }) => {
   try {
-    const user = { access_token, refresh_token, expires_at, spreadsheetId };
+    const user = {
+      access_token,
+      refresh_token,
+      expires_at,
+      spreadsheetId,
+      name,
+    };
     const newDoc = await createDoc(
       access_token,
       refresh_token,
