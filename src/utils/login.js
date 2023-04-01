@@ -1,5 +1,5 @@
 import { checkCredentials, createDoc } from "services";
-import { setUserSession } from "config/localStorage";
+import { setUserSession, getUserSession } from "config/localStorage";
 import Utils from "lib/utils";
 
 const setDoc = async ({
@@ -16,7 +16,11 @@ const setDoc = async ({
       expires_at,
       spreadsheetId
     );
-    setUserSession(user);
+    const oldUser = getUserSession();
+    setUserSession({
+      ...oldUser,
+      ...user,
+    });
     return newDoc;
   } catch (error) {
     throw error;
