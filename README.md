@@ -14,6 +14,7 @@
 - [Objectives](#Objectives)
 - [Screenshots](#Screenshots)
 - [Architecture](#Architecture)
+- [Development Requirements](#development-requirements)
 - [Onboarding](#Onboarding)
 - [Information](#Information)
 - [Example](#Example)
@@ -44,6 +45,39 @@
 ## Architecture
 
 ![public/img/Arch.png](public/img/Arch.png)
+
+## Development Requirements
+
+_These instructions will allow you to obtain a copy of the running project on your local machine for development and testing purposes._
+
+_The first thing you need to do is create a fork of this project and clone it. To start using the software it is only necessary to have [Node.js](https://nodejs.org/en/download) installed on your system._
+
+_Once the fork is cloned and Node installed.js on your system, you can install the project dependencies by following these steps;_
+
+_Installs project dependencies_
+
+```
+npm install
+```
+
+_Add an .env file to the project root and enter your credentials_
+
+```
+touch .env
+```
+
+```
+REACT_APP_REDIRECT_URI=<REACT_APP_REDIRECT_URI>
+REACT_APP_BASE_URI=<REACT_APP_BASE_URI>
+REACT_APP_GOOGLE_OAUTH_CLIENT_ID=<REACT_APP_GOOGLE_OAUTH_CLIENT_ID>
+REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET=<REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET>
+```
+
+_Run the project_
+
+```
+npm start
+```
 
 ## Onboarding
 
@@ -102,3 +136,10 @@ If you want to collaborate or support the project in any way, feel free to do so
     <td align="center"><a href="https://github.com/SirMendacium"><img src="https://avatars.githubusercontent.com/u/43242750?v=3?s=100" width="100px;" alt=""/><br /><sub><b>SirMendacium</b></sub></a></td>
   </tr>
 </table>
+
+## Expressions of gratitude 🎁
+
+* Tell others about this project 📢
+* Invite someone on the team for a beer 🍺 or coffee ☕. 
+* Give thanks publicly 🤓.
+* Star to the project ⭐
