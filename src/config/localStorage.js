@@ -6,6 +6,10 @@ export const setUserSession = (user) => {
     ...userFromStorage,
     ...user,
   };
+  if (userFromStorage.name) {
+    newUser.name = userFromStorage.name;
+  }
+
   const userObject = JSON.stringify(newUser);
   localStorage.setItem("user", userObject);
 };
