@@ -20,6 +20,7 @@ const Analytics = () => {
 
   const { formatSymbol } = Utils.Currency;
   const { LAST_12_MONTHS_OPTION } = Utils.Constants;
+  const { nextMonth } = Utils.Date;
 
   const [mainLoading, setMainLoading] = useState(false);
   const [selectedYear, setSelectedYear] = useState(LAST_12_MONTHS_OPTION.value);
@@ -39,7 +40,7 @@ const Analytics = () => {
           ? await getLast12Months(doc)
           : await getAllMonthByYear(doc, selectedYear);
 
-      const arrayStartsFrom = selectedYear === "last12months" ? 4 : 1;
+      const arrayStartsFrom = selectedYear === "last12months" ? nextMonth() : 1;
 
       const newArray = Array.from({ length: 12 }, (_, i) =>
         i + arrayStartsFrom > 12
@@ -59,7 +60,7 @@ const Analytics = () => {
       setData(chartDataWithAllMonths);
       setMainLoading(false);
     },
-    [LAST_12_MONTHS_OPTION, selectedYear]
+    [LAST_12_MONTHS_OPTION, nextMonth, selectedYear]
   );
 
   useEffect(() => {
