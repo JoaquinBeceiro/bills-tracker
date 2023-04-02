@@ -6,7 +6,7 @@ export const setUserSession = (user) => {
     ...userFromStorage,
     ...user,
   };
-  if (userFromStorage.name) {
+  if (userFromStorage?.name) {
     newUser.name = userFromStorage.name;
   }
 

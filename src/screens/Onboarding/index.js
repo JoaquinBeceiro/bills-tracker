@@ -28,7 +28,7 @@ const Onboarding = () => {
   const [checked, setChecked] = useState(false);
 
   const [values, setValues] = useState({
-    name: userFromStorage?.name || "",
+    name: userFromStorage?.name,
     spreadsheetId: userFromStorage?.spreadsheetId || "",
     access_token: userFromStorage?.access_token || "",
     expires_at: userFromStorage?.expires_at || "",
@@ -76,6 +76,7 @@ const Onboarding = () => {
             refresh_token,
             id_token,
             spreadsheetId: normalizedId,
+            name,
           };
           const newDoc = await checkUser(user);
           if (newDoc) {
@@ -101,6 +102,7 @@ const Onboarding = () => {
             userDispatch({ type: DispatchTypes.User.FINISH });
           }
         } catch (e) {
+          console.log("ERROR: ", e);
           alertModal(
             "Invalid credentials",
             "Please check your credentials and try again later."
