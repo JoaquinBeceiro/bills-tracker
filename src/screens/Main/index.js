@@ -9,8 +9,11 @@ import {
 import { HeaderLayout } from "layouts";
 import { getTypes, getTotalByMonth, addRow, createDoc } from "services";
 import Utils from "lib/utils";
+import { useHistory } from "react-router-dom";
 
 const Main = () => {
+  const history = useHistory();
+
   const { moneyToNumber } = Utils.Currency;
   const { nowYear, nowMonth, pastMonthYear, todayDate } = Utils.Date;
 
@@ -124,6 +127,8 @@ const Main = () => {
         });
       }
     } catch (e) {
+      setMainLoading(false);
+      history.push("/");
       console.log("createDoc ERROR", e);
     }
   }, [user, userDispatch]);
@@ -170,6 +175,7 @@ const Main = () => {
           );
           clearForm();
         } else {
+          console.log("addBill ERROR", addAction);
           alertModal(
             "Error",
             "There was an error trying to add a new bill. Please try again later."
