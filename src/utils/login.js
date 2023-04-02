@@ -1,5 +1,5 @@
 import { checkCredentials, createDoc } from "services";
-import { setUserSession, getUserSession } from "config/localStorage";
+import { setUserSession } from "config/localStorage";
 import Utils from "lib/utils";
 
 const setDoc = async ({
@@ -7,20 +7,23 @@ const setDoc = async ({
   refresh_token,
   expires_at,
   spreadsheetId,
+  name,
 }) => {
   try {
-    const user = { access_token, refresh_token, expires_at, spreadsheetId };
+    const user = {
+      access_token,
+      refresh_token,
+      expires_at,
+      spreadsheetId,
+      name,
+    };
     const newDoc = await createDoc(
       access_token,
       refresh_token,
       expires_at,
       spreadsheetId
     );
-    const oldUser = getUserSession();
-    setUserSession({
-      ...oldUser,
-      ...user,
-    });
+    setUserSession(user);
     return newDoc;
   } catch (error) {
     throw error;
@@ -33,6 +36,7 @@ export const checkUser = async ({
   refresh_token,
   id_token,
   spreadsheetId,
+  name,
 }) => {
   const normalizedId = Utils.Common.getSpreadsheetId(spreadsheetId);
   try {
@@ -42,6 +46,7 @@ export const checkUser = async ({
       refresh_token,
       id_token,
       spreadsheetId: normalizedId,
+      name,
     };
     const valid = await checkCredentials(user);
     if (valid) {
@@ -50,6 +55,7 @@ export const checkUser = async ({
       return false;
     }
   } catch (error) {
+    console.log("ERROR: ", error);
     return false;
   }
 };
