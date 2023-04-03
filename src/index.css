@@ -23,6 +23,15 @@ body {
 
 }
 
+#root {
+  display: flex;
+  justify-content: center;
+}
+
+#root>div {
+  max-width: 700px;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

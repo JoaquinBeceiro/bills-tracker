@@ -131,7 +131,7 @@ const Main = () => {
       history.push("/");
       console.log("createDoc ERROR", e);
     }
-  }, [user, userDispatch]);
+  }, [history, user, userDispatch]);
 
   useEffect(() => {
     if (doc === null && user && !checked) {
