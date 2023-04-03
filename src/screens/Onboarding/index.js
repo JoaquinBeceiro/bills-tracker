@@ -247,10 +247,9 @@ const Onboarding = () => {
           />
           <GoogleButton
             disabled={buttonDisabled}
-            type="light" // can be light or dark
+            type="light"
             onClick={() => login()}
             className={`googleButton ${buttonDisabled ? "buttonDisabled" : ""}`}
-            label="Login"
           />
           <S.GoogleDisclaimer>
             Google will ask permissions to share your name, email address,
