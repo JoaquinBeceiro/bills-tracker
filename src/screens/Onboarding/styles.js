@@ -9,11 +9,12 @@ export const Content = styled.div`
   flex-direction: column;
   > div:first-child {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
   .googleButton {
-    width: 100% !important;
     height: 60px;
-    margin-top: 30px;
     span {
       text-align: center;
       width: 100%;
