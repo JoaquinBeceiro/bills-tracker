@@ -18,6 +18,9 @@ export const Content = styled.div`
     span {
       text-align: center;
       width: 100%;
+      color: #757575;
+      font-weight: 500;
+      font-size: 14px;
     }
   }
 
