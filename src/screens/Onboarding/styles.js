@@ -18,8 +18,6 @@ export const Content = styled.div`
     span {
       text-align: center;
       width: 100%;
-      color: #000;
-      font-size: 18px;
     }
   }
 
