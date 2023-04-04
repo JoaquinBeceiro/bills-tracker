@@ -32,6 +32,7 @@ const BarChartComponent = ({ data, isLoading }) => {
             tickLine={false}
             tick={{ fontFamily: "Roboto", fontSize: 11, fill: "#7E7E7E" }}
           />
+
           <Tooltip
             offset={-25}
             content={CustomTooltip}

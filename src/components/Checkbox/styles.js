@@ -17,6 +17,7 @@ export const Cotnainer = styled.div`
 
 export const Label = styled.label`
   display: flex;
+  width: fit-content;
   gap: 10px;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   align-items: center;

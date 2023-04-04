@@ -52,7 +52,9 @@ const LineChartComponent = ({ data, isLoading, categories }) => {
             dataKey="name"
             tickLine={false}
             tick={{ fontFamily: "Roboto", fontSize: 11, fill: "#7E7E7E" }}
+            tickCount={12}
           />
+
           <Tooltip
             offset={-25}
             content={CustomTooltip}

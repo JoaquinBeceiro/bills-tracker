@@ -367,6 +367,37 @@ export const getLast12MonthsByType = async (doc) => {
   }
 };
 
+export const getAllMonthByTypeByYear = async (doc, year) => {
+  if (doc) {
+    const fetchedRows = await getLocalSheetData();
+    const totalsFiltered = fetchedRows.filter((e) => {
+      const dateSplitted = split(e.Date);
+      return dateSplitted[2] === year.toString();
+    });
+
+    const groupedByMonth = totalsFiltered.reduce((prev, curr) => {
+      const newObject = { ...prev };
+      const month = split(curr.Date)[1];
+
+      const oldValue = newObject[month]?.[curr.Type]?.value || 0;
+      const oldCount = newObject[month]?.[curr.Type]?.count || 0;
+
+      if (newObject[month] === undefined) newObject[month] = [];
+
+      newObject[month][curr.Type] = {
+        value: oldValue + moneyToNumber(curr.Amount),
+        count: oldCount + 1,
+        year,
+      };
+      return newObject;
+    }, {});
+
+    return Object.entries(groupedByMonth).map((e) => ({ ...e[1], name: e[0] }));
+  } else {
+    return null;
+  }
+};
+
 export const getDetailsByMonth = async (doc, month, year) => {
   if (doc) {
     const monthString = month.toString().length < 2 ? `0${month}` : `${month}`;

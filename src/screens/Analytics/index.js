@@ -15,6 +15,7 @@ import {
   getAllMonthByYear,
   getLast12Months,
   getLast12MonthsByType,
+  getAllMonthByTypeByYear,
 } from "services";
 import Utils from "lib/utils";
 import { useHistory } from "react-router-dom";
@@ -51,7 +52,7 @@ const Analytics = () => {
         if (selectedYear === "last12months") {
           return getLast12MonthsByType(doc);
         } else {
-          return getLast12MonthsByType(doc);
+          return getAllMonthByTypeByYear(doc, selectedYear);
         }
       };
 
