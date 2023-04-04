@@ -5,10 +5,17 @@ import {
   LoadingComponent,
   BarChartComponent,
   MonthLegendComponent,
+  LineChartComponent,
+  CheckboxComponent,
 } from "components";
 import * as S from "./styles";
 import { GlobalContext } from "context";
-import { getYears, getAllMonthByYear, getLast12Months } from "services";
+import {
+  getYears,
+  getAllMonthByYear,
+  getLast12Months,
+  getLast12MonthsByType,
+} from "services";
 import Utils from "lib/utils";
 import { useHistory } from "react-router-dom";
 
@@ -21,11 +28,15 @@ const Analytics = () => {
   const { formatSymbol } = Utils.Currency;
   const { LAST_12_MONTHS_OPTION } = Utils.Constants;
   const { nextMonth } = Utils.Date;
+  const { addColors } = Utils.Colors;
 
   const [mainLoading, setMainLoading] = useState(false);
   const [selectedYear, setSelectedYear] = useState(LAST_12_MONTHS_OPTION.value);
   const [yearsOption, setYearsOption] = useState([]);
   const [data, setData] = useState([]);
+  const [legendData, setLegendData] = useState([]);
+  const [chartCategories, setChartCategories] = useState([]);
+  const [showTypes, setShowTypes] = useState(false);
 
   const getStartData = useCallback(
     async (doc) => {
@@ -35,10 +46,25 @@ const Analytics = () => {
       newYearsOptions.push(LAST_12_MONTHS_OPTION);
       setYearsOption(newYearsOptions);
 
-      const newChartData =
-        selectedYear === "last12months"
-          ? await getLast12Months(doc)
-          : await getAllMonthByYear(doc, selectedYear);
+      const getChartDataTypes = () => {
+        if (selectedYear === "last12months") {
+          return getLast12MonthsByType(doc);
+        } else {
+          return getLast12MonthsByType(doc);
+        }
+      };
+
+      const getChartData = () => {
+        if (selectedYear === "last12months") {
+          return getLast12Months(doc);
+        } else {
+          return getAllMonthByYear(doc, selectedYear);
+        }
+      };
+
+      const newChartData = showTypes
+        ? await getChartDataTypes()
+        : await getChartData();
 
       const arrayStartsFrom = selectedYear === "last12months" ? nextMonth() : 1;
 
@@ -52,16 +78,75 @@ const Analytics = () => {
         const findElement = newChartData.find(
           ({ name }) => parseInt(name) === index
         );
+
         const newName = index < 10 ? `0${index}` : `${index}`;
-        return findElement
-          ? findElement
-          : { value: 0, count: 0, year: 0, name: newName };
+
+        if (showTypes) {
+          if (findElement) {
+            const keys = Object.keys(findElement);
+            const newValues = keys
+              .filter((e) => e !== "name")
+              .map((e) => ({
+                [e]: findElement[e].value,
+              }))
+              .reduce(
+                (prev, curr) => ({
+                  ...prev,
+                  ...curr,
+                }),
+                {}
+              );
+            return { ...newValues, name: newName };
+          } else {
+            return { name: newName };
+          }
+        } else {
+          return findElement
+            ? findElement
+            : { value: 0, count: 0, year: 0, name: newName };
+        }
       });
+
+      const legendChartData = await getChartData();
+      const leggendsData = newArray
+        .map((index) => {
+          const findElement = legendChartData.find(
+            ({ name }) => parseInt(name) === index
+          );
+          const newName = index < 10 ? `0${index}` : `${index}`;
+          return findElement
+            ? findElement
+            : { value: 0, count: 0, year: 0, name: newName };
+        })
+        .filter(({ value }) => value > 0)
+        .sort((a, b) =>
+          parseInt(`${b.year}${b.name}`) > parseInt(`${a.year}${a.name}`)
+            ? 1
+            : -1
+        );
+
+      setLegendData(leggendsData);
       setData(chartDataWithAllMonths);
       setMainLoading(false);
     },
-    [LAST_12_MONTHS_OPTION, nextMonth, selectedYear]
+    [LAST_12_MONTHS_OPTION, nextMonth, selectedYear, showTypes]
   );
+
+  useEffect(() => {
+    const categories = showTypes
+      ? addColors(
+          [...new Set(data.map((e) => Object.keys(e)).flat())]
+            .filter((e) => e !== "name")
+            .map((e, index) => ({
+              key: e,
+              checked: index <= 2,
+            }))
+        )
+      : [];
+    if (categories) {
+      setChartCategories(categories);
+    }
+  }, [addColors, data, showTypes]);
 
   useEffect(() => {
     if (doc) {
@@ -77,18 +162,23 @@ const Analytics = () => {
     ({ value }) => value === selectedYear.toString()
   );
 
-  const chartData = data.map(({ value, name }) => ({
-    name,
-    amount: value,
-  }));
-
-  const leggendsData = data
-    .filter(({ value }) => value > 0)
-    .sort((a, b) =>
-      parseInt(`${b.year}${b.name}`) > parseInt(`${a.year}${a.name}`) ? 1 : -1
-    );
+  const chartData = showTypes
+    ? data
+    : data.map(({ value, name }) => ({
+        name,
+        amount: value,
+      }));
 
   const totalYear = data.reduce((acc, cur) => acc + cur.value, 0);
+
+  const handleCategoryChange = (key) => {
+    console.log("key", key);
+    const newCategories = [...chartCategories].map((category) => ({
+      ...category,
+      checked: category.key === key ? !category.checked : category.checked,
+    }));
+    setChartCategories(newCategories);
+  };
 
   const screenLoading = mainLoading || loading;
 
@@ -117,9 +207,39 @@ const Analytics = () => {
               {selectedYear === "last12months" ? "period" : "year"}
             </S.ResumeTotal>
           </S.SubTitleContainer>
-          <BarChartComponent data={chartData} isLoading={screenLoading} />
+          <>
+            <CheckboxComponent
+              color="#333"
+              checked={showTypes}
+              onChange={() => setShowTypes(!showTypes)}
+              label="By type"
+            />
+          </>
+          {showTypes ? (
+            <>
+              <LineChartComponent
+                data={chartData}
+                isLoading={screenLoading}
+                categories={chartCategories.filter(({ checked }) => checked)}
+              />
+              <S.CategoryList>
+                {chartCategories.map(({ key, checked, color }, index) => (
+                  <li key={`${key}-${index}`}>
+                    <CheckboxComponent
+                      label={key}
+                      checked={checked}
+                      onChange={() => handleCategoryChange(key)}
+                      color={color}
+                    />
+                  </li>
+                ))}
+              </S.CategoryList>
+            </>
+          ) : (
+            <BarChartComponent data={chartData} isLoading={screenLoading} />
+          )}
           <S.LeggendsContainer>
-            {leggendsData.map(({ name, value, year }, index) => (
+            {legendData.map(({ name, value, year }, index) => (
               <MonthLegendComponent
                 key={`${name}-${index}`}
                 month={name}

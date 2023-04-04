@@ -334,6 +334,39 @@ export const getLast12Months = async (doc) => {
   }
 };
 
+export const getLast12MonthsByType = async (doc) => {
+  if (doc) {
+    const ago = month12Ago();
+    const fetchedRows = await getLocalSheetData();
+    const totalsFiltered = fetchedRows.filter((e) => {
+      const dateFromSpreadsheet = dateParser(e.Date);
+      return dateFromSpreadsheet.getTime() >= ago.getTime();
+    });
+
+    const grouped = totalsFiltered.reduce((prev, curr) => {
+      const newObject = { ...prev };
+      const month = split(curr.Date)[1];
+      const year = split(curr.Date)[2];
+
+      const oldValue = newObject[month]?.[curr.Type]?.value || 0;
+      const oldCount = newObject[month]?.[curr.Type]?.count || 0;
+
+      if (newObject[month] === undefined) newObject[month] = [];
+
+      newObject[month][curr.Type] = {
+        value: oldValue + moneyToNumber(curr.Amount),
+        count: oldCount + 1,
+        year,
+      };
+      return newObject;
+    }, {});
+
+    return Object.entries(grouped).map((e) => ({ ...e[1], name: e[0] }));
+  } else {
+    return null;
+  }
+};
+
 export const getDetailsByMonth = async (doc, month, year) => {
   if (doc) {
     const monthString = month.toString().length < 2 ? `0${month}` : `${month}`;
