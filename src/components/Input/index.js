@@ -13,7 +13,7 @@ const Input = ({
   options = [],
 }) => {
   const handleChangeInput = (e) => onChange(e.target.name, e.target.value);
-  const handleChangeDropdown = ({value}) => onChange(name, value);
+  const handleChangeDropdown = ({ value }) => onChange(name, value);
 
   const defaultProps = {
     name,
@@ -36,7 +36,13 @@ const Input = ({
           {
             text: <S.InputBox {...defaultProps} type="text" />,
             date: <S.Date {...defaultProps} type="date" />,
-            money: <S.TextMoney {...defaultProps} type="number" />,
+            money: (
+              <S.TextMoney
+                {...defaultProps}
+                type="number"
+                inputmode="numeric"
+              />
+            ),
             dropdown: (
               <S.DropdownBox {...defaultProps} options={options} isClearable />
             ),
