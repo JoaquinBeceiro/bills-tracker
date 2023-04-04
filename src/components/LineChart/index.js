@@ -41,6 +41,8 @@ const CustomTooltip = (props) => {
 const LineChartComponent = ({ data, isLoading, categories }) => {
   const chartHeight = 210;
 
+  console.log("data", data);
+
   return (
     <ResponsiveContainer width="100%" height={chartHeight}>
       {isLoading ? (
@@ -52,7 +54,12 @@ const LineChartComponent = ({ data, isLoading, categories }) => {
             dataKey="name"
             tickLine={false}
             tick={{ fontFamily: "Roboto", fontSize: 11, fill: "#7E7E7E" }}
+            type="category"
+            includeHidden
+            minTickGap={1}
+            tickSize={1}
             tickCount={12}
+            interval={0}
           />
 
           <Tooltip
@@ -61,13 +68,8 @@ const LineChartComponent = ({ data, isLoading, categories }) => {
             categories={categories}
             wrapperStyle={{ zIndex: 1000 }}
           />
-          {categories.map((cat) => (
-            <Line
-              key={cat.key}
-              type="monotone"
-              dataKey={cat.key}
-              stroke={cat.color}
-            />
+          {categories.map(({ key, color }) => (
+            <Line key={key} type="monotone" dataKey={key} stroke={color} />
           ))}
         </LineChart>
       )}
