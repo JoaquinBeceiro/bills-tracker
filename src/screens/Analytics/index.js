@@ -37,6 +37,7 @@ const Analytics = () => {
   const [legendData, setLegendData] = useState([]);
   const [chartCategories, setChartCategories] = useState([]);
   const [showTypes, setShowTypes] = useState(false);
+  const [totalYear, setTotalYear] = useState(0);
 
   const getStartData = useCallback(
     async (doc) => {
@@ -107,10 +108,10 @@ const Analytics = () => {
         }
       });
 
-      const legendChartData = await getChartData();
+      const yearData = await getChartData();
       const leggendsData = newArray
         .map((index) => {
-          const findElement = legendChartData.find(
+          const findElement = yearData.find(
             ({ name }) => parseInt(name) === index
           );
           const newName = index < 10 ? `0${index}` : `${index}`;
@@ -124,7 +125,20 @@ const Analytics = () => {
             ? 1
             : -1
         );
+      const newTotalYear = newArray
+        .map((index) => {
+          const findElement = yearData.find(
+            ({ name }) => parseInt(name) === index
+          );
+          const newName = index < 10 ? `0${index}` : `${index}`;
+          return findElement
+            ? findElement
+            : { value: 0, count: 0, year: 0, name: newName };
+        })
+        .filter(({ value }) => value > 0)
+        .reduce((acc, cur) => acc + cur.value, 0);
 
+      setTotalYear(newTotalYear);
       setLegendData(leggendsData);
       setData(chartDataWithAllMonths);
       setMainLoading(false);
@@ -168,8 +182,6 @@ const Analytics = () => {
         name,
         amount: value,
       }));
-
-  const totalYear = data.reduce((acc, cur) => acc + cur.value, 0);
 
   const handleCategoryChange = (key) => {
     console.log("key", key);
