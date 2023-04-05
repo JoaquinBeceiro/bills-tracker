@@ -44,7 +44,16 @@ export const ResumeTotal = styled.h4`
   font-weight: 300;
   font-size: 10px;
   span {
-  font-weight: 500;
+    font-weight: 500;
     color: #6fcf97;
   }
+`;
+
+export const CategoryList = styled.ul`
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  flex-flow: row wrap;
 `;
