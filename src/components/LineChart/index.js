@@ -23,6 +23,7 @@ const CustomTooltip = (props) => {
         <p>Month {name}</p>
         <ul>
           {Object.keys(data)
+            .sort((a, b) => (data[a] > data[b] ? -1 : 1))
             .filter((e) => categories.includes(e))
             .map((e, index) => (
               <li key={`${index}-${e}`}>
@@ -40,8 +41,6 @@ const CustomTooltip = (props) => {
 
 const LineChartComponent = ({ data, isLoading, categories }) => {
   const chartHeight = 210;
-
-  console.log("data", data);
 
   return (
     <ResponsiveContainer width="100%" height={chartHeight}>
