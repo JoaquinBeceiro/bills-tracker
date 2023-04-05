@@ -128,7 +128,7 @@ export const addRow = async (doc, date, who, amount, type, detail) => {
     };
     await sheet.addRow(newRow);
     const newData = await getLocalSheetData();
-    const lastId = newData[newData.length - 1].Id;
+    const lastId = newData[newData.length - 1]?.Id || 1;
     newData.push({ ...newRow, Id: lastId + 1 });
     setSheetData(newData);
     return newData;
