@@ -185,7 +185,6 @@ const Analytics = () => {
       }));
 
   const handleCategoryChange = (key) => {
-    console.log("key", key);
     const newCategories = [...chartCategories].map((category) => ({
       ...category,
       checked: category.key === key ? !category.checked : category.checked,
