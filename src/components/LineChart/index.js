@@ -68,7 +68,13 @@ const LineChartComponent = ({ data, isLoading, categories }) => {
             wrapperStyle={{ zIndex: 1000 }}
           />
           {categories.map(({ key, color }) => (
-            <Line key={key} type="monotone" dataKey={key} stroke={color} />
+            <Line
+              connectNulls
+              key={key}
+              type="monotone"
+              dataKey={key}
+              stroke={color}
+            />
           ))}
         </LineChart>
       )}
