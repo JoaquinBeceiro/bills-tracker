@@ -1,5 +1,7 @@
 <h1 align="center">Bills Tracker</h1>
-
+<p align="center">
+  <img src="public/img/screens/cover.png" width="450" height="450" />
+</p>
 ### This is a project based on a progressive web app to Track and share expenses with a Google Drive Spreadsheet in a very simple way.
 
 <p align="center">
@@ -26,7 +28,7 @@
 - Save bills to a spreadsheet quickly and easily
 - Separate types of expenses
 - Show all the records with graphs
-- Share your expenses with others on the same spreadsheet 
+- Share your expenses with others on the same spreadsheet
 - Identify how are you spending your money!
 
 ## Screenshots
@@ -52,10 +54,10 @@
 - Create a new Google Spreadsheet or copy from [here](https://docs.google.com/spreadsheets/d/1zR8NCRoiVZszVN1FlqUdSk9r9jfn_h_eR3gYCgJuvqY/copy).
 - Copy the spreadsheet ID or URL, you will need it later.
 - The ID is on the URL of the spreadsheet.
-https://docs.google.com/spreadsheets/d/1qffzsCf2siRv-loAAMLeGzsSsmwcT3odSfmXBASO0fg/edit#gid=0. You can also use the full URL.
-
+  https://docs.google.com/spreadsheets/d/1qffzsCf2siRv-loAAMLeGzsSsmwcT3odSfmXBASO0fg/edit#gid=0. You can also use the full URL.
 
 ### 2. Onboarding process
+
 #### Insert data into onboarding fields.
 
 - Insert you name in the "NAME" field
@@ -70,10 +72,7 @@ BillsTracker don’t save or track any information about you.
 All the data entered in the application belongs only and solely to the user, BillsTracker does not store any type of information since we do not have a database to do so.
 The code of the app is public and open source, we don’t have any back-end, it’s just front-end.
 
-
-
 If you want to collaborate or support the project in any way, feel free to do so through the GitHub profile
-
 
 ## Example
 
