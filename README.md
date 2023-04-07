@@ -2,6 +2,7 @@
 <p align="center">
   <img src="public/img/screens/cover.png" width="450" height="450" />
 </p>
+
 ### This is a project based on a progressive web app to Track and share expenses with a Google Drive Spreadsheet in a very simple way.
 
 <p align="center">
