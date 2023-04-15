@@ -21,6 +21,7 @@ const InputContainer = styled.div`
     overflow: hidden;
   }
   &.date {
+    height: 45px;
     color: #333333;
     z-index: 300;
     input {
