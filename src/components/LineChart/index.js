@@ -12,15 +12,20 @@ import * as S from "./styles";
 import Utils from "lib/utils";
 
 const { formatMoney } = Utils.Currency;
+const { monthToText } = Utils.Date;
 
 const CustomTooltip = (props) => {
   const categories = props?.categories?.map(({ key }) => key);
   const data = { ...props?.payload[0]?.payload };
   const name = props?.payload[0]?.payload?.name || "";
+  const year = props?.payload[0]?.payload?.year || "";
   if (data) {
+    const monthText = `${monthToText(parseInt(name) - 1)?.substring(0, 3)}.`;
     return (
       <S.Tooltip>
-        <p>Month {name}</p>
+        <p>
+          {monthText} {year}
+        </p>
         <ul>
           {Object.keys(data)
             .sort((a, b) => (data[a] > data[b] ? -1 : 1))
@@ -41,7 +46,6 @@ const CustomTooltip = (props) => {
 
 const LineChartComponent = ({ data, isLoading, categories }) => {
   const chartHeight = 210;
-
   return (
     <ResponsiveContainer width="100%" height={chartHeight}>
       {isLoading ? (
