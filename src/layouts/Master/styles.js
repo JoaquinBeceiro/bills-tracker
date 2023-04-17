@@ -17,6 +17,8 @@ const Container = styled.div`
 
 const Content = styled.div`
   display: flex;
+  height: ${({ footer }) =>
+    footer ? "calc(var(--vh) - 110px)" : "calc(var(--vh) - 60px)"};
   @media (display-mode: browser) {
     height: ${({ footer }) =>
       footer ? "calc(var(--vh) - 110px)" : "calc(var(--vh) - 60px)"};
