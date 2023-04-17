@@ -25,7 +25,7 @@ const SecondaryValue = styled.h3`
   font-family: Roboto;
   font-style: normal;
   font-weight: 300;
-  font-size: 9px;
+  font-size: 11px;
   color: #aaaaaa;
   display: flex;
   align-items: center;
