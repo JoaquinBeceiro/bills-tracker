@@ -3,7 +3,7 @@ import styled from "styled-components";
 const Container = styled.div`
   position: fixed;
   bottom: 0;
-  height: 50px;
+  height: 60px;
   width: 100%;
   max-width: inherit;
   background: #ffffff;

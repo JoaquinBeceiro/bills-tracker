@@ -2,7 +2,9 @@ import styled from "styled-components";
 import bg from "../../rsc/img/bg.svg";
 
 const Container = styled.div`
-  padding-bottom: ${({ footer }) => (footer ? "50px" : "0px;")};
+  /* padding-bottom: ${({ footer }) => (footer ? "60px" : "0px;")}; */
+  display: flex;
+  flex-direction: column;
   height: 100vh;
   min-height: 100vh;
   @media (display-mode: browser) {
@@ -19,11 +21,12 @@ const Content = styled.div`
   display: flex;
   height: ${({ footer }) =>
     footer ? "calc(var(--vh) - 110px)" : "calc(var(--vh) - 60px)"};
+  flex: 1;
   @media (display-mode: browser) {
     height: ${({ footer }) =>
-      footer ? "calc(var(--vh) - 110px)" : "calc(var(--vh) - 60px)"};
+      footer ? "calc(var(--vh) - 120px)" : "calc(var(--vh) - 60px)"};
     max-height: ${({ footer }) =>
-      footer ? "calc(var(--vh) - 110px)" : "calc(var(--vh) - 60px)"};
+      footer ? "calc(var(--vh) - 120px)" : "calc(var(--vh) - 60px)"};
   }
 `;
 
