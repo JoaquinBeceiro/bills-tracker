@@ -157,7 +157,7 @@ const Main = () => {
 
     if (window.gtag) {
       window.gtag("event", "add_bill", {
-        form,
+        ...form,
       });
     }
 
