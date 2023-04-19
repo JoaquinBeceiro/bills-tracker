@@ -155,6 +155,12 @@ const Main = () => {
   const addBill = async () => {
     const { amount, type, date, description } = form;
 
+    if (window.gtag) {
+      window.gtag("event", "add_bill", {
+        form,
+      });
+    }
+
     if (amount && type && date && user.name) {
       setMainLoading(true);
       try {
