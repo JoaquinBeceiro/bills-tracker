@@ -118,7 +118,9 @@ If you want to collaborate or support the project in any way, feel free to do so
 - [x] Validate inputs
 - [x] Show graphs
 - [x] Editable expense type dropdown values
-- [ ] Improve the code
+- [x] Improve the code
+- [x] Google login
+- [ ] Show important information for the user on the home page
 
 ## Author
 
