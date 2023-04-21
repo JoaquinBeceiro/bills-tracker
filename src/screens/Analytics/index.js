@@ -156,7 +156,7 @@ const Analytics = () => {
     const categories = showTypes
       ? addColors(
           [...new Set(data.map((e) => Object.keys(e)).flat())]
-            .filter((e) => e !== "name")
+            .filter((e) => e !== "name" && e !== "year")
             .map((e, index) => ({
               key: e,
               checked: index <= 2,
