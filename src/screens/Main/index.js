@@ -225,6 +225,7 @@ const Main = () => {
           options={billsTypes}
           value={billsTypes && form.type && billsTypes[form.type]}
           onChange={onChange}
+          placeholder="Write to create new type"
         />
         <InputComponent
           type="date"
