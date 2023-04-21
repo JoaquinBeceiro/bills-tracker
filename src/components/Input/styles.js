@@ -106,6 +106,7 @@ const TextMoney = styled(InputBox)`
 `;
 
 const Date = styled(InputBox)`
+  min-height: 45px;
   color: #333333;
   font-style: normal;
   font-weight: normal;
@@ -121,8 +122,37 @@ const Date = styled(InputBox)`
   }
 `;
 
+const CreateButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const CreateButton = styled.div`
+  width: fit-content;
+  border-radius: 9px;
+  padding: 4px 14px;
+  border: none;
+  color: white;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #6fc97f;
+`;
+
 const SelectComponent = (props) => (
-  <CreatableSelect classNamePrefix="Select" {...props} />
+  <CreatableSelect
+    classNamePrefix="Select"
+    formatCreateLabel={(input) => (
+      <CreateButtonContainer>
+        <CreateButton>
+          <strong>Create type</strong> {`"${input}"`}
+        </CreateButton>
+      </CreateButtonContainer>
+    )}
+    {...props}
+  />
 );
 
 const DropdownBox = styled(SelectComponent)`
