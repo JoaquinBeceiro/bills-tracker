@@ -86,7 +86,7 @@ const Analytics = () => {
         if (showTypes) {
           if (findElement) {
             const keys = Object.keys(findElement);
-            const newKeys = keys.filter((e) => e !== "name");
+            const newKeys = keys.filter((e) => e !== "name" && e !== "year");
             const newValues = newKeys
               .map((e) => ({
                 [e]: findElement[e].value,
