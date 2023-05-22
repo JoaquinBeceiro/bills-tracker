@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  height: 100%;
   max-width: 100%;
   .carousel-slider {
     padding-bottom: 15px;
