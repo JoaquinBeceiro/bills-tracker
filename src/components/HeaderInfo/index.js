@@ -12,8 +12,11 @@ const HeaderInfo = ({ data }) => {
         infiniteLoop={true}
         showThumbs={false}
         showStatus={false}
-        showIndicators={false}
-        interval={4000}
+        interval={6000}
+        showArrows={false}
+        renderIndicator={(clickHandler, isSelected) => (
+          <S.Indicator onClick={clickHandler} isSelected={isSelected} />
+        )}
       >
         {data &&
           data.map(
