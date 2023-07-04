@@ -18,7 +18,7 @@ const HeaderInfo = ({ data }) => {
           <S.Indicator onClick={clickHandler} isSelected={isSelected} />
         )}
       >
-        {data &&
+        {data ? (
           data.map(
             ({ primaryValue, secondaryValue, title, arrowIcon }, index) => (
               <HeaderBoxComponent
@@ -27,9 +27,13 @@ const HeaderInfo = ({ data }) => {
                 secondaryValue={secondaryValue}
                 title={title}
                 arrowIcon={arrowIcon}
+                info={"test"}
               />
             )
-          )}
+          )
+        ) : (
+          <HeaderBoxComponent />
+        )}
       </Carousel>
     </S.Container>
   );

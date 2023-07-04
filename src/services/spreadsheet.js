@@ -2,7 +2,11 @@ import { GoogleSpreadsheet } from "google-spreadsheet";
 import Utils from "lib/utils";
 import { defaultTypes, sheetHeaders, sheetTitle } from "config/sheet";
 import { setSheetData, getSheetData } from "config/localStorage";
-import { avgHeaderData, totalsHeaderData } from "./headerData";
+import {
+  avgHeaderData,
+  totalsHeaderData,
+  categoryHeaderData,
+} from "./headerData";
 const { OAuth2Client } = require("google-auth-library");
 
 const { moneyToNumber, formatMoney } = Utils.Currency;
@@ -452,6 +456,7 @@ export const deleteRow = async (doc, id) => {
 export const HeaderData = async (doc) => {
   const avgHeader = await avgHeaderData(doc);
   const totalsHeader = await totalsHeaderData(doc);
+  const categoryHeader = await categoryHeaderData(doc);
 
-  return [totalsHeader, avgHeader];
+  return [totalsHeader, avgHeader, categoryHeader];
 };

@@ -76,3 +76,78 @@ export const avgHeaderData = async (doc) => {
     return null;
   }
 };
+
+export const categoryHeaderData = async (doc) => {
+  if (doc) {
+    const todayDate = new Date().getDate();
+
+    const fetchedRows = await getLocalSheetData();
+    const totalsFiltered = fetchedRows.filter((e) => {
+      const dateSplitted = split(e.Date);
+      return (
+        dateSplitted[2] === nowYear().toString() &&
+        dateSplitted[1] === nowMonth().toString()
+      );
+    });
+
+    const totalsFilteredPreviousMonth = fetchedRows.filter((e) => {
+      const dateSplitted = split(e.Date);
+      return (
+        dateSplitted[2] === pastMonthYear().year.toString() &&
+        dateSplitted[1] === pastMonthYear().month.toString() &&
+        dateSplitted[0] <= todayDate
+      );
+    });
+
+    const totalThisValue = totalsFiltered.reduce((acc, val) => {
+      const newObj = { ...acc };
+      const newAcc = {
+        ...acc,
+        [val.Type]: (newObj[val.Type] | 0) + moneyToNumber(val.Amount),
+      };
+      return newAcc;
+    }, {});
+
+    const totalPreviousValue = totalsFilteredPreviousMonth.reduce(
+      (acc, val) => {
+        const newObj = { ...acc };
+        const newAcc = {
+          ...acc,
+          [val.Type]: (newObj[val.Type] | 0) + moneyToNumber(val.Amount),
+        };
+        return newAcc;
+      },
+      {}
+    );
+
+    const mergedCategories = [
+      ...new Set([
+        ...Object.keys(totalThisValue),
+        ...Object.keys(totalPreviousValue),
+      ]),
+    ];
+
+    const categoriesDiff = mergedCategories.map((category) => ({
+      category,
+      diff: (totalThisValue[category] | 0) - (totalPreviousValue[category] | 0),
+    }));
+
+    const maxDiff = categoriesDiff.reduce((prev, current) => {
+      return prev.diff > current.diff ? prev : current;
+    });
+
+    const category = maxDiff.category;
+
+    const upIcon =
+      (totalThisValue[category] | 0) > (totalPreviousValue[category] | 0);
+
+    return {
+      title: category,
+      primaryValue: `$${totalThisValue[category] | 0}`,
+      secondaryValue: `$${totalPreviousValue[category] | 0} past month`,
+      arrowIcon: upIcon,
+    };
+  } else {
+    return null;
+  }
+};
