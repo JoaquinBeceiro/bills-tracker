@@ -129,13 +129,16 @@ export const categoryHeaderData = async (doc) => {
       ]),
     ];
 
-    const categoriesDiff = mergedCategories.map((category) => ({
-      category,
-      diff: (totalThisValue[category] | 0) - (totalPreviousValue[category] | 0),
-    }));
+    const categoriesDiff = mergedCategories.length
+      ? mergedCategories.map((category) => ({
+          category,
+          diff:
+            (totalThisValue[category] | 0) - (totalPreviousValue[category] | 0),
+        }))
+      : [{ category: "", diff: 0 }];
 
     const maxDiff = categoriesDiff.reduce((prev, current) => {
-      return prev.diff > current.diff ? prev : current;
+      return prev?.diff > current?.diff ? prev : current;
     });
 
     const category = maxDiff.category;
@@ -143,13 +146,20 @@ export const categoryHeaderData = async (doc) => {
     const upIcon =
       (totalThisValue[category] | 0) > (totalPreviousValue[category] | 0);
 
-    return {
-      title: category,
-      primaryValue: `$${totalThisValue[category] | 0}`,
-      secondaryValue: `$${totalPreviousValue[category] | 0} past month`,
-      arrowIcon: upIcon,
-      info: "The category that increased the most compared to the previous month on the same day of the month",
-    };
+    let returnObject = {};
+    if (category) {
+      returnObject = {
+        title: category,
+        primaryValue: `$${totalThisValue[category] | 0}`,
+        secondaryValue: `$${totalPreviousValue[category] | 0} past month`,
+        arrowIcon: { up: upIcon },
+        info: "The category that increased the most compared to the previous month on the same day of the month",
+      };
+    } else {
+      returnObject = null;
+    }
+
+    return returnObject;
   } else {
     return null;
   }

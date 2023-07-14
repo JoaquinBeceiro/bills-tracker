@@ -18,21 +18,23 @@ const HeaderInfo = ({ data }) => {
         )}
       >
         {data ? (
-          data.map(
-            (
-              { primaryValue, secondaryValue, title, arrowIcon, info },
-              index
-            ) => (
-              <HeaderBoxComponent
-                key={`header-item-${index}`}
-                primaryValue={primaryValue}
-                secondaryValue={secondaryValue}
-                title={title}
-                arrowIcon={arrowIcon}
-                info={info}
-              />
+          data
+            .filter((item) => item !== null)
+            .map(
+              (
+                { primaryValue, secondaryValue, title, arrowIcon, info },
+                index
+              ) => (
+                <HeaderBoxComponent
+                  key={`header-item-${index}`}
+                  primaryValue={primaryValue}
+                  secondaryValue={secondaryValue}
+                  title={title}
+                  arrowIcon={arrowIcon}
+                  info={info}
+                />
+              )
             )
-          )
         ) : (
           <HeaderBoxComponent />
         )}
