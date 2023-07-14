@@ -4,6 +4,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 80px;
 `;
 
 const Content = styled.div`
@@ -15,6 +16,7 @@ const Content = styled.div`
   width: fit-content;
   flex-direction: column;
   text-align: left;
+  position: relative;
 `;
 
 const Title = styled.h2`
@@ -50,4 +52,24 @@ const SecondaryValue = styled.h3`
   }
 `;
 
-export { Container, Content, PrimaryValue, SecondaryValue, Title };
+const Info = styled.div`
+  background-color: #999999;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+  position: absolute;
+  right: 0px;
+  top: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    width: 3px;
+    path {
+      fill: #fff;
+    }
+  }
+`;
+
+export { Container, Content, PrimaryValue, SecondaryValue, Title, Info };

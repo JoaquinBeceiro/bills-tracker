@@ -5,13 +5,27 @@ import {
   PrimaryValue,
   SecondaryValue,
   Title,
+  Info,
 } from "./styles";
-import { ArrowIndicatorIcon } from "components";
+import { ArrowIndicatorIcon, InfoIcon, TooltipComponent } from "components";
 
-const HeaderBox = ({ primaryValue, secondaryValue, title, arrowIcon }) => {
+const HeaderBox = ({
+  primaryValue,
+  secondaryValue,
+  title,
+  arrowIcon,
+  info,
+}) => {
   return (
     <Container>
       <Content>
+        {info && (
+          <TooltipComponent id="" infoTitle="About" infoText={info}>
+            <Info>
+              <InfoIcon />
+            </Info>
+          </TooltipComponent>
+        )}
         {title && <Title>{title}</Title>}
         {primaryValue && <PrimaryValue>{primaryValue}</PrimaryValue>}
         {secondaryValue && (
