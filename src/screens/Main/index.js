@@ -1,28 +1,20 @@
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import { GlobalContext, DispatchTypes } from "context";
-import {
-  ArrowIndicatorIcon,
-  LoadingComponent,
-  ButtonComponent,
-  InputComponent,
-} from "components";
+import { LoadingComponent, ButtonComponent, InputComponent } from "components";
 import { HeaderLayout } from "layouts";
-import { getTypes, getTotalByMonth, addRow, createDoc } from "services";
+import { getTypes, addRow, createDoc, HeaderData } from "services";
 import Utils from "lib/utils";
 import { useHistory } from "react-router-dom";
 
 const Main = () => {
   const history = useHistory();
 
-  const { moneyToNumber } = Utils.Currency;
-  const { nowYear, nowMonth, pastMonthYear, todayDate } = Utils.Date;
+  const { todayDate } = Utils.Date;
 
   const [mainLoading, setMainLoading] = useState(true);
-  const [totalMonth, setTotalMonth] = useState(0);
-  const [pastMonth, setPastMonth] = useState(0);
-  const [gratherThanPastMonth, setGratherThanPastMonth] = useState(false);
   const [billsTypes, setBillsTypes] = useState([]);
   const [checked, setChecked] = useState(false);
+  const [headerData, setHeaderData] = useState(null);
 
   const defaultForm = {
     amount: "",
@@ -73,31 +65,16 @@ const Main = () => {
       setMainLoading(true);
       try {
         const types = await getTypes(doc);
-        const pastMonthYearValue = pastMonthYear();
-
-        const totalMonthValue = await getTotalByMonth(
-          doc,
-          nowMonth(),
-          nowYear()
-        );
-        const totalPastMonthValue = await getTotalByMonth(
-          doc,
-          pastMonthYearValue.month,
-          pastMonthYearValue.year
-        );
 
         const typesFormatted = types.map((type) => ({
           value: type,
           label: type,
         }));
 
-        setBillsTypes(typesFormatted);
-        setTotalMonth(totalMonthValue);
-        setPastMonth(totalPastMonthValue);
+        const headerData = await HeaderData(doc);
 
-        setGratherThanPastMonth(
-          moneyToNumber(totalMonthValue) > moneyToNumber(totalPastMonthValue)
-        );
+        setBillsTypes(typesFormatted);
+        setHeaderData(headerData);
 
         setMainLoading(false);
       } catch (e) {
@@ -106,7 +83,7 @@ const Main = () => {
         setMainLoading(false);
       }
     },
-    [alertModal, moneyToNumber, nowMonth, nowYear, pastMonthYear]
+    [alertModal]
   );
 
   const createDocHandler = useCallback(async () => {
@@ -145,12 +122,6 @@ const Main = () => {
       getStartData(doc);
     }
   }, [doc, loading, getStartData]);
-
-  const headerBoxProps = {
-    primaryValue: `$${totalMonth}`,
-    secondaryValue: `$${pastMonth} past month`,
-    icon: <ArrowIndicatorIcon up={gratherThanPastMonth} />,
-  };
 
   const addBill = async () => {
     const { amount, type, date, description } = form;
@@ -210,7 +181,7 @@ const Main = () => {
 
   return (
     <>
-      <HeaderLayout headerBox={headerBoxProps}>
+      <HeaderLayout headerBox={headerData}>
         <InputComponent
           type="money"
           placeholder="0"

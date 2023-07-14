@@ -20,6 +20,7 @@
     "react-google-button": "^0.7.2",
     "react-google-login": "^5.2.2",
     "react-lottie-player": "^1.5.4",
+    "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.0",
     "react-select": "^4.3.1",

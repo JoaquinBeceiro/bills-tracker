@@ -6,6 +6,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   max-height: 100%;
+  max-width: 100%;
 `;
 
 const Content = styled.div`

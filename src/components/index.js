@@ -15,3 +15,5 @@ export { default as BigModalComponent } from "./BigModal";
 export { default as DetailItemComponent } from "./DetailItem";
 export { default as MonthLegendComponent } from "./MonthLegend";
 export { default as CheckboxComponent } from "./Checkbox";
+export { default as HeaderInfoComponent } from "./HeaderInfo";
+export { default as TooltipComponent } from "./Tooltip";

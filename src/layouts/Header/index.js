@@ -1,11 +1,11 @@
 import React from "react";
 import { Container, Content } from "./styles";
-import { HeaderBoxComponent } from "components";
+import { HeaderInfoComponent } from "components";
 
 const Header = ({ children, headerBox }) => {
   return (
     <Container>
-      <HeaderBoxComponent {...headerBox} />
+      <HeaderInfoComponent data={headerBox} />
       <Content>{children}</Content>
     </Container>
   );

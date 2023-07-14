@@ -2,6 +2,11 @@ import { GoogleSpreadsheet } from "google-spreadsheet";
 import Utils from "lib/utils";
 import { defaultTypes, sheetHeaders, sheetTitle } from "config/sheet";
 import { setSheetData, getSheetData } from "config/localStorage";
+import {
+  avgHeaderData,
+  totalsHeaderData,
+  categoryHeaderData,
+} from "./headerData";
 const { OAuth2Client } = require("google-auth-library");
 
 const { moneyToNumber, formatMoney } = Utils.Currency;
@@ -32,7 +37,7 @@ const storeSheetData = async (doc) => {
   }
 };
 
-const getLocalSheetData = async () => {
+export const getLocalSheetData = async () => {
   const data = getSheetData();
   if (data) {
     return data;
@@ -446,4 +451,12 @@ export const deleteRow = async (doc, id) => {
   } else {
     return false;
   }
+};
+
+export const HeaderData = async (doc) => {
+  const avgHeader = await avgHeaderData(doc);
+  const totalsHeader = await totalsHeaderData(doc);
+  const categoryHeader = await categoryHeaderData(doc);
+
+  return [totalsHeader, avgHeader, categoryHeader];
 };
