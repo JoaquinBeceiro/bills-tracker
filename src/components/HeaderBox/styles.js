@@ -58,8 +58,8 @@ const Info = styled.div`
   width: 12px;
   height: 12px;
   position: absolute;
-  right: 7px;
-  top: 14px;
+  right: 0px;
+  top: 7px;
   display: flex;
   justify-content: center;
   align-items: center;

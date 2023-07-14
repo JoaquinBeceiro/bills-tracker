@@ -22,6 +22,7 @@ export const totalsHeaderData = async (doc) => {
       arrowIcon: {
         up: moneyToNumber(totalThisMonth) > moneyToNumber(totalPastMonth),
       },
+      info: "Total for the month compared to the total for the previous month",
     };
   } else {
     return null;
@@ -71,6 +72,7 @@ export const avgHeaderData = async (doc) => {
       arrowIcon: {
         up: moneyToNumber(avgThisMonth) > moneyToNumber(avgPreviousMonth),
       },
+      info: "Average per day compared to the previous month on the same day of the month",
     };
   } else {
     return null;
@@ -146,6 +148,7 @@ export const categoryHeaderData = async (doc) => {
       primaryValue: `$${totalThisValue[category] | 0}`,
       secondaryValue: `$${totalPreviousValue[category] | 0} past month`,
       arrowIcon: upIcon,
+      info: "The category that increased the most compared to the previous month on the same day of the month",
     };
   } else {
     return null;

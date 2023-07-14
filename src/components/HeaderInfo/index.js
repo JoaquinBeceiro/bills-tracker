@@ -8,11 +8,10 @@ const HeaderInfo = ({ data }) => {
   return (
     <S.Container>
       <Carousel
-        autoPlay={true}
+        autoPlay={false}
         infiniteLoop={true}
         showThumbs={false}
         showStatus={false}
-        interval={6000}
         showArrows={false}
         renderIndicator={(clickHandler, isSelected) => (
           <S.Indicator onClick={clickHandler} isSelected={isSelected} />
@@ -20,14 +19,17 @@ const HeaderInfo = ({ data }) => {
       >
         {data ? (
           data.map(
-            ({ primaryValue, secondaryValue, title, arrowIcon }, index) => (
+            (
+              { primaryValue, secondaryValue, title, arrowIcon, info },
+              index
+            ) => (
               <HeaderBoxComponent
                 key={`header-item-${index}`}
                 primaryValue={primaryValue}
                 secondaryValue={secondaryValue}
                 title={title}
                 arrowIcon={arrowIcon}
-                info={"test"}
+                info={info}
               />
             )
           )

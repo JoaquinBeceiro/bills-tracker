@@ -7,7 +7,7 @@ import {
   Title,
   Info,
 } from "./styles";
-import { ArrowIndicatorIcon, InfoIcon } from "components";
+import { ArrowIndicatorIcon, InfoIcon, TooltipComponent } from "components";
 
 const HeaderBox = ({
   primaryValue,
@@ -20,9 +20,11 @@ const HeaderBox = ({
     <Container>
       <Content>
         {info && (
-          <Info title={info}>
-            <InfoIcon />
-          </Info>
+          <TooltipComponent id="" infoTitle="About" infoText={info}>
+            <Info>
+              <InfoIcon />
+            </Info>
+          </TooltipComponent>
         )}
         {title && <Title>{title}</Title>}
         {primaryValue && <PrimaryValue>{primaryValue}</PrimaryValue>}
