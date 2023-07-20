@@ -120,7 +120,12 @@ If you want to collaborate or support the project in any way, feel free to do so
 - [x] Editable expense type dropdown values
 - [x] Improve the code
 - [x] Google login
-- [ ] Show important information for the user on the home page
+- [x] Show important information for the user on the home page
+- [ ] Monthly, weekly and daily recurring expenses automatically
+- [ ] Ability to create a monthly budget
+- [ ] Add income
+- [ ] Financial health analysis in plain text for the user
+- [ ] Improve categories
 
 ## Author
 
@@ -141,9 +146,9 @@ If you want to collaborate or support the project in any way, feel free to do so
 
 ## Expressions of gratitude 🎁
 
-* Tell others about this project 📢
-* Invite someone on the team for a beer 🍺 or coffee ☕. 
-* Give thanks publicly 🤓.
-* Star to the project ⭐
+- Tell others about this project 📢
+- Invite someone on the team for a beer 🍺 or coffee ☕.
+- Give thanks publicly 🤓.
+- Star to the project ⭐
 
 [![Invitame un café en cafecito.app](https://cdn.cafecito.app/imgs/buttons/button_5.svg)](https://cafecito.app/joaquinbeceiro)
