@@ -70,11 +70,14 @@ const Analytics = () => {
 
       const arrayStartsFrom = selectedYear === "last12months" ? nextMonth() : 1;
 
-      const newArray = Array.from({ length: 12 }, (_, i) =>
-        i + arrayStartsFrom > 12
-          ? (i + arrayStartsFrom + 1) % 13
-          : i + arrayStartsFrom
-      );
+      const newArray =
+        selectedYear === "last12months"
+          ? newChartData.map(({ name }) => parseInt(name))
+          : Array.from({ length: 12 }, (_, i) =>
+              i + arrayStartsFrom > 12
+                ? (i + arrayStartsFrom + 1) % 13
+                : i + arrayStartsFrom
+            );
 
       const chartDataWithAllMonths = newArray.map((index) => {
         const findElement = newChartData.find(

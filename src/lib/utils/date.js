@@ -80,7 +80,8 @@ export const month12Ago = () => {
   const ago = new Date(today.setMonth(today.getMonth() - 11));
   const month = ago.getMonth();
   const year = ago.getFullYear();
-  return new Date(year, month, 0, 0, 0, 0, 1);
+  const newDate = new Date(year, month, 1);
+  return newDate;
 };
 
 export const nextMonth = () => {

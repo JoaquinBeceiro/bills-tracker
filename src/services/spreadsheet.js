@@ -333,7 +333,14 @@ export const getLast12Months = async (doc) => {
       return newObject;
     }, {});
 
-    return Object.entries(grouped).map((e) => ({ ...e[1], name: e[0] }));
+    const reduced = Object.entries(grouped)
+      .map((e) => ({
+        ...e[1],
+        name: e[0],
+      }))
+      .sort((a, b) => a.year + a.name - (b.year + b.name));
+
+    return reduced;
   } else {
     return null;
   }
@@ -366,7 +373,14 @@ export const getLast12MonthsByType = async (doc) => {
       return newObject;
     }, {});
 
-    return Object.entries(grouped).map((e) => ({ ...e[1], name: e[0] }));
+    const reduced = Object.entries(grouped)
+      .map((e) => ({
+        ...e[1],
+        name: e[0],
+        year: e[1][Object.keys(e[1])[0]].year,
+      }))
+      .sort((a, b) => a.year + a.name - (b.year + b.name));
+    return reduced;
   } else {
     return null;
   }
