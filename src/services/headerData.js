@@ -70,7 +70,7 @@ export const avgHeaderData = async (doc) => {
       primaryValue: `$${avgThisMonth}`,
       secondaryValue: `$${avgPreviousMonth} past month`,
       arrowIcon: {
-        up: moneyToNumber(avgThisMonth) > moneyToNumber(avgPreviousMonth),
+        up: moneyToNumber(avgThisMonth) < moneyToNumber(avgPreviousMonth),
       },
       info: "Average per day compared to the previous month on the same day of the month",
     };
