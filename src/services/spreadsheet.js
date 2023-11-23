@@ -6,6 +6,7 @@ import {
   avgHeaderData,
   totalsHeaderData,
   categoryHeaderData,
+  yearHeaderData,
 } from "./headerData";
 const { OAuth2Client } = require("google-auth-library");
 
@@ -471,6 +472,7 @@ export const HeaderData = async (doc) => {
   const avgHeader = await avgHeaderData(doc);
   const totalsHeader = await totalsHeaderData(doc);
   const categoryHeader = await categoryHeaderData(doc);
+  const yearHeader = await yearHeaderData(doc);
 
-  return [totalsHeader, avgHeader, categoryHeader];
+  return [totalsHeader, avgHeader, categoryHeader, yearHeader];
 };

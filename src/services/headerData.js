@@ -1,4 +1,8 @@
-import { getLocalSheetData, getTotalByMonth } from "./spreadsheet";
+import {
+  getLocalSheetData,
+  getTotalByMonth,
+  getAllMonthByYear,
+} from "./spreadsheet";
 import Utils from "lib/utils";
 
 const { split, nowMonth, nowYear, pastMonthYear } = Utils.Date;
@@ -146,12 +150,15 @@ export const categoryHeaderData = async (doc) => {
     const upIcon =
       (totalThisValue[category] | 0) > (totalPreviousValue[category] | 0);
 
+    const primaryValue = formatMoney(totalThisValue[category] | 0);
+    const secondaryValue = formatMoney(totalPreviousValue[category] | 0);
+
     let returnObject = {};
     if (category) {
       returnObject = {
         title: category,
-        primaryValue: `$${totalThisValue[category] | 0}`,
-        secondaryValue: `$${totalPreviousValue[category] | 0} past month`,
+        primaryValue: `$${primaryValue}`,
+        secondaryValue: `$${secondaryValue} past month`,
         arrowIcon: { up: upIcon },
         info: "The category that increased the most compared to the previous month on the same day of the month",
       };
@@ -160,6 +167,36 @@ export const categoryHeaderData = async (doc) => {
     }
 
     return returnObject;
+  } else {
+    return null;
+  }
+};
+
+export const yearHeaderData = async (doc) => {
+  if (doc) {
+    const currentYear = await getAllMonthByYear(doc, nowYear());
+
+    const totalThisYear = currentYear.reduce(
+      (acc, current) => acc + current.value,
+      0
+    );
+
+    const yearMonthsLength = currentYear.length - 1 || 1;
+
+    const avgMonth =
+      currentYear
+        .slice(0, -1)
+        .reduce((acc, current) => acc + current.value, 0) / yearMonthsLength;
+
+    const primaryValue = formatMoney(totalThisYear);
+    const secondaryValue = formatMoney(avgMonth);
+
+    return {
+      title: "Total year",
+      primaryValue: `$${primaryValue}`,
+      secondaryValue: `$${secondaryValue} avg month`,
+      info: "Total of the current year and AVG per month of the current yearexcluding current month",
+    };
   } else {
     return null;
   }
