@@ -29,7 +29,16 @@ const InputContainer = styled.div`
       z-index: 300;
     }
   }
+
+  &.checkbox,
+  &.bigtext,
+  &.option {
+    margin-bottom: 0;
+  }
+
   &.textarea,
+  &.checkbox,
+  &.option,
   &.bigtext {
     border: none;
     flex-direction: column;
@@ -71,6 +80,20 @@ const InputContainer = styled.div`
     border-bottom: 2px solid #38b44e;
     margin-bottom: 20px;
   }
+
+  ${(props) =>
+    props.disabled &&
+    `
+    label {
+      color: #999;
+    }
+
+    input::placeholder,
+    textarea::placeholder 
+    {
+      color: #ccc;
+    }
+`}
 `;
 
 const InputBox = styled.input`

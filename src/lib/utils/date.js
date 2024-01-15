@@ -71,8 +71,10 @@ export const dateSort = (a, b) => {
 };
 
 export const split = (date) => {
-  const dateSplitted = date.split(getDateSeparator(date));
-  return dateSplitted[2].length === 4 ? dateSplitted : dateSplitted.reverse();
+  if (date) {
+    const dateSplitted = date.split(getDateSeparator(date));
+    return dateSplitted[2].length === 4 ? dateSplitted : dateSplitted.reverse();
+  }
 };
 
 export const month12Ago = () => {

@@ -41,9 +41,14 @@ const Guide = () => {
 
   const Step2 = (
     <S.Container>
-      <S.Title>Create a spreadsheet</S.Title>
+      <S.Title>Create a spreadsheet manually</S.Title>
       <S.Pharagraph>
-        Create a new Google Spreadsheet or copy from{" "}
+        You can select <i>"Create a new spreadsheet on your drive"</i> to create
+        it automatically or <i>"Use an existing one"</i> to select your own
+        spreadsheet.
+      </S.Pharagraph>
+      <S.Pharagraph>
+        Create/Find a new Google Spreadsheet or copy from{" "}
         <S.Link
           href="https://docs.google.com/spreadsheets/d/1zR8NCRoiVZszVN1FlqUdSk9r9jfn_h_eR3gYCgJuvqY/copy"
           target="_blank"
@@ -73,7 +78,10 @@ const Guide = () => {
       <S.Strong>Insert data into onboarding fields.</S.Strong>
       <S.OrderList>
         <li>Insert your name in the "NAME" field</li>
-        <li>Insert the Spreadsheet ID or URL</li>
+        <li>
+          Insert the Spreadsheet ID or URL or create a new one checking "Create
+          a new spreadsheet"
+        </li>
         <S.ImageContainer>
           <img src={LoginScreenshot} alt="Login screenshot" />
         </S.ImageContainer>

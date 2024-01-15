@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Main, TitleContainer, ActionContainer } from "./styles";
-import { SignOutIcon } from "../";
+import { SignOutIcon, MenuIcon } from "../";
 import { deleteUserSession } from "config/localStorage";
 import { useHistory } from "react-router-dom";
 import { GlobalContext, DispatchTypes } from "context";
@@ -59,9 +59,19 @@ const Header = ({
     });
   };
 
+  const handleMenuOpen = async () => {
+    alert("res");
+  };
+
+  const SHOW_MENU = process.env.REACT_APP_SHOW_MENU === "true";
+
   return (
     <Main colorChange={colorChange}>
-      {allowSignOut && <ActionContainer></ActionContainer>}
+      {allowSignOut && SHOW_MENU && (
+        <ActionContainer onClick={handleMenuOpen}>
+          <MenuIcon />
+        </ActionContainer>
+      )}
       <TitleContainer>
         <h1>{title}</h1>
         <h2>{subTitle}</h2>
