@@ -195,7 +195,7 @@ export const yearHeaderData = async (doc) => {
       title: "Total year",
       primaryValue: `$${primaryValue}`,
       secondaryValue: `$${secondaryValue} avg month`,
-      info: "Total of the current year and AVG per month of the current yearexcluding current month",
+      info: "Total of the current year and AVG per month of the current year excluding current month",
     };
   } else {
     return null;

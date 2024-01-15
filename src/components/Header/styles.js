@@ -36,6 +36,9 @@ const ActionContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  svg path {
+    fill: white;
+  }
 `;
 
 export { Main, TitleContainer, ActionContainer };
