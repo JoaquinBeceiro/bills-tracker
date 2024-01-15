@@ -1,7 +1,11 @@
 import React from "react";
 import * as S from "./styles";
 
-import { DollarIcon } from "components";
+import {
+  DollarIcon,
+  CheckboxComponent,
+  RadioButtonComponent,
+} from "components";
 
 const Input = ({
   name,
@@ -11,6 +15,7 @@ const Input = ({
   type = "text",
   placeholder = "",
   options = [],
+  disabled,
 }) => {
   const handleChangeInput = (e) => onChange(e.target.name, e.target.value);
   const handleChangeDropdown = ({ value }) => onChange(name, value);
@@ -20,10 +25,11 @@ const Input = ({
     placeholder,
     onChange: type === "dropdown" ? handleChangeDropdown : handleChangeInput,
     value,
+    disabled,
   };
 
   return (
-    <S.InputContainer className={type}>
+    <S.InputContainer className={type} disabled={disabled}>
       <div>
         {type === "money" ? (
           <DollarIcon />
@@ -48,6 +54,24 @@ const Input = ({
             ),
             bigtext: <S.BigTextBox {...defaultProps} rows="2" />,
             textarea: <S.TextAreaBox {...defaultProps} />,
+            checkbox: (
+              <CheckboxComponent
+                {...defaultProps}
+                type="checkbox"
+                color="#333"
+                checked={value}
+                label={placeholder}
+              />
+            ),
+            option: (
+              <RadioButtonComponent
+                options={options}
+                selected={value}
+                onChange={onChange}
+                disabled={disabled}
+                name={name}
+              />
+            ),
           }[type]
         }
       </div>

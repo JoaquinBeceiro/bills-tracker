@@ -1,6 +1,6 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import Utils from "lib/utils";
-import { defaultTypes, sheetHeaders, sheetTitle } from "config/sheet";
+import { defaultTypes, sheetHeaders, sheetTitle, docName } from "config/sheet";
 import { setSheetData, getSheetData } from "config/localStorage";
 import {
   avgHeaderData,
@@ -21,16 +21,16 @@ const storeSheetData = async (doc) => {
   if (doc) {
     const sheet = getSheet(doc);
     const fetchedRows = await sheet.getRows();
-    const mappedData = fetchedRows.map(
-      ({ Amount, Date, Detail, Type, Who, _rowNumber }) => ({
-        Amount,
-        Date,
-        Type,
-        Detail,
-        Who,
+    const mappedData = fetchedRows.map(({ _rawData, _rowNumber }) => {
+      return {
+        Amount: _rawData[2],
+        Date: _rawData[0],
+        Type: _rawData[3],
+        Detail: _rawData[4],
+        Who: _rawData[1],
         Id: _rowNumber,
-      })
-    );
+      };
+    });
     setSheetData(mappedData);
     return mappedData;
   } else {
@@ -44,6 +44,34 @@ export const getLocalSheetData = async () => {
     return data;
   } else {
     return await storeSheetData();
+  }
+};
+
+export const createNewDoc = async ({
+  access_token,
+  expires_at,
+  refresh_token,
+}) => {
+  try {
+    const oAuth2Client = new OAuth2Client({
+      clientId: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID,
+      clientSecret: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_SECRET,
+    });
+
+    oAuth2Client.credentials.access_token = access_token;
+    oAuth2Client.credentials.refresh_token = refresh_token;
+    oAuth2Client.credentials.expiry_date = expires_at;
+
+    const newDoc = await GoogleSpreadsheet.createNewSpreadsheetDocument(
+      oAuth2Client,
+      {
+        title: docName,
+      }
+    );
+    return Utils.Common.getSpreadsheetId(newDoc._spreadsheetUrl);
+  } catch (error) {
+    console.log("ERROR createNewDoc", error);
+    return false;
   }
 };
 
@@ -63,14 +91,13 @@ export const checkCredentials = async ({
     oAuth2Client.credentials.refresh_token = refresh_token;
     oAuth2Client.credentials.expiry_date = expires_at;
 
-    const doc = new GoogleSpreadsheet(spreadsheetId);
-    doc.useOAuth2Client(oAuth2Client);
+    const doc = new GoogleSpreadsheet(spreadsheetId, oAuth2Client);
 
     await doc.loadInfo();
 
     return true;
   } catch (error) {
-    console.log("ERROR eeeeee", error);
+    console.log("ERROR checkCredentials", error);
     return false;
   }
 };
@@ -91,8 +118,8 @@ export const createDoc = async (
     oauthClient.credentials.refresh_token = refresh_token;
     oauthClient.credentials.expiry_date = expires_at;
 
-    const doc = new GoogleSpreadsheet(spreadsheetId);
-    doc.useOAuth2Client(oauthClient);
+    const doc = new GoogleSpreadsheet(spreadsheetId, oauthClient);
+
     await doc.loadInfo();
 
     const newSheet = getSheet(doc);
@@ -105,6 +132,7 @@ export const createDoc = async (
     await storeSheetData(doc);
     return doc;
   } catch (error) {
+    console.log("ERROR createDoc", error);
     throw error;
   }
 };

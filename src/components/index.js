@@ -17,3 +17,4 @@ export { default as MonthLegendComponent } from "./MonthLegend";
 export { default as CheckboxComponent } from "./Checkbox";
 export { default as HeaderInfoComponent } from "./HeaderInfo";
 export { default as TooltipComponent } from "./Tooltip";
+export { default as RadioButtonComponent } from "./RadioButton";

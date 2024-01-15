@@ -73,7 +73,7 @@ const Guide = () => {
       <S.Strong>Insert data into onboarding fields.</S.Strong>
       <S.OrderList>
         <li>Insert your name in the "NAME" field</li>
-        <li>Insert the Spreadsheet ID or URL</li>
+        <li>Insert the Spreadsheet ID or URL or create a new one checking "Create a new spreadsheet"</li>
         <S.ImageContainer>
           <img src={LoginScreenshot} alt="Login screenshot" />
         </S.ImageContainer>

@@ -3,9 +3,9 @@ import { GlobalContext, DispatchTypes } from "context";
 import { NoHeaderLayout } from "layouts";
 import { InputComponent, ButtonComponent, LoadingComponent } from "components";
 import { useHistory } from "react-router-dom";
-import { getRefreshToken, getNewTokens } from "services";
+import { getRefreshToken, getNewTokens, createNewDoc } from "services";
 import * as S from "./styles";
-import { sheetScope } from "config/sheet";
+import { sheetScope, docName } from "config/sheet";
 import { getUserSession } from "config/localStorage";
 import { getAuthErrorMessage } from "config/errors";
 import Utils from "lib/utils";
@@ -34,6 +34,7 @@ const Onboarding = () => {
     expires_at: userFromStorage?.expires_at || "",
     refresh_token: userFromStorage?.refresh_token || "",
     id_token: userFromStorage?.id_token || "",
+    createDoc: userFromStorage?.createDoc || true,
   });
 
   const alertModal = useCallback(
@@ -55,7 +56,7 @@ const Onboarding = () => {
     [modalDispatch]
   );
 
-  const credentiaslCheck = useCallback(
+  const credentialsCheck = useCallback(
     async (newValues) => {
       const {
         name,
@@ -64,12 +65,25 @@ const Onboarding = () => {
         expires_at,
         id_token,
         spreadsheetId,
+        createDoc,
       } = newValues;
-      if (spreadsheetId) {
+      if (createDoc || spreadsheetId) {
         userDispatch({ type: DispatchTypes.User.SET_USER_START });
 
+        let normalizedId = "";
+
         try {
-          const normalizedId = Utils.Common.getSpreadsheetId(spreadsheetId);
+          if (createDoc) {
+            normalizedId = await createNewDoc({
+              access_token,
+              expires_at,
+              refresh_token,
+              spreadsheetId,
+            });
+          } else {
+            normalizedId = Utils.Common.getSpreadsheetId(spreadsheetId);
+          }
+
           const user = {
             access_token,
             expires_at,
@@ -115,7 +129,11 @@ const Onboarding = () => {
   );
 
   const handleChange = (prop) => (name, value) => {
-    setValues({ ...values, [prop]: value });
+    if (prop === "createDoc") {
+      setValues({ ...values, [prop]: !values[prop] });
+    } else {
+      setValues({ ...values, [prop]: value });
+    }
   };
 
   const checkCredentialsOnLoad = useCallback(
@@ -144,7 +162,7 @@ const Onboarding = () => {
             refreshTokens({ access_token, expires_at, refresh_token });
           }
         } catch (e) {
-          console.log("E", e);
+          console.log("ERROR checkCredentialsOnLoad", e);
         }
       }
     },
@@ -171,7 +189,7 @@ const Onboarding = () => {
         id_token: newTokens.credentials.idToken,
       };
       setValues(newCredentials);
-      await credentiaslCheck(newCredentials);
+      await credentialsCheck(newCredentials);
       setCustomLoading(false);
     } catch (error) {
       setCustomLoading(false);
@@ -212,7 +230,7 @@ const Onboarding = () => {
         id_token,
       };
       setValues(newCredentials);
-      await credentiaslCheck(newCredentials);
+      await credentialsCheck(newCredentials);
       setCustomLoading(false);
     } catch (error) {
       setCustomLoading(false);
@@ -223,7 +241,9 @@ const Onboarding = () => {
     }
   };
 
-  const buttonDisabled = values.name === "" || values.spreadsheetId === "";
+  const buttonDisabled = values.createDoc
+    ? !values.name
+    : !values.name || !values.spreadsheetId;
 
   return (
     <NoHeaderLayout>
@@ -238,13 +258,30 @@ const Onboarding = () => {
             onChange={handleChange("name")}
           />
           <InputComponent
-            name="sId"
-            title="Spreadsheet ID or URL"
-            placeholder="Spreadheet ID or URL"
-            type="bigtext"
-            value={values.spreadsheetId || ""}
-            onChange={handleChange("spreadsheetId")}
+            name="createDoc"
+            title="Spreadsheet"
+            type="option"
+            value={values.createDoc ? "create" : "existing"}
+            onChange={handleChange("createDoc")}
+            options={[
+              {
+                label: `Create a new spreadsheet on your drive with the name "${docName}".`,
+                value: "create",
+              },
+              { label: "Use an existing one.", value: "existing" },
+            ]}
           />
+          {!values.createDoc && (
+            <InputComponent
+              name="sId"
+              // title="Existing spreadsheet"
+              placeholder="Spreadheet ID or URL"
+              type="bigtext"
+              value={values.spreadsheetId || ""}
+              onChange={handleChange("spreadsheetId")}
+              disabled={values.createDoc === true}
+            />
+          )}
           <GoogleButton
             disabled={buttonDisabled}
             type="light"

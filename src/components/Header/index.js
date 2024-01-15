@@ -59,7 +59,7 @@ const Header = ({
     });
   };
 
-  const handleMenuOpen = () => {
+  const handleMenuOpen = async () => {
     alert("res");
   };
 

@@ -15,6 +15,7 @@ export const Content = styled.div`
   }
   .googleButton {
     height: 60px;
+    margin-top: 40px;
     span {
       text-align: center;
       width: 100%;
