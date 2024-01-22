@@ -23,11 +23,13 @@ const Config = () => {
     setMenuItems(newMenuItems);
   };
 
+  const activeItem = menuItems.find(({ active }) => active).label;
+
   return (
     <>
       <NoHeaderLayout>
         <TabsComponent items={menuItems} action={menuAction} />
-        <S.Container>Config</S.Container>
+        <S.Container>Config {activeItem}</S.Container>
       </NoHeaderLayout>
 
       {screenLoading && <LoadingComponent />}
