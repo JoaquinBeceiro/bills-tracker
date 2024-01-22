@@ -4,8 +4,8 @@ import { LoadingComponent, TabsComponent } from "components";
 import * as S from "./styles";
 
 const defaultMenuItems = [
-  { label: "profile", active: true },
-  { label: "schedule", active: false },
+  { label: "schedule", active: true },
+  { label: "profile", active: false },
   { label: "budget", active: false },
   { label: "types", active: false, disabled: true },
 ];
