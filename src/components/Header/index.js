@@ -62,6 +62,7 @@ const Header = ({
 
   return (
     <Main colorChange={colorChange}>
+      <ActionContainer></ActionContainer>
       <TitleContainer>
         <h1>{title}</h1>
         <h2>{subTitle}</h2>
