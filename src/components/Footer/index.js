@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, MenuItem } from "./styles";
 import { useHistory, useLocation } from "react-router-dom";
-import { PieChartIcon, LineChartIcon, HomeIcon } from "../";
+import { PieChartIcon, LineChartIcon, HomeIcon, GearIcon } from "../";
 
 const Footer = () => {
   const history = useHistory();
@@ -32,6 +32,13 @@ const Footer = () => {
         className={isActive("analytics") ? "active" : ""}
       >
         <LineChartIcon />
+      </MenuItem>
+
+      <MenuItem
+        onClick={() => handleNavigate("/config")}
+        className={isActive("config") ? "active" : ""}
+      >
+        <GearIcon />
       </MenuItem>
     </Container>
   );

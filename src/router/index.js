@@ -41,6 +41,11 @@ const RouterComponent = ({ children }) => (
           <AnalyticsScreen />
         </MasterLayout>
       </Route>
+      <Route exact path="/config">
+        <MasterLayout footer={true} subTitle="Config" allowSignOut={true}>
+          <>Config</>
+        </MasterLayout>
+      </Route>
     </Switch>
   </Router>
 );

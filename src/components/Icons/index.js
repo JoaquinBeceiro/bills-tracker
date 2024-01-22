@@ -9,3 +9,4 @@ export { default as NavigateIcon } from "./Navigate";
 export { default as DeleteIcon } from "./Delete";
 export { default as InfoIcon } from "./Info";
 export { default as MenuIcon } from "./Menu";
+export { default as GearIcon } from "./Gear";

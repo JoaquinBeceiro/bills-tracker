@@ -5,6 +5,7 @@ import { deleteUserSession } from "config/localStorage";
 import { useHistory } from "react-router-dom";
 import { GlobalContext, DispatchTypes } from "context";
 import { googleLogout } from "@react-oauth/google";
+import { SidebarComponent } from "components";
 
 const Header = ({
   title = "BillsTracker",
@@ -59,19 +60,8 @@ const Header = ({
     });
   };
 
-  const handleMenuOpen = async () => {
-    alert("res");
-  };
-
-  const SHOW_MENU = process.env.REACT_APP_SHOW_MENU === "true";
-
   return (
     <Main colorChange={colorChange}>
-      {allowSignOut && SHOW_MENU && (
-        <ActionContainer onClick={handleMenuOpen}>
-          <MenuIcon />
-        </ActionContainer>
-      )}
       <TitleContainer>
         <h1>{title}</h1>
         <h2>{subTitle}</h2>
