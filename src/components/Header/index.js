@@ -1,11 +1,10 @@
 import React, { useState, useContext } from "react";
 import { Main, TitleContainer, ActionContainer } from "./styles";
-import { SignOutIcon, MenuIcon } from "../";
+import { SignOutIcon } from "../";
 import { deleteUserSession } from "config/localStorage";
 import { useHistory } from "react-router-dom";
 import { GlobalContext, DispatchTypes } from "context";
 import { googleLogout } from "@react-oauth/google";
-import { SidebarComponent } from "components";
 
 const Header = ({
   title = "BillsTracker",
