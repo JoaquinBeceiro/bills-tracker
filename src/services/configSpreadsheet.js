@@ -14,31 +14,35 @@ const getSheet = async (doc) => {
   }
 };
 
-const storeSheetData = async (doc) => {
+export const storeSheetData = async (doc) => {
   if (doc) {
-    const sheet = getSheet(doc);
-    const fetchedRows = await sheet.getRows();
-    const mappedData = fetchedRows.map(({ _rawData, _rowNumber }) => {
-      return {
-        Name: _rawData[0],
-        Frequency: _rawData[1],
-        Amount: _rawData[2],
-        Id: _rowNumber,
-      };
-    });
-    setSheetConfig(mappedData);
-    return mappedData;
+    const sheet = await getSheet(doc);
+    if (sheet) {
+      const fetchedRows = await sheet.getRows();
+      const mappedData = fetchedRows.map(({ _rawData, _rowNumber }) => {
+        return {
+          Name: _rawData[0],
+          Frequency: _rawData[1],
+          Amount: _rawData[2],
+          Id: _rowNumber,
+        };
+      });
+      setSheetConfig(mappedData);
+      return mappedData;
+    } else {
+      return null;
+    }
   } else {
     return null;
   }
 };
 
-export const getLocalSheetData = async () => {
+export const getLocalSheetData = async (doc) => {
   const data = getSheetConfig();
   if (data) {
     return data;
   } else {
-    return await storeSheetData();
+    return await storeSheetData(doc);
   }
 };
 
@@ -51,7 +55,7 @@ export const addRow = async (doc, name, frequency, amount) => {
       Amount: `$${amount}`,
     };
     await sheet.addRow(newRow);
-    const newData = await getLocalSheetData();
+    const newData = await getLocalSheetData(doc);
     const lastId = newData[newData.length - 1]?.Id || 1;
     newData.push({ ...newRow, Id: lastId + 1 });
     setSheetConfig(newData);
@@ -64,7 +68,6 @@ export const addRow = async (doc, name, frequency, amount) => {
 export const deleteRow = async (doc, id) => {
   if (doc) {
     const sheet = await getSheet(doc);
-    console.log("sheet", sheet);
     if (sheet) {
       const fetchedRows = await sheet.getRows();
       const findById = fetchedRows.find(({ _rowNumber }) => _rowNumber === id);
@@ -74,6 +77,7 @@ export const deleteRow = async (doc, id) => {
           const newData = await storeSheetData(doc);
           return newData;
         } catch (error) {
+          console.log("Error (config deleteRow)", error);
           return false;
         }
       } else {

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import * as S from "./styles";
 import {
   DetailItemComponent,
@@ -6,8 +6,11 @@ import {
   InputComponent,
 } from "components";
 import Utils from "lib/utils";
-import { getSheetConfig } from "config/localStorage";
-import { addRow, deleteRow } from "services/configSpreadsheet";
+import {
+  addRow,
+  deleteRow,
+  getLocalSheetData,
+} from "services/configSpreadsheet";
 
 const { formatMoney, moneyToNumber } = Utils.Currency;
 
@@ -24,14 +27,27 @@ const defaultForm = {
   amount: "",
 };
 
-const Schedule = ({ doc, setMainLoading, DispatchTypes, modalDispatch }) => {
+const Schedule = ({
+  doc,
+  setMainLoading,
+  DispatchTypes,
+  modalDispatch,
+  isLoading,
+}) => {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(defaultForm);
+  const [schedules, setSchedules] = useState(null);
 
-  const getStartData = async (doc) => {
-    setMainLoading(true);
-    setMainLoading(false);
-  };
+  const getStartData = useCallback(async () => {
+    const data = await getLocalSheetData(doc);
+    setSchedules(data);
+  }, [doc]);
+
+  useEffect(() => {
+    if (doc && !isLoading) {
+      getStartData();
+    }
+  }, [doc, getStartData, isLoading]);
 
   const handleAddNew = () => {
     setShowForm(true);
@@ -40,8 +56,6 @@ const Schedule = ({ doc, setMainLoading, DispatchTypes, modalDispatch }) => {
   const hideForm = () => {
     setShowForm(false);
   };
-
-  const schedules = getSheetConfig();
 
   const onChange = (name, value) => {
     if (name && value) {
@@ -58,6 +72,7 @@ const Schedule = ({ doc, setMainLoading, DispatchTypes, modalDispatch }) => {
       const { name, frequency, amount } = form;
       await addRow(doc, name, frequency, amount);
       setForm(defaultForm);
+      getStartData();
       hideForm();
     } catch (error) {
       console.log("ERROR (addSchedule)", error);
@@ -79,7 +94,7 @@ const Schedule = ({ doc, setMainLoading, DispatchTypes, modalDispatch }) => {
             modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
             setMainLoading(true);
             await deleteRow(doc, id);
-            getStartData(doc);
+            getStartData();
             setMainLoading(false);
           },
         },
@@ -134,24 +149,46 @@ const Schedule = ({ doc, setMainLoading, DispatchTypes, modalDispatch }) => {
     );
   }
 
+  const SkeletonLoading = (isLoading) => {
+    return !isLoading ? (
+      <S.NoData>
+        <p>There is no records to show.</p>
+        <p>Please create new schedules.</p>
+      </S.NoData>
+    ) : (
+      <>
+        <DetailItemComponent deleteAction={true} isLoading={true} />
+        <DetailItemComponent deleteAction={true} isLoading={true} />
+        <DetailItemComponent deleteAction={true} isLoading={true} />
+      </>
+    );
+  };
+
   return (
     <S.Content>
       <S.TableContainer>
-        {schedules.map(({ Name, Amount, Frequency, Id }) => {
-          const priceFormatted = `$${formatMoney(moneyToNumber(Amount))}`;
-          const typeSchedule = Utils.Constants.SCHEDULE_FREQUENCY[Frequency];
-          return (
-            <DetailItemComponent
-              key={Name}
-              amount={priceFormatted}
-              title={Name}
-              description={typeSchedule}
-              deleteAction={() => deleteRecord(Id)}
-            />
-          );
-        })}
+        {schedules === null || schedules.length === 0
+          ? SkeletonLoading(isLoading)
+          : schedules.map(({ Name, Amount, Frequency, Id }) => {
+              const priceFormatted = `$${formatMoney(moneyToNumber(Amount))}`;
+              const typeSchedule =
+                Utils.Constants.SCHEDULE_FREQUENCY[Frequency];
+              return (
+                <DetailItemComponent
+                  key={`${Id}-${Name}`}
+                  amount={priceFormatted}
+                  title={Name}
+                  description={typeSchedule}
+                  deleteAction={() => deleteRecord(Id)}
+                />
+              );
+            })}
       </S.TableContainer>
-      <ButtonComponent text="Add new" action={handleAddNew} />
+      <ButtonComponent
+        text="Add new"
+        action={handleAddNew}
+        disabled={isLoading}
+      />
     </S.Content>
   );
 };

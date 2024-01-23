@@ -1,10 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import { NoHeaderLayout } from "layouts";
-import { LoadingComponent, TabsComponent } from "components";
+import { TabsComponent, LoadingComponent } from "components";
 import * as S from "./styles";
 import Schedule from "./schedule";
 import Utils from "lib/utils";
 import { GlobalContext, DispatchTypes } from "context";
+import { storeSheetData } from "services/configSpreadsheet";
 
 const Config = () => {
   const context = useContext(GlobalContext);
@@ -13,8 +14,20 @@ const Config = () => {
 
   const { doc, loading } = userState;
 
-  const [mainLoading, setMainLoading] = useState(false);
+  const [mainLoading, setMainLoading] = useState(true);
   const [menuItems, setMenuItems] = useState(Utils.Constants.MENU_ITEMS);
+
+  const getStartData = useCallback(async () => {
+    console.log("!!!!!!! getStartData");
+    setMainLoading(true);
+    const scheduleData = await storeSheetData(doc);
+    console.log("scheduleData", scheduleData);
+    setMainLoading(false);
+  }, [doc]);
+
+  useEffect(() => {
+    getStartData();
+  }, [getStartData]);
 
   const menuAction = (key) => {
     const newMenuItems = Utils.Constants.MENU_ITEMS.map((item) => ({
@@ -25,6 +38,8 @@ const Config = () => {
   };
 
   const activeItem = menuItems.find(({ active }) => active).label;
+
+  const isLoading = loading || mainLoading;
 
   return (
     <>
@@ -37,14 +52,14 @@ const Config = () => {
               setMainLoading={setMainLoading}
               DispatchTypes={DispatchTypes}
               modalDispatch={modalDispatch}
+              isLoading={isLoading}
             />
           )}
           {activeItem === Utils.Constants.PROFILE && <>PROFILE</>}
           {activeItem === Utils.Constants.BUDGET && <>BUDGET</>}
         </S.Container>
       </NoHeaderLayout>
-
-      {loading || (mainLoading && <LoadingComponent />)}
+      {isLoading && <LoadingComponent />}
     </>
   );
 };

@@ -23,3 +23,22 @@ export const Form = styled.div`
   justify-content: space-between;
   gap: 20px;
 `;
+
+export const NoData = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+  flex-direction: column;
+  color: #7e7e7e;
+  font-family: Roboto;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 300;
+  text-transform: uppercase;
+
+  p {
+    margin: 0;
+  }
+`;
