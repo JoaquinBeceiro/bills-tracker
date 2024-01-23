@@ -236,7 +236,7 @@ const Type = () => {
             <DetailItemComponent
               key={`${index}-${Detail}`}
               amount={Amount}
-              date={dateToText(Date)}
+              description={dateToText(Date)}
               title={Detail}
               subTitle={showDetail === 'all' && Type}
               deleteAction={() => deleteRecord(Id, Type)}

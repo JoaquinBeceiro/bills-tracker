@@ -32,3 +32,22 @@ export const LAST_12_MONTHS_OPTION = {
   label: "Last 12M",
   value: "last12months",
 };
+
+export const SCHEDULE = "Schedule";
+export const PROFILE = "Profile";
+export const BUDGET = "Budget";
+export const TYPES = "Types";
+
+export const MENU_ITEMS = [
+  { label: SCHEDULE, active: true },
+  { label: PROFILE, active: false },
+  { label: BUDGET, active: false },
+  { label: TYPES, active: false, disabled: true },
+];
+
+export const SCHEDULE_TYPES = {
+  0: "Daily",
+  1: "Weekly",
+  2: "Monthly",
+  3: "Yearly",
+};

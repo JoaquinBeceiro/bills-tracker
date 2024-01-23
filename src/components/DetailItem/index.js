@@ -2,7 +2,7 @@ import React from "react";
 import * as S from "./styles";
 import { DeleteIcon } from "components";
 
-const DetailItem = ({ title, date, amount, subTitle, deleteAction }) => {
+const DetailItem = ({ title, description, amount, subTitle, deleteAction }) => {
   return (
     <S.Container>
       <S.Content fullWidth={true}>
@@ -11,7 +11,7 @@ const DetailItem = ({ title, date, amount, subTitle, deleteAction }) => {
           <S.Amount>{amount}</S.Amount>
         </S.Row>
         <S.Row>
-          <S.Date>{date}</S.Date>
+          <S.Date>{description}</S.Date>
           <S.SubTitle>{subTitle}</S.SubTitle>
         </S.Row>
       </S.Content>
