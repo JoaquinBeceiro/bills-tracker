@@ -18,10 +18,8 @@ const Config = () => {
   const [menuItems, setMenuItems] = useState(Utils.Constants.MENU_ITEMS);
 
   const getStartData = useCallback(async () => {
-    console.log("!!!!!!! getStartData");
     setMainLoading(true);
     const scheduleData = await storeSheetData(doc);
-    console.log("scheduleData", scheduleData);
     setMainLoading(false);
   }, [doc]);
 
