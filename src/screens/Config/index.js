@@ -19,7 +19,7 @@ const Config = () => {
 
   const getStartData = useCallback(async () => {
     setMainLoading(true);
-    const scheduleData = await storeSheetData(doc);
+    await storeSheetData(doc);
     setMainLoading(false);
   }, [doc]);
 
