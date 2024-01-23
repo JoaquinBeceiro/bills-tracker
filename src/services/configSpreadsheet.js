@@ -60,3 +60,29 @@ export const addRow = async (doc, name, frequency, amount) => {
     return null;
   }
 };
+
+export const deleteRow = async (doc, id) => {
+  if (doc) {
+    const sheet = await getSheet(doc);
+    console.log("sheet", sheet);
+    if (sheet) {
+      const fetchedRows = await sheet.getRows();
+      const findById = fetchedRows.find(({ _rowNumber }) => _rowNumber === id);
+      if (findById) {
+        try {
+          await findById.delete();
+          const newData = await storeSheetData(doc);
+          return newData;
+        } catch (error) {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+};

@@ -11,7 +11,13 @@ import {
 } from "components";
 import * as S from "./styles";
 import { GlobalContext, DispatchTypes } from "context";
-import { getByTypesMonth, getMonthYears, getDetailsByTypeDate, getDetailsByMonth, deleteRow } from "services";
+import {
+  getByTypesMonth,
+  getMonthYears,
+  getDetailsByTypeDate,
+  getDetailsByMonth,
+  deleteRow,
+} from "services";
 import Utils from "lib/utils";
 import { useLocation } from "react-router-dom";
 
@@ -134,21 +140,19 @@ const Type = () => {
   const showAllDetails = async () => {
     setMainLoading(true);
 
-    const title = `${monthToText(parseInt(selectedDate.month))} ${selectedDate.year}`;
+    const title = `${monthToText(parseInt(selectedDate.month))} ${
+      selectedDate.year
+    }`;
     setModalTitle(title);
 
     const selectedMonth = parseInt(selectedDate.month) + 1;
-    const data = await getDetailsByMonth(
-      doc,
-      selectedMonth,
-      selectedDate.year,
-    );
+    const data = await getDetailsByMonth(doc, selectedMonth, selectedDate.year);
     setShowDetail("all");
     setDetailData(data);
     const subTitle = `${data.length} transactions`;
     setModalSubtitle(subTitle);
     setMainLoading(false);
-  }
+  };
 
   const deleteRecord = async (id, type) => {
     modalDispatch({
@@ -164,7 +168,7 @@ const Type = () => {
             setMainLoading(true);
             await deleteRow(doc, id);
             getStartData(doc);
-            if(showDetail === 'all'){
+            if (showDetail === "all") {
               showAllDetails();
             } else {
               getDetailData(type);
@@ -177,13 +181,11 @@ const Type = () => {
           text: "Cancel",
           action: () => {
             modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
-
           },
         },
       ],
     });
-
-  }
+  };
 
   return (
     <>
@@ -221,7 +223,11 @@ const Type = () => {
               />
             ))}
             <S.ShowAllContainer>
-              <ButtonComponent type="text" text="Show all" action={showAllDetails} />
+              <ButtonComponent
+                type="text"
+                text="Show all"
+                action={showAllDetails}
+              />
             </S.ShowAllContainer>
           </div>
         </S.Container>
@@ -238,7 +244,7 @@ const Type = () => {
               amount={Amount}
               description={dateToText(Date)}
               title={Detail}
-              subTitle={showDetail === 'all' && Type}
+              subTitle={showDetail === "all" && Type}
               deleteAction={() => deleteRecord(Id, Type)}
             />
           ))}

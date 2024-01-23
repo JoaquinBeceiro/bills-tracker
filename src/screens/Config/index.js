@@ -4,11 +4,13 @@ import { LoadingComponent, TabsComponent } from "components";
 import * as S from "./styles";
 import Schedule from "./schedule";
 import Utils from "lib/utils";
-import { GlobalContext } from "context";
+import { GlobalContext, DispatchTypes } from "context";
 
 const Config = () => {
   const context = useContext(GlobalContext);
   const [userState] = context.globalUser;
+  const [, modalDispatch] = context.globalModal;
+
   const { doc, loading } = userState;
 
   const [mainLoading, setMainLoading] = useState(false);
@@ -30,7 +32,12 @@ const Config = () => {
         <TabsComponent items={menuItems} action={menuAction} />
         <S.Container>
           {activeItem === Utils.Constants.SCHEDULE && (
-            <Schedule doc={doc} setMainLoading={setMainLoading} />
+            <Schedule
+              doc={doc}
+              setMainLoading={setMainLoading}
+              DispatchTypes={DispatchTypes}
+              modalDispatch={modalDispatch}
+            />
           )}
           {activeItem === Utils.Constants.PROFILE && <>PROFILE</>}
           {activeItem === Utils.Constants.BUDGET && <>BUDGET</>}
