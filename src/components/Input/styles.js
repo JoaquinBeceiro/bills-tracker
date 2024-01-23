@@ -185,7 +185,6 @@ const CreatableSelectComponent = (props) => (
 );
 
 const SelectComponent = (props) => {
-  console.log("props",props);
   return <Select classNamePrefix="Select" {...props} />;
 };
 

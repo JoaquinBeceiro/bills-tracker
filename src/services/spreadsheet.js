@@ -1,6 +1,13 @@
 import { GoogleSpreadsheet } from "google-spreadsheet";
 import Utils from "lib/utils";
-import { defaultTypes, sheetHeaders, sheetTitle, docName } from "config/sheet";
+import {
+  defaultTypes,
+  sheetHeaders,
+  sheetTitle,
+  sheetTitleConfig,
+  docName,
+  sheetHeadersConfig,
+} from "config/sheet";
 import { setSheetData, getSheetData } from "config/localStorage";
 import {
   avgHeaderData,
@@ -127,6 +134,10 @@ export const createDoc = async (
       await doc.addSheet({
         title: sheetTitle,
         headerValues: sheetHeaders,
+      });
+      await doc.addSheet({
+        title: sheetTitleConfig,
+        headerValues: sheetHeadersConfig,
       });
     }
     await storeSheetData(doc);

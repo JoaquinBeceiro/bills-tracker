@@ -7,8 +7,9 @@ import {
 } from "components";
 import Utils from "lib/utils";
 import { getSheetConfig } from "config/localStorage";
+import { addRow } from "services/configSpreadsheet";
 
-const { formatMoney } = Utils.Currency;
+const { formatMoney, moneyToNumber } = Utils.Currency;
 
 const SCHEDULE_FREQUENCY_OPTIONS = Object.entries(
   Utils.Constants.SCHEDULE_FREQUENCY
@@ -20,10 +21,10 @@ const SCHEDULE_FREQUENCY_OPTIONS = Object.entries(
 const defaultForm = {
   name: "",
   frequency: 0,
-  amount: 1,
+  amount: 0,
 };
 
-const Schedule = () => {
+const Schedule = ({ doc, setMainLoading }) => {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(defaultForm);
 
@@ -50,6 +51,19 @@ const Schedule = () => {
     }
   };
 
+  const addSchedule = async () => {
+    setMainLoading(true);
+    try {
+      const { name, frequency, amount } = form;
+      await addRow(doc, name, frequency, amount);
+      hideForm();
+    } catch (error) {
+      console.log("ERROR (addSchedule)", error);
+    } finally {
+      setMainLoading(false);
+    }
+  };
+
   if (showForm) {
     return (
       <S.Content>
@@ -58,7 +72,7 @@ const Schedule = () => {
             type="text"
             placeholder="Schedule name"
             name="name"
-            value={""}
+            value={form.name}
             onChange={onChange}
             title="Name"
           />
@@ -80,11 +94,11 @@ const Schedule = () => {
             type="money"
             placeholder="0"
             name="amount"
-            value={0}
+            value={form.amount}
             onChange={onChange}
           />
         </S.Form>
-        <ButtonComponent text="Save" action={hideForm} />
+        <ButtonComponent text="Save" action={addSchedule} />
         <ButtonComponent type="text" text="Cancel" action={hideForm} />
       </S.Content>
     );
@@ -93,16 +107,16 @@ const Schedule = () => {
   return (
     <S.Content>
       <S.TableContainer>
-        {schedules.map(({ name, amount, frequency }) => {
-          const priceFormatted = `$${formatMoney(amount)}`;
-          const typeSchedule = Utils.Constants.SCHEDULE_FREQUENCY[frequency];
+        {schedules.map(({ Name, Amount, Frequency }) => {
+          const priceFormatted = `$${formatMoney(moneyToNumber(Amount))}`;
+          const typeSchedule = Utils.Constants.SCHEDULE_FREQUENCY[Frequency];
           return (
             <DetailItemComponent
-              key={name}
+              key={Name}
               amount={priceFormatted}
-              title={name}
+              title={Name}
               description={typeSchedule}
-              deleteAction={() => deleteRecord(name)}
+              deleteAction={() => deleteRecord(Name)}
             />
           );
         })}
