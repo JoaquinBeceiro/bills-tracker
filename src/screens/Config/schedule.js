@@ -1,32 +1,101 @@
-import React from "react";
+import React, { useState } from "react";
 import * as S from "./styles";
-import { DetailItemComponent, ButtonComponent } from "components";
+import {
+  DetailItemComponent,
+  ButtonComponent,
+  InputComponent,
+} from "components";
 import Utils from "lib/utils";
+import { getSheetConfig } from "config/localStorage";
 
 const { formatMoney } = Utils.Currency;
 
+const SCHEDULE_FREQUENCY_OPTIONS = Object.entries(
+  Utils.Constants.SCHEDULE_FREQUENCY
+).map((value) => ({
+  value: value[0],
+  label: value[1],
+}));
+
+const defaultForm = {
+  name: "",
+  frequency: 0,
+  amount: 1,
+};
+
 const Schedule = () => {
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState(defaultForm);
+
   const handleAddNew = () => {
-    alert("Add");
+    setShowForm(true);
   };
 
-  const schedules = [
-    { name: "Rent", price: 30000, type: 2 },
-    { name: "Internet", price: 5000, type: 2 },
-    { name: "Phone", price: 3000, type: 1 },
-    { name: "Netflix", price: 3500, type: 2 },
-  ];
+  const hideForm = () => {
+    setShowForm(false);
+  };
+
+  const schedules = getSheetConfig();
 
   const deleteRecord = (name) => {
     alert(name);
   };
 
+  const onChange = (name, value) => {
+    if (name && value) {
+      setForm({
+        ...form,
+        [name]: value,
+      });
+    }
+  };
+
+  if (showForm) {
+    return (
+      <S.Content>
+        <S.Form>
+          <InputComponent
+            type="text"
+            placeholder="Schedule name"
+            name="name"
+            value={""}
+            onChange={onChange}
+            title="Name"
+          />
+          <InputComponent
+            type="dropdown"
+            name="frequency"
+            title="Frequency"
+            options={SCHEDULE_FREQUENCY_OPTIONS}
+            value={
+              SCHEDULE_FREQUENCY_OPTIONS &&
+              form.frequency &&
+              SCHEDULE_FREQUENCY_OPTIONS[form.frequency]
+            }
+            onChange={onChange}
+            placeholder="Select frequency"
+            isSearchable={false}
+          />
+          <InputComponent
+            type="money"
+            placeholder="0"
+            name="amount"
+            value={0}
+            onChange={onChange}
+          />
+        </S.Form>
+        <ButtonComponent text="Save" action={hideForm} />
+        <ButtonComponent type="text" text="Cancel" action={hideForm} />
+      </S.Content>
+    );
+  }
+
   return (
     <S.Content>
       <S.TableContainer>
-        {schedules.map(({ name, price, type }) => {
-          const priceFormatted = `$${formatMoney(price)}`;
-          const typeSchedule = Utils.Constants.SCHEDULE_TYPES[type];
+        {schedules.map(({ name, amount, frequency }) => {
+          const priceFormatted = `$${formatMoney(amount)}`;
+          const typeSchedule = Utils.Constants.SCHEDULE_FREQUENCY[frequency];
           return (
             <DetailItemComponent
               key={name}

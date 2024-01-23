@@ -25,3 +25,10 @@ export const setSheetData = (data) => {
 };
 
 export const getSheetData = () => JSON.parse(localStorage.getItem("data"));
+
+export const setSheetConfig = (data) => {
+  const dataObject = JSON.stringify(data);
+  localStorage.setItem("config", dataObject);
+};
+
+export const getSheetConfig = () => JSON.parse(localStorage.getItem("config"));
