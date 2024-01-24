@@ -40,8 +40,8 @@ export const TYPES = "Types";
 
 export const MENU_ITEMS = [
   { label: SCHEDULE, active: true },
-  { label: PROFILE, active: false },
-  { label: BUDGET, active: false },
+  { label: PROFILE, active: false, disabled: true },
+  { label: BUDGET, active: false, disabled: true },
   { label: TYPES, active: false, disabled: true },
 ];
 
