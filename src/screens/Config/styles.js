@@ -10,11 +10,13 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: 100%;
 `;
 
 export const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
 `;
 
 export const Form = styled.div`
@@ -36,9 +38,15 @@ export const NoData = styled.div`
   font-size: 13px;
   font-style: normal;
   font-weight: 300;
-  text-transform: uppercase;
+
+  img {
+    width: 100%;
+  }
 
   p {
+    &.strong {
+      font-weight: 900;
+    }
     margin: 0;
   }
 `;

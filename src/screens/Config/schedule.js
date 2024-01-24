@@ -11,6 +11,7 @@ import {
   deleteRow,
   getLocalSheetData,
 } from "services/configSpreadsheet";
+import EmptyBox from "rsc/img/emptybox.png";
 
 const { formatMoney, moneyToNumber } = Utils.Currency;
 
@@ -152,8 +153,9 @@ const Schedule = ({
   const SkeletonLoading = (isLoading) => {
     return !isLoading ? (
       <S.NoData>
-        <p>There is no records to show.</p>
-        <p>Please create new schedules.</p>
+        <img src={EmptyBox} alt="Empty box" />
+        <p className="strong">You have not created any schedule yet.</p>
+        <p>You can easily create and manage your schedules on this page.</p>
       </S.NoData>
     ) : (
       <>
