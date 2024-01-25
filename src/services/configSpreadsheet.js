@@ -48,11 +48,13 @@ export const getLocalSheetData = async (doc) => {
 
 export const addRow = async (doc, name, frequency, amount) => {
   if (doc) {
+    const timestamp = new Date().getTime();
     const sheet = await getSheet(doc);
     const newRow = {
       Name: name,
       Frequency: frequency,
       Amount: `$${amount}`,
+      Date: timestamp,
     };
     await sheet.addRow(newRow);
     const newData = await getLocalSheetData(doc);

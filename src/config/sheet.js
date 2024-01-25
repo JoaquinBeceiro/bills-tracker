@@ -1,5 +1,5 @@
 const sheetHeaders = ["Date", "Who", "Amount", "Type", "Detail"];
-const sheetHeadersConfig = ["Name", "Frequency", "Amount"];
+const sheetHeadersConfig = ["Name", "Frequency", "Amount", "Date"];
 const defaultTypes = ["Supermercado", "Farmacia", "Vestimenta", "Otros"];
 const docName = "BillsTracker";
 const sheetTitle = "Bills";
