@@ -1,5 +1,12 @@
 const sheetHeaders = ["Date", "Who", "Amount", "Type", "Detail"];
-const sheetHeadersConfig = ["Name", "Frequency", "Amount", "Date"];
+const sheetHeadersConfig = [
+  "Name",
+  "Type",
+  "Frequency",
+  "Amount",
+  "Description",
+  "Date",
+];
 const defaultTypes = ["Supermercado", "Farmacia", "Vestimenta", "Otros"];
 const docName = "BillsTracker";
 const sheetTitle = "Bills";
@@ -13,5 +20,5 @@ export {
   sheetTitle,
   sheetScope,
   sheetTitleConfig,
-  sheetHeadersConfig
+  sheetHeadersConfig,
 };

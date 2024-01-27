@@ -22,8 +22,10 @@ export const storeSheetData = async (doc) => {
       const mappedData = fetchedRows.map(({ _rawData, _rowNumber }) => {
         return {
           Name: _rawData[0],
-          Frequency: _rawData[1],
-          Amount: _rawData[2],
+          Type: _rawData[1],
+          Frequency: _rawData[2],
+          Amount: _rawData[3],
+          Description: _rawData[4],
           Id: _rowNumber,
         };
       });
@@ -46,14 +48,16 @@ export const getLocalSheetData = async (doc) => {
   }
 };
 
-export const addRow = async (doc, name, frequency, amount) => {
+export const addRow = async (doc, name, type, frequency, amount, description) => {
   if (doc) {
     const timestamp = new Date().getTime();
     const sheet = await getSheet(doc);
     const newRow = {
       Name: name,
+      Type: type,
       Frequency: frequency,
       Amount: `$${amount}`,
+      Description: description,
       Date: timestamp,
     };
     await sheet.addRow(newRow);

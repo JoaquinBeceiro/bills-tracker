@@ -6,6 +6,7 @@ import Schedule from "./schedule";
 import Utils from "lib/utils";
 import { GlobalContext, DispatchTypes } from "context";
 import { storeSheetData } from "services/configSpreadsheet";
+import { getTypes } from "services";
 
 const Config = () => {
   const context = useContext(GlobalContext);
@@ -16,16 +17,52 @@ const Config = () => {
 
   const [mainLoading, setMainLoading] = useState(true);
   const [menuItems, setMenuItems] = useState(Utils.Constants.MENU_ITEMS);
+  const [billsTypes, setBillsTypes] = useState([]);
+
+  const alertModal = useCallback(
+    (title, content, actions) => {
+      modalDispatch({
+        type: DispatchTypes.Modal.MODAL_SHOW,
+        title,
+        content,
+        actions: [
+          {
+            text: "Ok",
+            action: () => {
+              modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
+              actions && actions();
+            },
+          },
+        ],
+      });
+    },
+    [modalDispatch]
+  );
 
   const getStartData = useCallback(async () => {
     setMainLoading(true);
-    await storeSheetData(doc);
+    try {
+      await storeSheetData(doc);
+      const types = await getTypes(doc);
+      const typesFormatted = types.map((type) => ({
+        value: type,
+        label: type,
+      }));
+      setBillsTypes(typesFormatted);
+    } catch (e) {
+      console.log("getStartData ERROR", e);
+      alertModal("Error", "There was an error. Please try again later.");
+      setMainLoading(false);
+    }
+
     setMainLoading(false);
-  }, [doc]);
+  }, [alertModal, doc]);
 
   useEffect(() => {
-    getStartData();
-  }, [getStartData]);
+    if (doc) {
+      getStartData();
+    }
+  }, [getStartData, doc]);
 
   const menuAction = (key) => {
     const newMenuItems = Utils.Constants.MENU_ITEMS.map((item) => ({
@@ -51,6 +88,7 @@ const Config = () => {
               DispatchTypes={DispatchTypes}
               modalDispatch={modalDispatch}
               isLoading={isLoading}
+              billsTypes={billsTypes}
             />
           )}
           {activeItem === Utils.Constants.PROFILE && <>PROFILE</>}

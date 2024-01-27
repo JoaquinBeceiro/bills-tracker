@@ -191,7 +191,7 @@ const SelectComponent = (props) => {
 const CreatableDropdownBox = styled(CreatableSelectComponent)`
   border: none;
   border-style: unset;
-  z-index: 400;
+  z-index: 500;
   & .Select__control {
     border: none;
     border-style: unset;

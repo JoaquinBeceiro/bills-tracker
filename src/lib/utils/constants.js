@@ -45,9 +45,9 @@ export const MENU_ITEMS = [
   { label: TYPES, active: false, disabled: true },
 ];
 
-export const SCHEDULE_FREQUENCY = {
-  0: "Daily",
-  1: "Weekly",
-  2: "Monthly",
-  3: "Yearly",
-};
+export const SCHEDULE_FREQUENCY = [
+  { key: "0", value: "Daily", description: "" },
+  { key: "1", value: "Weekly", description: "" },
+  { key: "2", value: "Monthly", description: "" },
+  { key: "3", value: "Yearly", description: "" },
+];

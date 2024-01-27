@@ -15,17 +15,19 @@ import EmptyBox from "rsc/img/emptybox.png";
 
 const { formatMoney, moneyToNumber } = Utils.Currency;
 
-const SCHEDULE_FREQUENCY_OPTIONS = Object.entries(
-  Utils.Constants.SCHEDULE_FREQUENCY
-).map((value) => ({
-  value: value[0],
-  label: value[1],
-}));
+const SCHEDULE_FREQUENCY_OPTIONS = Utils.Constants.SCHEDULE_FREQUENCY.map(
+  ({ key, value }) => ({
+    value: key,
+    label: value,
+  })
+);
 
 const defaultForm = {
   name: "",
+  type: "",
   frequency: 0,
   amount: "",
+  description: "",
 };
 
 const Schedule = ({
@@ -34,6 +36,7 @@ const Schedule = ({
   DispatchTypes,
   modalDispatch,
   isLoading,
+  billsTypes,
 }) => {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(defaultForm);
@@ -70,8 +73,8 @@ const Schedule = ({
   const addSchedule = async () => {
     setMainLoading(true);
     try {
-      const { name, frequency, amount } = form;
-      await addRow(doc, name, frequency, amount);
+      const { name, type, frequency, amount, description } = form;
+      await addRow(doc, name, type, frequency, amount, description);
       setForm(defaultForm);
       getStartData();
       hideForm();
@@ -123,6 +126,15 @@ const Schedule = ({
             title="Name"
           />
           <InputComponent
+            type="creatableDropdown"
+            name="type"
+            title="Type"
+            options={billsTypes}
+            value={billsTypes && form.type && billsTypes[form.type]}
+            onChange={onChange}
+            placeholder="Write to create new type"
+          />
+          <InputComponent
             type="dropdown"
             name="frequency"
             title="Frequency"
@@ -141,6 +153,14 @@ const Schedule = ({
             placeholder="0"
             name="amount"
             value={form.amount}
+            onChange={onChange}
+          />
+          <InputComponent
+            type="bigtext"
+            name="description"
+            title="Description"
+            placeholder="Write a description..."
+            value={form.description}
             onChange={onChange}
           />
         </S.Form>
@@ -171,20 +191,24 @@ const Schedule = ({
       <S.TableContainer>
         {schedules === null || schedules.length === 0
           ? SkeletonLoading(isLoading)
-          : schedules.map(({ Name, Amount, Frequency, Id }) => {
-              const priceFormatted = `$${formatMoney(moneyToNumber(Amount))}`;
-              const typeSchedule =
-                Utils.Constants.SCHEDULE_FREQUENCY[Frequency];
-              return (
-                <DetailItemComponent
-                  key={`${Id}-${Name}`}
-                  amount={priceFormatted}
-                  title={Name}
-                  description={typeSchedule}
-                  deleteAction={() => deleteRecord(Id)}
-                />
-              );
-            })}
+          : schedules.map(
+              ({ Name, Type, Amount, Frequency, Description, Id }) => {
+                const priceFormatted = `$${formatMoney(moneyToNumber(Amount))}`;
+                const typeSchedule = Utils.Constants.SCHEDULE_FREQUENCY.find(
+                  ({ key }) => key === Frequency
+                ).value;
+                return (
+                  <DetailItemComponent
+                    key={`${Id}-${Name}`}
+                    amount={priceFormatted}
+                    title={`${Name} (${typeSchedule})`}
+                    subTitle={Type}
+                    description={Description}
+                    deleteAction={() => deleteRecord(Id)}
+                  />
+                );
+              }
+            )}
       </S.TableContainer>
       <ButtonComponent
         text="Add new"
