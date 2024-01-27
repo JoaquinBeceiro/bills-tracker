@@ -3,7 +3,7 @@ import * as S from "./styles";
 
 const RadioButton = ({ options, selected, onChange, disabled, name }) => {
   return (
-    <S.Cotnainer>
+    <S.Container>
       {options.map(({ label, value }) => (
         <Fragment key={`${label}-${value}`}>
           <S.Label htmlFor={value} disabled={disabled}>
@@ -21,7 +21,7 @@ const RadioButton = ({ options, selected, onChange, disabled, name }) => {
           </S.Label>
         </Fragment>
       ))}
-    </S.Cotnainer>
+    </S.Container>
   );
 };
 
