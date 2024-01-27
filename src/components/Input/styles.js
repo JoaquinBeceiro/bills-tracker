@@ -54,6 +54,11 @@ const InputContainer = styled.div`
   &.money {
     border-color: #38b44e;
   }
+  &.option {
+    label {
+      font-size: 14px;
+    }
+  }
 
   > div {
     display: flex;

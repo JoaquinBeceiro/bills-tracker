@@ -23,5 +23,21 @@
   ],
   "start_url": ".",
   "theme_color": "#ffffff",
-  "background_color": "#38B44E"
+  "background_color": "#38B44E",
+  "screenshots": [
+    {
+      "src": "img/screens/cover.png",
+      "sizes": "1080x1080",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Cover"
+    },
+    {
+      "src": "img/screens/home.png",
+      "sizes": "360x640",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Home"
+    }
+  ]
 }

@@ -11,8 +11,7 @@ const rotate = keyframes`
   }
 `;
 
-
-export const Cotnainer = styled.div`
+export const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -26,16 +25,20 @@ export const Label = styled.label`
   gap: 10px;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   align-items: center;
+  display: flex;
+  align-items: flex-start;
 `;
 
 export const RadioButton = styled.input`
-    height: 0;
-    width: 0;
-    opacity: 0;
-    z-index: -1;
+  height: 0;
+  width: 0;
+  opacity: 0;
+  z-index: -1;
 `;
 
 export const Indicator = styled.div`
+  margin-top: 5px;
+  padding-right: 12px;
   width: 12px;
   height: 12px;
   background: ${(props) =>
