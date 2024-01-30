@@ -4,6 +4,7 @@ import { GlobalContext, DispatchTypes } from "context";
 import { SearchIcon, CloseIcon, DetailItemComponent } from "components";
 import { getItemsByText } from "services";
 import Utils from "lib/utils";
+import EmptyBox from "rsc/img/emptybox.png";
 
 const { dateToText } = Utils.Date;
 
@@ -64,7 +65,13 @@ const Search = () => {
     }
 
     if (results.length === 0) {
-      return <S.NoResultsMessage>No results for your query</S.NoResultsMessage>;
+      return (
+        <S.NoResultsMessage>
+          <img src={EmptyBox} alt="Empty box" />
+
+          <p>We could not find any matches.</p>
+        </S.NoResultsMessage>
+      );
     }
 
     return (

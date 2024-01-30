@@ -77,7 +77,13 @@ export const NoResultsMessage = styled.div`
   font-weight: 200;
   color: #7e7e7e;
   flex: 1;
+  flex-direction: column;
+  gap: 20px;
   height: 100%;
+  img {
+    width: 100%;
+    padding: 0 30px;
+  }
 `;
 
 export const CountContainer = styled.div`
