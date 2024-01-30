@@ -1,7 +1,12 @@
 /* eslint-disable no-use-before-define */
 import React, { useContext, useEffect, useCallback } from "react";
 import { Content, Container } from "./styles";
-import { HeaderComponent, FooterComponent, ModalComponent } from "components";
+import {
+  HeaderComponent,
+  FooterComponent,
+  ModalComponent,
+  SearchComponent,
+} from "components";
 import { GlobalContext, DispatchTypes } from "context";
 import { getUserSession } from "config/localStorage";
 import { withRouter } from "react-router";
@@ -17,6 +22,7 @@ const Master = ({
 }) => {
   const context = useContext(GlobalContext);
   const [modalState] = context.globalModal;
+  const [searchState] = context.globalSearch;
   const [, userDispatch] = context.globalUser;
 
   const createDoc = useCallback(
@@ -71,6 +77,7 @@ const Master = ({
           actions={modalState.actions}
         />
       )}
+      {searchState.show && <SearchComponent />}
     </Container>
   );
 };

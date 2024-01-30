@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import CreatableSelect from "react-select/creatable";
+import Select from "react-select";
 
 const InputContainer = styled.div`
   box-sizing: border-box;
@@ -169,7 +170,7 @@ const CreateButton = styled.div`
   background-color: #6fc97f;
 `;
 
-const SelectComponent = (props) => (
+const CreatableSelectComponent = (props) => (
   <CreatableSelect
     classNamePrefix="Select"
     formatCreateLabel={(input) => (
@@ -182,6 +183,54 @@ const SelectComponent = (props) => (
     {...props}
   />
 );
+
+const SelectComponent = (props) => {
+  return <Select classNamePrefix="Select" {...props} />;
+};
+
+const CreatableDropdownBox = styled(CreatableSelectComponent)`
+  border: none;
+  border-style: unset;
+  z-index: 500;
+  & .Select__control {
+    border: none;
+    border-style: unset;
+  }
+
+  & .Select__value-container {
+    text-align: right;
+    justify-content: flex-end;
+  }
+
+  & .Select__indicator-separator,
+  .Select__clear-indicator {
+    display: none;
+  }
+
+  & .Select__control--is-focused {
+    box-shadow: none;
+  }
+
+  & .Select__option {
+    text-align: right;
+  }
+
+  font-family: Roboto;
+  border: none;
+  border-radius: 7px;
+  width: 100%;
+  font-weight: normal;
+  font-size: 13px;
+  ::placeholder {
+    color: #7e7e7e;
+  }
+  &:focus {
+    outline: none;
+    ::placeholder {
+      color: #000;
+    }
+  }
+`;
 
 const DropdownBox = styled(SelectComponent)`
   border: none;
@@ -260,6 +309,7 @@ export {
   InputContainer,
   InputBox,
   DropdownBox,
+  CreatableDropdownBox,
   BigTextBox,
   TextAreaBox,
   TextMoney,
