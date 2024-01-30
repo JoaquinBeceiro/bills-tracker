@@ -13,6 +13,8 @@ const Footer = () => {
     history.push(route);
   };
 
+  const SHOW_CONFIG_MENU = process.env.REACT_APP_SHOW_CONFIG_MENU === "true";
+
   return (
     <Container>
       <MenuItem
@@ -34,12 +36,14 @@ const Footer = () => {
         <LineChartIcon />
       </MenuItem>
 
-      <MenuItem
-        onClick={() => handleNavigate("/config")}
-        className={isActive("config") ? "active" : ""}
-      >
-        <GearIcon />
-      </MenuItem>
+      {SHOW_CONFIG_MENU && (
+        <MenuItem
+          onClick={() => handleNavigate("/config")}
+          className={isActive("config") ? "active" : ""}
+        >
+          <GearIcon />
+        </MenuItem>
+      )}
     </Container>
   );
 };
