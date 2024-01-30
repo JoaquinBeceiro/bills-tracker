@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, MenuItem } from "./styles";
 import { useHistory, useLocation } from "react-router-dom";
-import { PieChartIcon, LineChartIcon, HomeIcon } from "../";
+import { PieChartIcon, LineChartIcon, HomeIcon, GearIcon } from "../";
 
 const Footer = () => {
   const history = useHistory();
@@ -12,6 +12,8 @@ const Footer = () => {
   const handleNavigate = (route) => {
     history.push(route);
   };
+
+  const SHOW_CONFIG_MENU = process.env.REACT_APP_SHOW_CONFIG_MENU === "true";
 
   return (
     <Container>
@@ -33,6 +35,15 @@ const Footer = () => {
       >
         <LineChartIcon />
       </MenuItem>
+
+      {SHOW_CONFIG_MENU && (
+        <MenuItem
+          onClick={() => handleNavigate("/config")}
+          className={isActive("config") ? "active" : ""}
+        >
+          <GearIcon />
+        </MenuItem>
+      )}
     </Container>
   );
 };

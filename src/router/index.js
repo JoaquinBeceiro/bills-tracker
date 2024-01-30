@@ -8,6 +8,7 @@ import {
   TypeScreen,
   AnalyticsScreen,
   GuideScreen,
+  ConfigScreen,
 } from "screens";
 
 const RouterComponent = ({ children }) => (
@@ -39,6 +40,11 @@ const RouterComponent = ({ children }) => (
       <Route exact path="/analytics">
         <MasterLayout footer={true} subTitle="Analytics" allowSignOut={true}>
           <AnalyticsScreen />
+        </MasterLayout>
+      </Route>
+      <Route exact path="/config">
+        <MasterLayout footer={true} subTitle="Config" allowSignOut={true}>
+          <ConfigScreen />
         </MasterLayout>
       </Route>
     </Switch>

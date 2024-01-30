@@ -190,7 +190,7 @@ const Main = () => {
           onChange={onChange}
         />
         <InputComponent
-          type="dropdown"
+          type="creatableDropdown"
           name="type"
           title="Type"
           options={billsTypes}

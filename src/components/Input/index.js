@@ -16,6 +16,7 @@ const Input = ({
   placeholder = "",
   options = [],
   disabled,
+  isSearchable,
 }) => {
   const handleChangeInput = (e) => onChange(e.target.name, e.target.value);
   const handleChangeDropdown = ({ value }) => onChange(name, value);
@@ -23,9 +24,13 @@ const Input = ({
   const defaultProps = {
     name,
     placeholder,
-    onChange: type === "dropdown" ? handleChangeDropdown : handleChangeInput,
+    onChange:
+      type === "creatableDropdown" || type === "dropdown"
+        ? handleChangeDropdown
+        : handleChangeInput,
     value,
     disabled,
+    isSearchable,
   };
 
   return (
@@ -49,9 +54,14 @@ const Input = ({
                 inputmode="numeric"
               />
             ),
-            dropdown: (
-              <S.DropdownBox {...defaultProps} options={options} isClearable />
+            creatableDropdown: (
+              <S.CreatableDropdownBox
+                {...defaultProps}
+                options={options}
+                isCreatable
+              />
             ),
+            dropdown: <S.DropdownBox {...defaultProps} options={options} />,
             bigtext: <S.BigTextBox {...defaultProps} rows="2" />,
             textarea: <S.TextAreaBox {...defaultProps} />,
             checkbox: (
