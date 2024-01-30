@@ -80,6 +80,9 @@ export const NoResultsMessage = styled.div`
   flex-direction: column;
   gap: 20px;
   height: 100%;
+  > div {
+    height: 170px;
+  }
   img {
     width: 100%;
     padding: 0 30px;
