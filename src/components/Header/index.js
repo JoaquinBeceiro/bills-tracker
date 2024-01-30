@@ -69,13 +69,13 @@ const Header = ({
 
   return (
     <Main colorChange={colorChange}>
-      <ActionContainer>
-        {allowSignOut && (
+      {allowSignOut && (
+        <ActionContainer>
           <div onClick={handleSearch}>
             <MenuSearchIcon />
           </div>
-        )}
-      </ActionContainer>
+        </ActionContainer>
+      )}
       <TitleContainer>
         <h1>{title}</h1>
         <h2>{subTitle}</h2>
