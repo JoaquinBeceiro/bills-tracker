@@ -18,7 +18,7 @@ import {
 const { OAuth2Client } = require("google-auth-library");
 
 const { moneyToNumber, formatMoney } = Utils.Currency;
-const { dateSort, split, month12Ago, dateParser } = Utils.Date;
+const { dateSort, split, month12Ago, dateParser, dateToText } = Utils.Date;
 
 const getSheet = (doc) => {
   return doc.sheetsByTitle[sheetTitle];
@@ -504,6 +504,49 @@ export const deleteRow = async (doc, id) => {
     }
   } else {
     return false;
+  }
+};
+
+export const getItemsByText = async (doc, text, limit = 100) => {
+  if (doc && text) {
+    const wordCounts = text.trim().split(" ").length;
+    const fetchedRows = await getLocalSheetData();
+    const formatSearch = text.toLowerCase().trim();
+    const totalsFiltered = fetchedRows.filter((e) => {
+      const dateText = dateToText(e.Date);
+      const moneyNumber = moneyToNumber(e.Amount);
+      const items = [e.Amount, e.Type, e.Detail, dateText, moneyNumber];
+      const itemsText = items.join(" ").toLowerCase();
+
+      const coincidences = formatSearch.split(" ").reduce((acc, value) => {
+        if (new RegExp(value).exec(itemsText)) {
+          return acc + 1;
+        }
+        return acc;
+      }, 0);
+
+      return coincidences === wordCounts;
+    });
+
+    const mappedData = totalsFiltered.map(
+      ({ Amount, Date, Detail, Type, Who, Id }) => ({
+        Amount,
+        Date,
+        Detail,
+        Type,
+        Who,
+        Id,
+      })
+    );
+
+    const dataSorted = mappedData.sort(dateSort);
+
+    return {
+      count: dataSorted.length,
+      results: dataSorted.slice(0, limit),
+    };
+  } else {
+    return null;
   }
 };
 

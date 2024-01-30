@@ -1,6 +1,7 @@
 import React, { useReducer, createContext } from "react";
 import UserReducer, { userInitialState } from "./reducers/User";
 import ModalReducer, { modalInitialState } from "./reducers/Modal";
+import SearchReducer, { searchInitialState } from "./reducers/Search";
 import Types from "./types";
 
 export const GlobalContext = createContext();
@@ -13,10 +14,15 @@ const AppContextProvider = ({ children }) => {
     ModalReducer,
     modalInitialState
   );
+  const [searchState, searchDispatch] = useReducer(
+    SearchReducer,
+    searchInitialState
+  );
 
   const values = {
     globalUser: [userState, userDispatch],
     globalModal: [modalState, modalDispatch],
+    globalSearch: [searchState, searchDispatch],
   };
 
   return (

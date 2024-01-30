@@ -19,3 +19,4 @@ export { default as HeaderInfoComponent } from "./HeaderInfo";
 export { default as TooltipComponent } from "./Tooltip";
 export { default as RadioButtonComponent } from "./RadioButton";
 export { default as TabsComponent } from "./Tabs";
+export { default as SearchComponent } from "./Search";

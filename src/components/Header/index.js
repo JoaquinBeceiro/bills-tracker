@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Main, TitleContainer, ActionContainer } from "./styles";
-import { SignOutIcon } from "../";
+import { SignOutIcon, MenuSearchIcon } from "../";
 import { deleteUserSession } from "config/localStorage";
 import { useHistory } from "react-router-dom";
 import { GlobalContext, DispatchTypes } from "context";
@@ -14,6 +14,7 @@ const Header = ({
   const context = useContext(GlobalContext);
   const [, userDispatch] = context.globalUser;
   const [, modalDispatch] = context.globalModal;
+  const [, searchDispatch] = context.globalSearch;
 
   const history = useHistory();
 
@@ -59,9 +60,20 @@ const Header = ({
     });
   };
 
+  const handleSearch = () => {
+    console.log("SHOW SEARCH");
+    searchDispatch({
+      type: DispatchTypes.Search.SEARCH_SHOW,
+    });
+  };
+
   return (
     <Main colorChange={colorChange}>
-      <ActionContainer></ActionContainer>
+      <ActionContainer>
+        <div onClick={handleSearch}>
+          <MenuSearchIcon />
+        </div>
+      </ActionContainer>
       <TitleContainer>
         <h1>{title}</h1>
         <h2>{subTitle}</h2>
