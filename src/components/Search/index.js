@@ -67,8 +67,9 @@ const Search = () => {
     if (results.length === 0) {
       return (
         <S.NoResultsMessage>
-          <img src={EmptyBox} alt="Empty box" />
-
+          <div>
+            <img src={EmptyBox} alt="Empty box" />
+          </div>
           <p>We could not find any matches.</p>
         </S.NoResultsMessage>
       );
