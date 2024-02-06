@@ -46,12 +46,17 @@ const storeSheetData = async (doc) => {
 };
 
 export const getLocalSheetData = async () => {
+  let returnData = [];
   const data = getSheetData();
   if (data) {
-    return data;
+    returnData = data;
   } else {
-    return await storeSheetData();
+    returnData = await storeSheetData();
   }
+  const filteredData = returnData.filter(
+    ({ Date, Amount }) => Date.trim() && Amount.trim()
+  );
+  return filteredData;
 };
 
 export const createNewDoc = async ({
