@@ -4,6 +4,7 @@ import {
   DetailItemComponent,
   ButtonComponent,
   InputComponent,
+  InfoIcon,
 } from "components";
 import Utils from "lib/utils";
 import { addRow, getLocalSheetData } from "services/configSpreadsheet";
@@ -12,7 +13,6 @@ import { sheetHeadersTypes } from "config/sheet";
 
 const defaultForm = {
   name: "",
-  description: "",
 };
 
 const Types = ({
@@ -61,8 +61,8 @@ const Types = ({
   const addType = async () => {
     setMainLoading(true);
     try {
-      const { name, description } = form;
-      const data = { name, description };
+      const { name } = form;
+      const data = { name };
       await addRow(doc, Utils.Constants.TYPES, sheetHeadersTypes, data);
       setForm(defaultForm);
       getStartData();
@@ -87,12 +87,12 @@ const Types = ({
             title="Name"
           />
           <InputComponent
-            type="bigtext"
-            name="description"
-            title="Description"
-            placeholder="Write a description..."
-            value={form.description}
+            type="icon"
+            placeholder="Search icon"
+            name="icon"
+            value={form.icon}
             onChange={onChange}
+            title="Icon"
           />
         </S.Form>
         <ButtonComponent text="Save" action={addType} />
@@ -110,9 +110,9 @@ const Types = ({
       </S.NoData>
     ) : (
       <>
-        <DetailItemComponent deleteAction={true} isLoading={true} />
-        <DetailItemComponent deleteAction={true} isLoading={true} />
-        <DetailItemComponent deleteAction={true} isLoading={true} />
+        <DetailItemComponent icon={true} deleteAction={true} isLoading={true} />
+        <DetailItemComponent icon={true} deleteAction={true} isLoading={true} />
+        <DetailItemComponent icon={true} deleteAction={true} isLoading={true} />
       </>
     );
   };
@@ -122,12 +122,12 @@ const Types = ({
       <S.TableContainer>
         {types === null || types.length === 0
           ? SkeletonLoading(isLoading)
-          : types.map(({ Name, Description, Id }) => {
+          : types.map(({ Name, Id }) => {
               return (
                 <DetailItemComponent
                   key={`${Id}-${Name}`}
                   title={Name}
-                  description={Description}
+                  icon={<InfoIcon />}
                   deleteAction={() =>
                     deleteRecord(Id, Utils.Constants.TYPES, sheetHeadersTypes)
                   }

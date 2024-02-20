@@ -6,6 +6,7 @@ export const Container = styled.div`
   margin-bottom: 10px;
   padding: 10px 0;
   flex-direction: row;
+  gap: 10px;
 `;
 
 export const Row = styled.div`
@@ -59,4 +60,33 @@ export const ActionContainer = styled.div`
   justify-content: center;
   align-items: center;
   padding-left: 18px;
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .skeleton {
+      display: flex;
+    }
+  }
+`;
+
+export const IconContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-left: 18px;
+  background-color: #38b44e;
+  padding: 10px;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  text-align: center;
+  svg path {
+    fill: white;
+  }
+
+  .skeleton {
+    display: flex;
+  }
 `;

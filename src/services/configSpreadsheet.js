@@ -64,7 +64,7 @@ export const addRow = async (doc, title, headers, data) => {
       },
       [Utils.Constants.TYPES]: {
         Name: data.name,
-        Description: data.description,
+        Icon: data.icon,
       },
     }[title];
 

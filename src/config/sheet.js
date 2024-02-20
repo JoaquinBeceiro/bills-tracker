@@ -7,7 +7,7 @@ const sheetHeadersSchedule = [
   "Description",
   "Date",
 ];
-const sheetHeadersTypes = ["Name"];
+const sheetHeadersTypes = ["Name", "Icon"];
 const defaultTypes = ["Supermercado", "Farmacia", "Vestimenta", "Otros"];
 const docName = "BillsTracker";
 const sheetTitle = "Bills";

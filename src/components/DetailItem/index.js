@@ -9,6 +9,7 @@ const DetailItem = ({
   description,
   amount,
   subTitle,
+  icon,
   deleteAction,
   isLoading,
 }) => {
@@ -18,6 +19,19 @@ const DetailItem = ({
 
   return (
     <S.Container>
+      {icon &&
+        (isLoading ? (
+          <S.IconContainer>
+            <Skeleton
+              circle
+              width={36}
+              height={36}
+              containerClassName="skeleton"
+            />
+          </S.IconContainer>
+        ) : (
+          <S.IconContainer>{icon}</S.IconContainer>
+        ))}
       <S.Content fullWidth={true}>
         <S.Row>
           <S.Title>{isLoading ? <SkeletonComp /> : title}</S.Title>
@@ -31,12 +45,14 @@ const DetailItem = ({
       {deleteAction && (
         <S.ActionContainer>
           {isLoading ? (
-            <Skeleton
-              circle
-              width={24}
-              height={24}
-              containerClassName="flex-1"
-            />
+            <div>
+              <Skeleton
+                circle
+                width={20}
+                height={20}
+                containerClassName="skeleton"
+              />
+            </div>
           ) : (
             <div
               onClick={(e) => {
