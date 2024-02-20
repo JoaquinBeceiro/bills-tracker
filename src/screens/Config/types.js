@@ -6,14 +6,9 @@ import {
   InputComponent,
 } from "components";
 import Utils from "lib/utils";
-import {
-  addRow,
-  deleteRow,
-  getLocalSheetData,
-} from "services/configSpreadsheet";
+import { addRow, getLocalSheetData } from "services/configSpreadsheet";
 import EmptyBox from "rsc/img/emptybox.png";
-
-const { formatMoney, moneyToNumber } = Utils.Currency;
+import { sheetHeadersTypes } from "config/sheet";
 
 const defaultForm = {
   name: "",
@@ -23,18 +18,23 @@ const defaultForm = {
 const Types = ({
   doc,
   setMainLoading,
-  DispatchTypes,
-  modalDispatch,
   isLoading,
   billsTypes,
+  deleteRecord,
 }) => {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(defaultForm);
   const [types, seTypes] = useState(null);
 
+  console.log("types", types);
+
   const getStartData = useCallback(async () => {
-    const data = await getLocalSheetData(doc);
-    // setSchedules(data);
+    const data = await getLocalSheetData(
+      doc,
+      Utils.Constants.TYPES,
+      sheetHeadersTypes
+    );
+    seTypes(data);
   }, [doc]);
 
   useEffect(() => {
@@ -64,43 +64,16 @@ const Types = ({
     setMainLoading(true);
     try {
       const { name, description } = form;
-      await addRow(doc, name, description);
+      const data = { name, description };
+      await addRow(doc, Utils.Constants.TYPES, sheetHeadersTypes, data);
       setForm(defaultForm);
       getStartData();
       hideForm();
     } catch (error) {
-      console.log("ERROR (addSchedule)", error);
+      console.log("ERROR (addType)", error);
     } finally {
       setMainLoading(false);
     }
-  };
-
-  const deleteRecord = async (id) => {
-    modalDispatch({
-      type: DispatchTypes.Modal.MODAL_SHOW,
-      title: "Confirmation",
-      content: "Do you really want to delete this record?",
-      actions: [
-        {
-          type: "secondary",
-          text: "Delete",
-          action: async () => {
-            modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
-            setMainLoading(true);
-            await deleteRow(doc, id);
-            getStartData();
-            setMainLoading(false);
-          },
-        },
-        {
-          type: "text",
-          text: "Cancel",
-          action: () => {
-            modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
-          },
-        },
-      ],
-    });
   };
 
   if (showForm) {
@@ -124,7 +97,7 @@ const Types = ({
             onChange={onChange}
           />
         </S.Form>
-        {/* <ButtonComponent text="Save" action={addSchedule} /> */}
+        <ButtonComponent text="Save" action={addType} />
         <ButtonComponent type="text" text="Cancel" action={hideForm} />
       </S.Content>
     );
@@ -151,19 +124,15 @@ const Types = ({
       <S.TableContainer>
         {types === null || types.length === 0
           ? SkeletonLoading(isLoading)
-          : types.map(({ Name, Type, Amount, Frequency, Description, Id }) => {
-              const priceFormatted = `$${formatMoney(moneyToNumber(Amount))}`;
-              const typeSchedule = Utils.Constants.SCHEDULE_FREQUENCY.find(
-                ({ key }) => key === Frequency
-              ).value;
+          : types.map(({ Name, Description, Id }) => {
               return (
                 <DetailItemComponent
                   key={`${Id}-${Name}`}
-                  amount={priceFormatted}
-                  title={`${Name} (${typeSchedule})`}
-                  subTitle={Type}
+                  title={Name}
                   description={Description}
-                  deleteAction={() => deleteRecord(Id)}
+                  deleteAction={() =>
+                    deleteRecord(Id, Utils.Constants.TYPES, sheetHeadersTypes)
+                  }
                 />
               );
             })}

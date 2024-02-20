@@ -1,5 +1,4 @@
 import { setSheetConfig, getSheetConfig } from "config/localStorage";
-import { createScheduleRow } from "config/sheet";
 import Utils from "lib/utils";
 
 const getSheet = async (doc, title, headers) => {
@@ -20,18 +19,16 @@ export const storeSheetData = async (doc, title, headers) => {
     const sheet = await getSheet(doc, title, headers);
     if (sheet) {
       const fetchedRows = await sheet.getRows();
-      const mappedData = fetchedRows.map(({ _rawData, _rowNumber }) => {
-        return {
-          [Utils.Constants.SCHEDULE]: createScheduleRow(
-            _rawData[0],
-            _rawData[1],
-            _rawData[2],
-            _rawData[3],
-            _rawData[4],
-            _rowNumber
-          ),
-        }[title];
-      });
+      const mappedData = fetchedRows.map(
+        ({ _rawData, _rowNumber, _worksheet }) => {
+          const headersValues = _worksheet._headerValues;
+
+          return headersValues.reduce(
+            (acc, val, index) => ({ ...acc, [val]: _rawData[index] }),
+            { Id: _rowNumber }
+          );
+        }
+      );
       setSheetConfig(mappedData, title);
       return mappedData;
     } else {
@@ -64,6 +61,10 @@ export const addRow = async (doc, title, headers, data) => {
         Amount: `$${data.amount}`,
         Description: data.description,
         Date: timestamp,
+      },
+      [Utils.Constants.TYPES]: {
+        Name: data.name,
+        Description: data.description,
       },
     }[title];
 

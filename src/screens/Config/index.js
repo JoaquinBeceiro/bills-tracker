@@ -84,7 +84,7 @@ const Config = () => {
   const deleteRecord = async (id, title, headers) => {
     modalDispatch({
       type: DispatchTypes.Modal.MODAL_SHOW,
-      title: "Confirmation",
+      title: title,
       content: "Do you really want to delete this record?",
       actions: [
         {
@@ -131,8 +131,6 @@ const Config = () => {
             <Types
               doc={doc}
               setMainLoading={setMainLoading}
-              DispatchTypes={DispatchTypes}
-              modalDispatch={modalDispatch}
               isLoading={isLoading}
               billsTypes={billsTypes}
               deleteRecord={deleteRecord}
