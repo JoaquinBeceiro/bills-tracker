@@ -9,8 +9,14 @@ import { GlobalContext, DispatchTypes } from "context";
 import { storeSheetData, deleteRow } from "services/configSpreadsheet";
 import { getTypes } from "services";
 import { sheetHeadersSchedule, sheetHeadersTypes } from "config/sheet";
+import { useHistory, useLocation } from "react-router-dom";
 
 const Config = () => {
+  const history = useHistory();
+  const location = useLocation();
+
+  const active = new URLSearchParams(location.search).get("active");
+
   const context = useContext(GlobalContext);
   const [userState] = context.globalUser;
   const [, modalDispatch] = context.globalModal;
@@ -73,13 +79,44 @@ const Config = () => {
     }
   }, [getStartData, doc]);
 
-  const menuAction = (key) => {
-    const newMenuItems = Utils.Constants.MENU_ITEMS.map((item) => ({
-      ...item,
-      active: key === item.label,
-    }));
-    setMenuItems(newMenuItems);
-  };
+  const menuAction = useCallback(
+    (key) => {
+      const newMenuItems = Utils.Constants.MENU_ITEMS.map((item) => ({
+        ...item,
+        active: key === item.label,
+      }));
+      history.push({
+        search: `?active=${key}`,
+      });
+      setMenuItems(newMenuItems);
+    },
+    [history]
+  );
+
+  const checkActivePath = useCallback(
+    (activePath) => {
+      const findItem = Utils.Constants.MENU_ITEMS.find(
+        ({ label }) => label === activePath
+      );
+      if (findItem && !findItem.disabled) {
+        menuAction(activePath);
+      } else {
+        history.push({
+          search: "",
+        });
+      }
+    },
+    [history, menuAction]
+  );
+
+  useEffect(() => {
+    if (active) {
+      const activeMenu = menuItems.find(({ active }) => active).label;
+      if (activeMenu !== active) {
+        checkActivePath(active);
+      }
+    }
+  }, [active, checkActivePath, menuItems]);
 
   const deleteRecord = async (id, title, headers) => {
     modalDispatch({
