@@ -3,10 +3,12 @@ import { NoHeaderLayout } from "layouts";
 import { TabsComponent, LoadingComponent } from "components";
 import * as S from "./styles";
 import Schedule from "./schedule";
+import Types from "./types";
 import Utils from "lib/utils";
 import { GlobalContext, DispatchTypes } from "context";
 import { storeSheetData } from "services/configSpreadsheet";
 import { getTypes } from "services";
+import { sheetHeadersSchedule, sheetHeadersTypes } from "config/sheet";
 
 const Config = () => {
   const context = useContext(GlobalContext);
@@ -39,28 +41,35 @@ const Config = () => {
     [modalDispatch]
   );
 
-  const getStartData = useCallback(async () => {
-    setMainLoading(true);
-    try {
-      await storeSheetData(doc);
-      const types = await getTypes(doc);
-      const typesFormatted = types.map((type) => ({
-        value: type,
-        label: type,
-      }));
-      setBillsTypes(typesFormatted);
-    } catch (e) {
-      console.log("getStartData ERROR", e);
-      alertModal("Error", "There was an error. Please try again later.");
-      setMainLoading(false);
-    }
+  const getStartData = useCallback(
+    async (title, headers) => {
+      setMainLoading(true);
+      try {
+        await storeSheetData(doc, title, headers);
+        const types = await getTypes(doc);
+        const typesFormatted = types.map((type) => ({
+          value: type,
+          label: type,
+        }));
+        setBillsTypes(typesFormatted);
+      } catch (e) {
+        console.log("getStartData ERROR", e);
+        alertModal(
+          "Error",
+          `There was an error trying to obtain ${title.toLowerCase()} data. Please try again later.`
+        );
+        setMainLoading(false);
+      }
 
-    setMainLoading(false);
-  }, [alertModal, doc]);
+      setMainLoading(false);
+    },
+    [alertModal, doc]
+  );
 
   useEffect(() => {
     if (doc) {
-      getStartData();
+      getStartData(Utils.Constants.SCHEDULE, sheetHeadersSchedule);
+      getStartData(Utils.Constants.TYPES, sheetHeadersTypes);
     }
   }, [getStartData, doc]);
 
@@ -83,6 +92,16 @@ const Config = () => {
         <S.Container>
           {activeItem === Utils.Constants.SCHEDULE && (
             <Schedule
+              doc={doc}
+              setMainLoading={setMainLoading}
+              DispatchTypes={DispatchTypes}
+              modalDispatch={modalDispatch}
+              isLoading={isLoading}
+              billsTypes={billsTypes}
+            />
+          )}
+          {activeItem === Utils.Constants.TYPES && (
+            <Types
               doc={doc}
               setMainLoading={setMainLoading}
               DispatchTypes={DispatchTypes}

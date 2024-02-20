@@ -26,9 +26,14 @@ export const setSheetData = (data) => {
 
 export const getSheetData = () => JSON.parse(localStorage.getItem("data"));
 
-export const setSheetConfig = (data) => {
-  const dataObject = JSON.stringify(data);
-  localStorage.setItem("config", dataObject);
+export const setSheetConfig = (data, title) => {
+  if (title) {
+    const dataObject = JSON.stringify(data);
+    localStorage.setItem(`config_${title}`, dataObject);
+  } else {
+    throw Error("Cannot save without title.");
+  }
 };
 
-export const getSheetConfig = () => JSON.parse(localStorage.getItem("config"));
+export const getSheetConfig = (title) =>
+  JSON.parse(localStorage.getItem(`config_${title}`));

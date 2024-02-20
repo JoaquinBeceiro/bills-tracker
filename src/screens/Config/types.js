@@ -12,26 +12,15 @@ import {
   getLocalSheetData,
 } from "services/configSpreadsheet";
 import EmptyBox from "rsc/img/emptybox.png";
-import { sheetHeadersSchedule } from "config/sheet";
 
 const { formatMoney, moneyToNumber } = Utils.Currency;
 
-const SCHEDULE_FREQUENCY_OPTIONS = Utils.Constants.SCHEDULE_FREQUENCY.map(
-  ({ key, value }) => ({
-    value: key,
-    label: value,
-  })
-);
-
 const defaultForm = {
   name: "",
-  type: "",
-  frequency: 0,
-  amount: "",
   description: "",
 };
 
-const Schedule = ({
+const Types = ({
   doc,
   setMainLoading,
   DispatchTypes,
@@ -41,15 +30,11 @@ const Schedule = ({
 }) => {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(defaultForm);
-  const [schedules, setSchedules] = useState(null);
+  const [types, seTypes] = useState(null);
 
   const getStartData = useCallback(async () => {
-    const data = await getLocalSheetData(
-      doc,
-      Utils.Constants.SCHEDULE,
-      sheetHeadersSchedule
-    );
-    setSchedules(data);
+    const data = await getLocalSheetData(doc);
+    // setSchedules(data);
   }, [doc]);
 
   useEffect(() => {
@@ -75,12 +60,11 @@ const Schedule = ({
     }
   };
 
-  const addSchedule = async () => {
+  const addType = async () => {
     setMainLoading(true);
     try {
-      const { name, type, frequency, amount, description } = form;
-      const data = { name, type, frequency, amount, description };
-      await addRow(doc, Utils.Constants.SCHEDULE, sheetHeadersSchedule, data);
+      const { name, description } = form;
+      await addRow(doc, name, description);
       setForm(defaultForm);
       getStartData();
       hideForm();
@@ -103,12 +87,7 @@ const Schedule = ({
           action: async () => {
             modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
             setMainLoading(true);
-            await deleteRow(
-              doc,
-              Utils.Constants.SCHEDULE,
-              sheetHeadersSchedule,
-              id
-            );
+            await deleteRow(doc, id);
             getStartData();
             setMainLoading(false);
           },
@@ -130,41 +109,11 @@ const Schedule = ({
         <S.Form>
           <InputComponent
             type="text"
-            placeholder="Schedule name"
+            placeholder="Type name"
             name="name"
             value={form.name}
             onChange={onChange}
             title="Name"
-          />
-          <InputComponent
-            type="creatableDropdown"
-            name="type"
-            title="Type"
-            options={billsTypes}
-            value={billsTypes && form.type && billsTypes[form.type]}
-            onChange={onChange}
-            placeholder="Write to create new type"
-          />
-          <InputComponent
-            type="dropdown"
-            name="frequency"
-            title="Frequency"
-            options={SCHEDULE_FREQUENCY_OPTIONS}
-            value={
-              SCHEDULE_FREQUENCY_OPTIONS &&
-              form.frequency &&
-              SCHEDULE_FREQUENCY_OPTIONS[form.frequency]
-            }
-            onChange={onChange}
-            placeholder="Select frequency"
-            isSearchable={false}
-          />
-          <InputComponent
-            type="money"
-            placeholder="0"
-            name="amount"
-            value={form.amount}
-            onChange={onChange}
           />
           <InputComponent
             type="bigtext"
@@ -175,7 +124,7 @@ const Schedule = ({
             onChange={onChange}
           />
         </S.Form>
-        <ButtonComponent text="Save" action={addSchedule} />
+        {/* <ButtonComponent text="Save" action={addSchedule} /> */}
         <ButtonComponent type="text" text="Cancel" action={hideForm} />
       </S.Content>
     );
@@ -185,8 +134,8 @@ const Schedule = ({
     return !isLoading ? (
       <S.NoData>
         <img src={EmptyBox} alt="Empty box" />
-        <p className="strong">You have not created any schedule yet.</p>
-        <p>You can easily create and manage your schedules on this page.</p>
+        <p className="strong">You have not created any type yet.</p>
+        <p>You can easily create and manage your types on this page.</p>
       </S.NoData>
     ) : (
       <>
@@ -200,26 +149,24 @@ const Schedule = ({
   return (
     <S.Content>
       <S.TableContainer>
-        {schedules === null || schedules.length === 0
+        {types === null || types.length === 0
           ? SkeletonLoading(isLoading)
-          : schedules.map(
-              ({ Name, Type, Amount, Frequency, Description, Id }) => {
-                const priceFormatted = `$${formatMoney(moneyToNumber(Amount))}`;
-                const typeSchedule = Utils.Constants.SCHEDULE_FREQUENCY.find(
-                  ({ key }) => key === Frequency
-                ).value;
-                return (
-                  <DetailItemComponent
-                    key={`${Id}-${Name}`}
-                    amount={priceFormatted}
-                    title={`${Name} (${typeSchedule})`}
-                    subTitle={Type}
-                    description={Description}
-                    deleteAction={() => deleteRecord(Id)}
-                  />
-                );
-              }
-            )}
+          : types.map(({ Name, Type, Amount, Frequency, Description, Id }) => {
+              const priceFormatted = `$${formatMoney(moneyToNumber(Amount))}`;
+              const typeSchedule = Utils.Constants.SCHEDULE_FREQUENCY.find(
+                ({ key }) => key === Frequency
+              ).value;
+              return (
+                <DetailItemComponent
+                  key={`${Id}-${Name}`}
+                  amount={priceFormatted}
+                  title={`${Name} (${typeSchedule})`}
+                  subTitle={Type}
+                  description={Description}
+                  deleteAction={() => deleteRecord(Id)}
+                />
+              );
+            })}
       </S.TableContainer>
       <ButtonComponent
         text="Add new"
@@ -230,4 +177,4 @@ const Schedule = ({
   );
 };
 
-export default Schedule;
+export default Types;

@@ -6,7 +6,7 @@ import {
   sheetTitle,
   sheetTitleConfig,
   docName,
-  sheetHeadersConfig,
+  sheetHeadersSchedule,
 } from "config/sheet";
 import { setSheetData, getSheetData } from "config/localStorage";
 import {
@@ -142,7 +142,7 @@ export const createDoc = async (
       });
       await doc.addSheet({
         title: sheetTitleConfig,
-        headerValues: sheetHeadersConfig,
+        headerValues: sheetHeadersSchedule,
       });
     }
     await storeSheetData(doc);
