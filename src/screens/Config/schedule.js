@@ -6,11 +6,7 @@ import {
   InputComponent,
 } from "components";
 import Utils from "lib/utils";
-import {
-  addRow,
-  deleteRow,
-  getLocalSheetData,
-} from "services/configSpreadsheet";
+import { addRow, getLocalSheetData } from "services/configSpreadsheet";
 import EmptyBox from "rsc/img/emptybox.png";
 import { sheetHeadersSchedule } from "config/sheet";
 
@@ -34,10 +30,9 @@ const defaultForm = {
 const Schedule = ({
   doc,
   setMainLoading,
-  DispatchTypes,
-  modalDispatch,
   isLoading,
   billsTypes,
+  deleteRecord,
 }) => {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(defaultForm);
@@ -89,39 +84,6 @@ const Schedule = ({
     } finally {
       setMainLoading(false);
     }
-  };
-
-  const deleteRecord = async (id) => {
-    modalDispatch({
-      type: DispatchTypes.Modal.MODAL_SHOW,
-      title: "Confirmation",
-      content: "Do you really want to delete this record?",
-      actions: [
-        {
-          type: "secondary",
-          text: "Delete",
-          action: async () => {
-            modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
-            setMainLoading(true);
-            await deleteRow(
-              doc,
-              Utils.Constants.SCHEDULE,
-              sheetHeadersSchedule,
-              id
-            );
-            getStartData();
-            setMainLoading(false);
-          },
-        },
-        {
-          type: "text",
-          text: "Cancel",
-          action: () => {
-            modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
-          },
-        },
-      ],
-    });
   };
 
   if (showForm) {
@@ -215,7 +177,13 @@ const Schedule = ({
                     title={`${Name} (${typeSchedule})`}
                     subTitle={Type}
                     description={Description}
-                    deleteAction={() => deleteRecord(Id)}
+                    deleteAction={() =>
+                      deleteRecord(
+                        Id,
+                        Utils.Constants.SCHEDULE,
+                        sheetHeadersSchedule
+                      )
+                    }
                   />
                 );
               }

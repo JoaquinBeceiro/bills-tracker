@@ -6,7 +6,7 @@ import Schedule from "./schedule";
 import Types from "./types";
 import Utils from "lib/utils";
 import { GlobalContext, DispatchTypes } from "context";
-import { storeSheetData } from "services/configSpreadsheet";
+import { storeSheetData, deleteRow } from "services/configSpreadsheet";
 import { getTypes } from "services";
 import { sheetHeadersSchedule, sheetHeadersTypes } from "config/sheet";
 
@@ -81,6 +81,34 @@ const Config = () => {
     setMenuItems(newMenuItems);
   };
 
+  const deleteRecord = async (id, title, headers) => {
+    modalDispatch({
+      type: DispatchTypes.Modal.MODAL_SHOW,
+      title: "Confirmation",
+      content: "Do you really want to delete this record?",
+      actions: [
+        {
+          type: "secondary",
+          text: "Delete",
+          action: async () => {
+            modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
+            setMainLoading(true);
+            await deleteRow(doc, title, headers, id);
+            getStartData(title, headers);
+            setMainLoading(false);
+          },
+        },
+        {
+          type: "text",
+          text: "Cancel",
+          action: () => {
+            modalDispatch({ type: DispatchTypes.Modal.MODAL_HIDE });
+          },
+        },
+      ],
+    });
+  };
+
   const activeItem = menuItems.find(({ active }) => active).label;
 
   const isLoading = loading || mainLoading;
@@ -94,10 +122,9 @@ const Config = () => {
             <Schedule
               doc={doc}
               setMainLoading={setMainLoading}
-              DispatchTypes={DispatchTypes}
-              modalDispatch={modalDispatch}
               isLoading={isLoading}
               billsTypes={billsTypes}
+              deleteRecord={deleteRecord}
             />
           )}
           {activeItem === Utils.Constants.TYPES && (
@@ -108,6 +135,7 @@ const Config = () => {
               modalDispatch={modalDispatch}
               isLoading={isLoading}
               billsTypes={billsTypes}
+              deleteRecord={deleteRecord}
             />
           )}
           {activeItem === Utils.Constants.PROFILE && <>PROFILE</>}
