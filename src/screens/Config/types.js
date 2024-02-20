@@ -26,8 +26,6 @@ const Types = ({
   const [form, setForm] = useState(defaultForm);
   const [types, seTypes] = useState(null);
 
-  console.log("types", types);
-
   const getStartData = useCallback(async () => {
     const data = await getLocalSheetData(
       doc,
