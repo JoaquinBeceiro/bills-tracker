@@ -2,6 +2,9 @@
   "name": "bills-tracker",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "=16.14.2"
+  },
   "dependencies": {
     "@devexpress/dx-react-chart": "^2.7.1",
     "@devexpress/dx-react-chart-material-ui": "^2.7.1",
