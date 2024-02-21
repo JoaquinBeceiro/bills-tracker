@@ -4,6 +4,7 @@ import CreatableSelect from "react-select/creatable";
 import Select from "react-select";
 
 const InputContainer = styled.div`
+  position: relative;
   box-sizing: border-box;
   margin-bottom: 20px;
   border-bottom: 1px solid #c4c4c4;
@@ -305,6 +306,66 @@ const TextAreaBox = styled(BigTextBox)`
   min-height: 88px;
 `;
 
+const IconBox = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+`;
+
+const IconText = styled.input`
+  font-family: Roboto;
+  border: 0px;
+  width: 100%;
+  height: 100%;
+  text-align: right;
+  flex: 1;
+  font-weight: normal;
+  font-size: 18px;
+  ::placeholder {
+    color: #7e7e7e;
+  }
+  &:focus {
+    outline: none;
+    ::placeholder {
+      color: #000;
+    }
+  }
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 100%;
+`;
+
+const IconSearch = styled.div`
+  position: absolute;
+  height: 200px;
+  width: 100%;
+  left: 0;
+  top: 45px;
+  border-radius: 7px;
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.25);
+  overflow-y: scroll;
+  display: grid;
+  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(25px, 1fr));
+  grid-template-rows: 25px;
+  grid-auto-rows: 25px;
+
+  > div {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
 export {
   InputContainer,
   InputBox,
@@ -314,4 +375,8 @@ export {
   TextAreaBox,
   TextMoney,
   Date,
+  IconBox,
+  IconText,
+  IconContainer,
+  IconSearch,
 };

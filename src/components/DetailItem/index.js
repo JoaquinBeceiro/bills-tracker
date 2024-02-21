@@ -1,6 +1,6 @@
 import React from "react";
 import * as S from "./styles";
-import { DeleteIcon } from "components";
+import { DeleteIcon, IconComponent } from "components";
 import "react-loading-skeleton/dist/skeleton.css";
 import Skeleton from "react-loading-skeleton";
 
@@ -30,7 +30,9 @@ const DetailItem = ({
             />
           </S.IconContainer>
         ) : (
-          <S.IconContainer>{icon}</S.IconContainer>
+          <S.IconContainer>
+            <IconComponent icon={icon} />
+          </S.IconContainer>
         ))}
       <S.Content fullWidth={true}>
         <S.Row>

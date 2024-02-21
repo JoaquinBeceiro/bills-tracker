@@ -1,5 +1,6 @@
 import React from "react";
 import * as S from "./styles";
+import Icon from "./icon";
 
 import {
   DollarIcon,
@@ -19,6 +20,7 @@ const Input = ({
   isSearchable,
 }) => {
   const handleChangeInput = (e) => onChange(e.target.name, e.target.value);
+  const handleChangeIcon = (value) => onChange(name, value);
   const handleChangeDropdown = ({ value }) => onChange(name, value);
 
   const defaultProps = {
@@ -82,6 +84,7 @@ const Input = ({
                 name={name}
               />
             ),
+            icon: <Icon {...defaultProps} onChange={handleChangeIcon} />,
           }[type]
         }
       </div>

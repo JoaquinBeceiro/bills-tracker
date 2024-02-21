@@ -20,3 +20,4 @@ export { default as TooltipComponent } from "./Tooltip";
 export { default as RadioButtonComponent } from "./RadioButton";
 export { default as TabsComponent } from "./Tabs";
 export { default as SearchComponent } from "./Search";
+export { default as IconComponent } from "./Icon";

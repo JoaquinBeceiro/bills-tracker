@@ -13,6 +13,7 @@ import { sheetHeadersTypes } from "config/sheet";
 
 const defaultForm = {
   name: "",
+  icon: "",
 };
 
 const Types = ({
@@ -61,8 +62,8 @@ const Types = ({
   const addType = async () => {
     setMainLoading(true);
     try {
-      const { name } = form;
-      const data = { name };
+      const { name, icon } = form;
+      const data = { name, icon };
       await addRow(doc, Utils.Constants.TYPES, sheetHeadersTypes, data);
       setForm(defaultForm);
       getStartData();
@@ -122,12 +123,12 @@ const Types = ({
       <S.TableContainer>
         {types === null || types.length === 0
           ? SkeletonLoading(isLoading)
-          : types.map(({ Name, Id }) => {
+          : types.map(({ Name, Icon, Id }) => {
               return (
                 <DetailItemComponent
                   key={`${Id}-${Name}`}
                   title={Name}
-                  icon={<InfoIcon />}
+                  icon={Icon}
                   deleteAction={() =>
                     deleteRecord(Id, Utils.Constants.TYPES, sheetHeadersTypes)
                   }
