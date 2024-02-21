@@ -4,7 +4,6 @@ import {
   DetailItemComponent,
   ButtonComponent,
   InputComponent,
-  InfoIcon,
 } from "components";
 import Utils from "lib/utils";
 import { addRow, getLocalSheetData } from "services/configSpreadsheet";
@@ -16,13 +15,7 @@ const defaultForm = {
   icon: "",
 };
 
-const Types = ({
-  doc,
-  setMainLoading,
-  isLoading,
-  billsTypes,
-  deleteRecord,
-}) => {
+const Types = ({ doc, setMainLoading, isLoading, deleteRecord }) => {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(defaultForm);
   const [types, seTypes] = useState(null);
