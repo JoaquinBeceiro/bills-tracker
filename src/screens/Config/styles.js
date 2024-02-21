@@ -11,12 +11,18 @@ export const Content = styled.div`
   flex-direction: column;
   gap: 20px;
   height: 100%;
+  max-height: calc(100dvh - 200px);
 `;
 
 export const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+  max-height: 100%;
+  overflow-y: auto;
+  width: 100%;
+  margin-right: -20px;
+  padding-right: 20px;
 `;
 
 export const Form = styled.div`

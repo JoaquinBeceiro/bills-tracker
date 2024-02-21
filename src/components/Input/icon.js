@@ -7,6 +7,7 @@ const Icon = ({ name, placeholder, disabled, onChange }) => {
   const [iconPack, setIconPack] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [selectedIcon, setSelectedIcon] = useState(null);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (iconPack.length === 0) {
@@ -40,7 +41,13 @@ const Icon = ({ name, placeholder, disabled, onChange }) => {
   const handleSelectIcon = (iconName) => {
     onChange(iconName);
     setSearchText("");
+    setOpen(false);
     setSelectedIcon(iconName);
+  };
+
+  const handleTextChange = (text) => {
+    setSearchText(text);
+    setOpen(true);
   };
 
   return (
@@ -50,22 +57,28 @@ const Icon = ({ name, placeholder, disabled, onChange }) => {
         placeholder={placeholder}
         disabled={disabled}
         value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
+        onChange={(e) => handleTextChange(e.target.value)}
       />
       <S.IconContainer>
         {selectedIcon && <FontAwesomeIcon icon={selectedIcon} />}
       </S.IconContainer>
-      {searchText !== "" && (
-        <S.IconSearch>
-          {iconsFiltered.map(({ prefix, iconName }, index) => (
-            <div
-              onClick={() => handleSelectIcon(iconName)}
-              key={index + prefix + iconName}
-            >
-              <FontAwesomeIcon icon={iconName} />
-            </div>
-          ))}
-        </S.IconSearch>
+      {open && (
+        <>
+          <S.IconSearchOverlay
+            onClick={() => setOpen(false)}
+          ></S.IconSearchOverlay>
+          <S.IconSearch>
+            {iconsFiltered.map(({ prefix, iconName }, index) => (
+              <div
+                className="svg-icon-item"
+                onClick={() => handleSelectIcon(iconName)}
+                key={index + prefix + iconName}
+              >
+                <FontAwesomeIcon icon={iconName} />
+              </div>
+            ))}
+          </S.IconSearch>
+        </>
       )}
     </S.IconBox>
   );

@@ -321,6 +321,7 @@ const IconText = styled.input`
   flex: 1;
   font-weight: normal;
   font-size: 18px;
+  z-index: 20;
   ::placeholder {
     color: #7e7e7e;
   }
@@ -340,6 +341,16 @@ const IconContainer = styled.div`
   height: 100%;
 `;
 
+const IconSearchOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: #00000010;
+  z-index: 10;
+`;
+
 const IconSearch = styled.div`
   position: absolute;
   height: 200px;
@@ -352,17 +363,19 @@ const IconSearch = styled.div`
   box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.25);
   overflow-y: scroll;
   display: grid;
-  gap: 15px;
   grid-template-columns: repeat(auto-fit, minmax(25px, 1fr));
   grid-template-rows: 25px;
   grid-auto-rows: 25px;
+  z-index: 20;
 
   > div {
+    z-index: 100;
     width: 25px;
     height: 25px;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10px;
   }
 `;
 
@@ -379,4 +392,5 @@ export {
   IconText,
   IconContainer,
   IconSearch,
+  IconSearchOverlay,
 };
