@@ -19,6 +19,7 @@ const { OAuth2Client } = require("google-auth-library");
 
 const { moneyToNumber, formatMoney } = Utils.Currency;
 const { dateSort, split, month12Ago, dateParser, dateToText } = Utils.Date;
+const { getTotalRecords } = Utils.Common;
 
 const getSheet = (doc) => {
   return doc.sheetsByTitle[sheetTitle];
@@ -549,6 +550,7 @@ export const getItemsByText = async (doc, text, limit = 100) => {
     return {
       count: dataSorted.length,
       results: dataSorted.slice(0, limit),
+      total: getTotalRecords(dataSorted),
     };
   } else {
     return null;

@@ -1,3 +1,5 @@
+import Utils from "lib/utils";
+
 export const isJsonString = (str) => {
   try {
     JSON.parse(str);
@@ -19,3 +21,9 @@ export const getSpreadsheetId = (url) => {
     return null;
   }
 };
+
+export const getTotalRecords = records => {
+  const { moneyToNumber, formatMoney } = Utils.Currency;
+  const total = records.reduce((prev, cur) => prev + moneyToNumber(cur.Amount), 0);
+  return formatMoney(total);
+}

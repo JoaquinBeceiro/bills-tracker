@@ -14,11 +14,11 @@ const Search = () => {
   const [searchValue, searchDispatch] = context.globalSearch;
   const [results, setResults] = useState([]);
   const [count, setCount] = useState(0);
+  const [total, setTotal] = useState(0);
 
   const { doc, loading } = userState;
 
   const handleCloseSearch = (e) => {
-    console.log("CLOSE!!");
     e.preventDefault();
     e.stopPropagation();
     searchDispatch({ type: DispatchTypes.Search.SEARCH_HIDE });
@@ -40,6 +40,7 @@ const Search = () => {
     if (items) {
       setResults(items.results);
       setCount(items.count);
+      setTotal(items.total);
     }
   };
 
@@ -97,7 +98,7 @@ const Search = () => {
           <S.SearchInputContainer>
             <SearchIcon />
             <S.SearchInput
-              autofocus
+              autoFocus
               placeholder="Start searching..."
               onChange={handleSearchInput}
               value={searchValue.input}
@@ -113,11 +114,11 @@ const Search = () => {
           <S.CountContainer>
             <div>
               <strong>Showing</strong>
-              <p>{results.length}</p>
+              <p>{results.length}/{count}</p>
             </div>
             <div>
               <strong>Total</strong>
-              <p>{count}</p>
+              <p>${total}</p>
             </div>
           </S.CountContainer>
         )}
