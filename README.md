@@ -9,7 +9,7 @@
   <img alt="Stars" src="https://img.shields.io/github/stars/JoaquinBeceiro/Bills-Tracker.svg?style=plasticr"/>
   <img alt="Last Commit" src="https://img.shields.io/github/last-commit/JoaquinBeceiro/Bills-Tracker.svg?style=plasticr"/>
   <img alt="Commit activity" src="https://img.shields.io/github/commit-activity/m/JoaquinBeceiro/Bills-Tracker.svg?style=plasticr"/>
-  <img alt="Maintenance" src="https://img.shields.io/maintenance/yes/2023"/>
+  <img alt="Maintenance" src="https://img.shields.io/maintenance/yes/2024"/>
 </p>
 
 ## Table of Contents
