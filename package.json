@@ -15,6 +15,7 @@
     "firebase": "^9.14.0",
     "google-auth-library": "^8.0.2",
     "google-spreadsheet": "^4.1.1",
+    "math-expression-evaluator": "^2.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-google-button": "^0.7.2",

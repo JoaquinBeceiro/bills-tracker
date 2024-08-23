@@ -50,7 +50,7 @@ const Input = ({
             money: (
               <S.TextMoney
                 {...defaultProps}
-                type="number"
+                type="text"
                 inputmode="numeric"
               />
             ),

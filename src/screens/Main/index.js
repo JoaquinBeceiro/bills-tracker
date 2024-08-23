@@ -5,6 +5,7 @@ import { HeaderLayout } from "layouts";
 import { getTypes, addRow, createDoc, HeaderData } from "services";
 import Utils from "lib/utils";
 import { useHistory } from "react-router-dom";
+import { isMath, evaluateMath, isNumber } from "utils/math";
 
 const Main = () => {
   const history = useHistory();
@@ -124,7 +125,28 @@ const Main = () => {
   }, [doc, loading, getStartData]);
 
   const addBill = async () => {
-    const { amount, type, date, description } = form;
+    const { type, date, description } = form;
+    let { amount } = form;
+
+    const isAmountMath = isMath(amount);
+    const isAmountNumber = isNumber(amount);
+
+    if( isAmountMath ){
+      try {
+        amount = Math.round( evaluateMath(amount) );
+      } catch (error){
+        amount = "";
+      }
+    } 
+
+    if( amount.length === 0 || !((isAmountNumber && !isAmountMath) || (!isAmountNumber && isAmountMath))){
+      alertModal(
+        "Error",
+        "There was an error trying to add a new bill. The amount field is not valid."
+      );
+      setMainLoading(false);
+      return;
+    }
 
     if (window.gtag) {
       window.gtag("event", "add_bill", {
@@ -160,7 +182,7 @@ const Main = () => {
           setMainLoading(false);
         }
         setMainLoading(false);
-      } catch (error) {
+      } catch  (error) {
         console.log("addBill ERROR", error);
         alertModal(
           "Error",
