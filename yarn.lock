@@ -8049,6 +8049,11 @@
   dependencies:
     "object-visit" "^1.0.0"
 
+"math-expression-evaluator@^2.0.5":
+  "integrity" "sha512-C8Ifr3BpZ1E8ncWiHltndUkimvkzBwEiXPRyDJVxspo/G7zSN8tLHwFVfrGotvWzu2wuRkjnxaEayFblepmN5Q=="
+  "resolved" "https://registry.npmjs.org/math-expression-evaluator/-/math-expression-evaluator-2.0.5.tgz"
+  "version" "2.0.5"
+
 "md5.js@^1.3.4":
   "integrity" "sha512-xitP+WxNPcTTOgnTJcrhM0xvdPepipPSf3I8EIpGKeFLjt3PlJLIDG3u8EX53ZIubkb+5U2+3rELYpEhHhzdkg=="
   "resolved" "https://registry.npmjs.org/md5.js/-/md5.js-1.3.5.tgz"
